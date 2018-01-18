@@ -12,7 +12,7 @@ public class OI {
 	private Joystick leftJoy = new Joystick(ControlMap.leftStick);
 	private Joystick rightJoy = new Joystick(ControlMap.rightStick);
 	
-	public double getleftY() {
+	public double getLeftY() {
 		return leftJoy.getY();
 	}
 	

@@ -1,0 +1,9 @@
+# Gradle
+build/
+.gradle/
+
+# IntelliJ
+.idea/
+FRC-2018.iml
+
+out/
