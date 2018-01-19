@@ -5,5 +5,5 @@ build/
 # IntelliJ
 .idea/
 FRC-2018.iml
-
-out/
+FRC-2018.ipr
+FRC-2018.iws

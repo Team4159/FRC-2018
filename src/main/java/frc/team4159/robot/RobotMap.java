@@ -7,11 +7,10 @@ package frc.team4159.robot;
  * floating around.
  */
 public class RobotMap {
-	// map wires connecting to roborio
 
-    //Talons
-    public static int DT_LEFT = 2;
-    public static int DT_LEFT_FOLLOWER= 3;
-    public static int DT_RIGHT = 1;
-    public static int DT_RIGHT_FOLLOWER = 4;
+    // CAN Talons
+    public static final int DT_LEFT = 2;
+    public static final int DT_LEFT_FOLLOWER= 3;
+    public static final int DT_RIGHT = 1;
+    public static final int DT_RIGHT_FOLLOWER = 4;
 }
