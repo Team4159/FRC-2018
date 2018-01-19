@@ -18,6 +18,7 @@ import openrio.powerup.MatchData;
  * project.
  */
 public class Robot extends TimedRobot {
+
 	public static final Drivetrain drivetrain = new Drivetrain();
 	public static OI oi;
 

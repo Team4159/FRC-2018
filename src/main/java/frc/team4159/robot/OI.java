@@ -9,14 +9,14 @@ import edu.wpi.first.wpilibj.Joystick;
 
 public class OI {
 	
-	private Joystick leftJoy = new Joystick(ControlMap.leftStick);
-	private Joystick rightJoy = new Joystick(ControlMap.rightStick);
+	private static Joystick leftJoy = new Joystick(ControlMap.leftStick);
+	private static Joystick rightJoy = new Joystick(ControlMap.rightStick);
 	
-	public double getLeftY() {
+	public static double getLeftY() {
 		return leftJoy.getY();
 	}
 	
-	public double getRightY() {
+	public static double getRightY() {
 		return rightJoy.getY();
 	}
 	

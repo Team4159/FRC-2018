@@ -1,6 +1,8 @@
 package frc.team4159.robot.commands;
 
 import frc.team4159.robot.Robot;
+import frc.team4159.robot.OI;
+import com.ctre.phoenix.motion.TrajectoryPoint;
 
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -16,8 +18,8 @@ public class TankDrive extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-        Robot.drivetrain.setLeftRaw(Robot.oi.getLeftY());
-        Robot.drivetrain.setRightRaw(Robot.oi.getRightY());
+        Robot.drivetrain.setLeftRaw(OI.getLeftY());
+        Robot.drivetrain.setRightRaw(OI.getRightY());
     }
 
     // Make this return true when this Command no longer needs to run execute()
