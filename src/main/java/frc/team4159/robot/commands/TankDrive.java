@@ -2,7 +2,6 @@ package frc.team4159.robot.commands;
 
 import frc.team4159.robot.Robot;
 import frc.team4159.robot.OI;
-import com.ctre.phoenix.motion.TrajectoryPoint;
 
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -34,6 +33,6 @@ public class TankDrive extends Command {
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
-    		end();
+        end();
     }
 }

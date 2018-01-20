@@ -13,11 +13,24 @@ public class OI {
 	private static Joystick rightJoy = new Joystick(ControlMap.rightStick);
 	
 	public static double getLeftY() {
-		return leftJoy.getY();
+
+		double leftY = leftJoy.getY();
+
+		if(leftY < 0)
+		    return -1 * Math.pow(leftY, 2);
+
+		return Math.pow(leftY, 2);
+
 	}
 	
 	public static double getRightY() {
-		return rightJoy.getY();
+
+        double rightY = rightJoy.getY();
+
+        if(rightY < 0)
+            return -1 * Math.pow(rightY, 2);
+
+        return Math.pow(rightY, 2);
 	}
 	
 }

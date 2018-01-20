@@ -7,11 +7,13 @@ package frc.team4159.robot;
  * floating around.
  */
 public class RobotMap {
-    //CAN Talons
-    public static int DT_LEFT = 3;
-    public static int DT_RIGHT = 4;
-    //CAN VictorSPX
-    public static int DT_RIGHT_FOLLOWER = 3;
-    public static int DT_LEFT_FOLLOWER= 4;
+
+    // CAN Talons
+    public static int LEFT_TALON = 3;
+    public static int RIGHT_TALON = 4;
+
+    // CAN VictorSPX
+    public static int LEFT_VICTOR = 4;
+    public static int RIGHT_VICTOR = 3;
 
 }
