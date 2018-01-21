@@ -1,4 +1,4 @@
-package frc.team4159.robot.commands;
+package frc.team4159.robot.commands.drive;
 
 import frc.team4159.robot.Robot;
 import frc.team4159.robot.OI;
@@ -19,6 +19,7 @@ public class TankDrive extends Command {
     protected void execute() {
         Robot.drivetrain.setLeftRaw(OI.getLeftY());
         Robot.drivetrain.setRightRaw(OI.getRightY());
+        Robot.drivetrain.logSmartDashboard();
     }
 
     // Make this return true when this Command no longer needs to run execute()
