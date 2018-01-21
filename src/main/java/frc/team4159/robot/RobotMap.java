@@ -8,4 +8,11 @@ package frc.team4159.robot;
  */
 public class RobotMap {
 	// map wires connecting to roborio
+
+    //just declared these for random purposes feel free to change
+    public final static int leftMotorMaster = 0;
+    public final static int leftMotorSlave = 1;
+
+    public final static int rightMotorMaster = 2;
+    public final static int rightMotorSlave = 3;
 }

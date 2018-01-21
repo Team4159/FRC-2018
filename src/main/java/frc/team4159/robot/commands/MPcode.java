@@ -1,5 +1,6 @@
 package frc.team4159.robot.commands;
 
+/*taken from https://github.com/CrossTheRoadElec/Phoenix-Examples-Languages/blob/master/Java/MotionProfile/src/org/usfirst/frc/team217/robot/MotionProfileExample.java*/
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.*;
@@ -7,8 +8,10 @@ import com.ctre.phoenix.motorcontrol.can.*;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Notifier;
 import com.ctre.phoenix.motion.*;
-//import com.ctre.phoenix.motion.TrajectoryPoint.TrajectoryDuration;
-import com.ctre.phoenix.motion.TrajectoryPoint.*;
+import com.ctre.phoenix.motion.TrajectoryPoint.TrajectoryDuration;
+
+import frc.team4159.robot.Constants;
+
 
 
 public class MPcode {

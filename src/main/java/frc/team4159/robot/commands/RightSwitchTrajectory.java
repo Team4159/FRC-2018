@@ -1,7 +1,7 @@
 package frc.team4159.robot.commands;
 //Altered from https://github.com/CrossTheRoadElec/FRC-Examples-STEAMWORKS/blob/master/JAVA_MotionProfileExample/src/org/usfirst/frc/team3539/robot/GeneratedMotionProfile.java 
 
-public class RightSwitchTrajectory {
+public class RightSwitchTrajectory extends Trajectory{
 	
 	//Telling number of velocity point
 	public static final int numPoints = 185;

@@ -2,9 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/ChickenBot.iml" filepath="$PROJECT_DIR$/ChickenBot.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/ChickenBot_main.iml" filepath="$PROJECT_DIR$/.idea/modules/ChickenBot_main.iml" group="ChickenBot" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/ChickenBot_test.iml" filepath="$PROJECT_DIR$/.idea/modules/ChickenBot_test.iml" group="ChickenBot" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/FRC-2018.iml" filepath="$PROJECT_DIR$/.idea/modules/FRC-2018.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/FRC-2018_main.iml" filepath="$PROJECT_DIR$/.idea/modules/FRC-2018_main.iml" group="FRC-2018" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/FRC-2018_test.iml" filepath="$PROJECT_DIR$/.idea/modules/FRC-2018_test.iml" group="FRC-2018" />
     </modules>
   </component>
 </project>
