@@ -8,9 +8,9 @@ import edu.wpi.first.wpilibj.Joystick;
  */
 
 public class OI {
-	
 	private static Joystick leftJoy = new Joystick(ControlMap.leftStick);
 	private static Joystick rightJoy = new Joystick(ControlMap.rightStick);
+	private static Joystick secondaryJoy = new Joystick(ControlMap.secondaryStick);
 	
 	public static double getLeftY() {
 
@@ -32,5 +32,12 @@ public class OI {
 
         return Math.pow(rightY, 2);
 	}
+
+	public  boolean testButton(){
+		if(secondaryJoy.getRawButton(2))
+			return true;
+		return false;
+	}
 	
 }
+

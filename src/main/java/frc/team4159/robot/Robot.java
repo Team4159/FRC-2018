@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import frc.team4159.robot.commands.TankDrive;
 import frc.team4159.robot.subsystems.Drivetrain;
+import frc.team4159.robot.subsystems.TestPneumatics;
 import openrio.powerup.MatchData;
 
 /**
@@ -17,9 +18,12 @@ import openrio.powerup.MatchData;
  * creating this project, you must also update the build.properties file in the
  * project.
  */
+
+
 public class Robot extends TimedRobot {
 
 	public static final Drivetrain drivetrain = new Drivetrain();
+	public static final TestPneumatics pneumatics = new TestPneumatics();
 	public static OI oi;
 
 	private MatchData.OwnedSide switchNear;
