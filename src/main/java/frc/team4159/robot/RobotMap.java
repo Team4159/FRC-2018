@@ -6,13 +6,16 @@ package frc.team4159.robot;
  * the wiring easier and significantly reduces the number of magic numbers
  * floating around.
  */
+
 public class RobotMap {
-	// map wires connecting to roborio
 
-    //just declared these for random purposes feel free to change
-    public final static int leftMotorMaster = 0;
-    public final static int leftMotorSlave = 1;
 
-    public final static int rightMotorMaster = 2;
-    public final static int rightMotorSlave = 3;
+    // CAN Talon SRX
+    public static int LEFT_TALON = 3;
+    public static int RIGHT_TALON = 4;
+
+    // CAN Victor SPX
+    public static int LEFT_VICTOR = 4;
+    public static int RIGHT_VICTOR = 3;
+
 }

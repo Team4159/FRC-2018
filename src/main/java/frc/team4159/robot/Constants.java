@@ -1,7 +1,10 @@
 package frc.team4159.robot;
 
-/* Any other constants that are not roborio or joystick related i.e. scale factors */
-/* taken from https://github.com/CrossTheRoadElec/Phoenix-Examples-Languages/blob/master/Java/MotionProfile/src/org/usfirst/frc/team217/robot/Constants.java */
+
+/* Any other constants that are not roborio or joystick related i.e. scale factors, pid constants
+* Store multiple bot constants here and make sure to comment them out when not in use
+* */
+
 public class Constants {
     	/** which Talon on CANBus*/
     public static final int kTalonID = 0;
@@ -43,4 +46,7 @@ public class Constants {
     public static final double kNeutralDeadband  = 0.01;
 
     public static final int numTraPts = 185;
+    /* Practice bot */
+
+    /* Competition bot */
 }
