@@ -12,9 +12,8 @@ public class Superstructure {
     private static Superstructure instance;
 
     public static Superstructure getInstance() {
-        if(instance == null)
+        if (instance == null)
             instance = new Superstructure();
         return instance;
     }
-
 }

@@ -8,7 +8,6 @@ package frc.team4159.robot;
  */
 
 public class RobotMap {
-
     // CAN Talon SRX
     public static int LEFT_TALON = 3;
     public static int RIGHT_TALON = 4;
@@ -16,5 +15,9 @@ public class RobotMap {
     // CAN Victor SPX
     public static int LEFT_VICTOR = 4;
     public static int RIGHT_VICTOR = 3;
+
+    //Solenoids
+    public static int WHATEVER = 1;
+    public static int WHATEVER2 = 2;
 
 }
