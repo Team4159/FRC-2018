@@ -14,23 +14,11 @@ public class AutoCommandGroup extends CommandGroup  {
 		//tells what each path does
 		switch(m) {
 			case LEFT_SWITCH:
-				
+
 				System.out.println("left switch path activated");
 				break;
 			case RIGHT_SWITCH:
 				System.out.println("right switch path activated");
-				break;
-			case LEFT_SCALE_RIGHT_SWITCH:
-				System.out.println("left scale right switch path activated");
-				break;
-			case RIGHT_SCALE_RIGHT_SWITCH:
-				System.out.println("right scale right switch path activated");
-				break;
-			case LEFT_SCALE_LEFT_SWITCH:
-				System.out.println("left scale left switch path activated");
-				break;
-			case RIGHT_SCALE_LEFT_SWITCH:
-				System.out.println("right scale left switch path activated");
 				break;
 			case DO_NOTHING:
 				System.out.println("Standing still");
@@ -42,7 +30,7 @@ public class AutoCommandGroup extends CommandGroup  {
 	
 	//naming different types of Autos
 	public enum Mode{
-		LEFT_SWITCH, RIGHT_SWITCH, RIGHT_SCALE_LEFT_SWITCH, RIGHT_SCALE_RIGHT_SWITCH, LEFT_SCALE_RIGHT_SWITCH, LEFT_SCALE_LEFT_SWITCH, DO_NOTHING
+		LEFT_SWITCH, RIGHT_SWITCH, DO_NOTHING
 	}
 	
 

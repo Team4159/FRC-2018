@@ -2,26 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f8e86cec-cbd5-4750-94c2-251e27b0e718" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" afterPath="$PROJECT_DIR$/.idea/compiler.xml" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" afterPath="$PROJECT_DIR$/.gitignore" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/out/production/classes/frc/team4159/robot/Constants.class" afterPath="$PROJECT_DIR$/out/production/classes/frc/team4159/robot/Constants.class" />
-      <change beforePath="$PROJECT_DIR$/out/production/classes/frc/team4159/robot/ControlMap.class" afterPath="$PROJECT_DIR$/out/production/classes/frc/team4159/robot/ControlMap.class" />
-      <change beforePath="$PROJECT_DIR$/out/production/classes/frc/team4159/robot/OI.class" afterPath="$PROJECT_DIR$/out/production/classes/frc/team4159/robot/OI.class" />
-      <change beforePath="$PROJECT_DIR$/out/production/classes/frc/team4159/robot/Robot.class" afterPath="$PROJECT_DIR$/out/production/classes/frc/team4159/robot/Robot.class" />
-      <change beforePath="$PROJECT_DIR$/out/production/classes/frc/team4159/robot/RobotMap.class" afterPath="$PROJECT_DIR$/out/production/classes/frc/team4159/robot/RobotMap.class" />
-      <change beforePath="$PROJECT_DIR$/out/production/classes/frc/team4159/robot/commands/MPcode$PeriodicRunnable.class" afterPath="$PROJECT_DIR$/out/production/classes/frc/team4159/robot/commands/MPcode$PeriodicRunnable.class" />
-      <change beforePath="$PROJECT_DIR$/out/production/classes/frc/team4159/robot/commands/MPcode.class" afterPath="$PROJECT_DIR$/out/production/classes/frc/team4159/robot/commands/MPcode.class" />
-      <change beforePath="$PROJECT_DIR$/out/production/classes/frc/team4159/robot/commands/PIDcode.class" afterPath="$PROJECT_DIR$/out/production/classes/frc/team4159/robot/commands/PIDcode.class" />
-      <change beforePath="$PROJECT_DIR$/out/production/classes/frc/team4159/robot/commands/TankDrive.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/out/production/classes/frc/team4159/robot/commands/TestMPcode.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/out/production/classes/frc/team4159/robot/commands/Trajectory.class" afterPath="$PROJECT_DIR$/out/production/classes/frc/team4159/robot/commands/Trajectory.class" />
-      <change beforePath="$PROJECT_DIR$/out/production/classes/frc/team4159/robot/subsystems/Drivetrain.class" afterPath="$PROJECT_DIR$/out/production/classes/frc/team4159/robot/subsystems/Drivetrain.class" />
       <change beforePath="$PROJECT_DIR$/src/main/java/frc/team4159/robot/commands/AutoCommandGroup.java" afterPath="$PROJECT_DIR$/src/main/java/frc/team4159/robot/commands/AutoCommandGroup.java" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/frc/team4159/robot/commands/MPcode.java" afterPath="$PROJECT_DIR$/src/main/java/frc/team4159/robot/commands/MPcode.java" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/frc/team4159/robot/commands/PIDcode.java" afterPath="$PROJECT_DIR$/src/main/java/frc/team4159/robot/commands/PIDcode.java" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/frc/team4159/robot/commands/TestMPcode.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/frc/team4159/robot/commands/Trajectory.java" afterPath="$PROJECT_DIR$/src/main/java/frc/team4159/robot/commands/Trajectory.java" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/frc/team4159/robot/commands/LeftSwitchTrajectory.java" afterPath="$PROJECT_DIR$/src/main/java/frc/team4159/robot/commands/LeftSwitchTrajectory.java" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/.gradle/" />
@@ -43,8 +27,8 @@
       <file leaf-file-name="MPcode.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/frc/team4159/robot/commands/MPcode.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2925">
-              <caret line="262" column="54" lean-forward="false" selection-start-line="262" selection-start-column="54" selection-end-line="262" selection-end-column="54" />
+            <state relative-caret-position="-5113">
+              <caret line="19" column="77" lean-forward="false" selection-start-line="19" selection-start-column="77" selection-end-line="19" selection-end-column="77" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#13631#13632#0" expanded="true" />
@@ -52,6 +36,16 @@
                 <element signature="e#13941#13942#0" expanded="true" />
                 <element signature="e#13973#13974#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="LeftSwitchTrajectory.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/frc/team4159/robot/commands/LeftSwitchTrajectory.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-6320">
+              <caret line="2" column="30" lean-forward="false" selection-start-line="2" selection-start-column="30" selection-end-line="2" selection-end-column="30" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -70,10 +64,20 @@
         <entry file="file://$PROJECT_DIR$/src/main/java/frc/team4159/robot/commands/PIDcode.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="-781">
-              <caret line="34" column="33" lean-forward="true" selection-start-line="34" selection-start-column="33" selection-end-line="34" selection-end-column="33" />
+              <caret line="34" column="33" lean-forward="false" selection-start-line="34" selection-start-column="33" selection-end-line="34" selection-end-column="33" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name=".gitignore" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/.gitignore">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="204">
+              <caret line="12" column="0" lean-forward="true" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -88,11 +92,33 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="AutoCommandGroup.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="AutoCommandGroup.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/frc/team4159/robot/commands/AutoCommandGroup.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="153">
-              <caret line="16" column="16" lean-forward="false" selection-start-line="16" selection-start-column="16" selection-end-line="16" selection-end-column="16" />
+            <state relative-caret-position="187">
+              <caret line="11" column="35" lean-forward="false" selection-start-line="11" selection-start-column="35" selection-end-line="11" selection-end-column="35" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Robot.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/frc/team4159/robot/Robot.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="255">
+              <caret line="24" column="0" lean-forward="false" selection-start-line="24" selection-start-column="0" selection-end-line="24" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="TankDrive.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/frc/team4159/robot/commands/drive/TankDrive.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="68">
+              <caret line="7" column="13" lean-forward="false" selection-start-line="7" selection-start-column="13" selection-end-line="7" selection-end-column="13" />
               <folding />
             </state>
           </provider>
@@ -541,11 +567,13 @@
         <option value="$PROJECT_DIR$/src/main/java/frc/team4159/robot/commands/MPcode.java" />
         <option value="$PROJECT_DIR$/src/main/java/frc/team4159/robot/commands/Trajectory.java" />
         <option value="$PROJECT_DIR$/src/main/java/frc/team4159/robot/commands/PIDcode.java" />
+        <option value="$PROJECT_DIR$/.gitignore" />
         <option value="$PROJECT_DIR$/src/main/java/frc/team4159/robot/commands/AutoCommandGroup.java" />
+        <option value="$PROJECT_DIR$/src/main/java/frc/team4159/robot/commands/LeftSwitchTrajectory.java" />
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
+  <component name="ProjectFrameBounds" extendedState="7">
     <option name="y" value="23" />
     <option name="width" value="1386" />
     <option name="height" value="788" />
@@ -617,7 +645,26 @@
               <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="robot" type="462c0819:PsiDirectoryNode" />
+              <item name="commands" type="462c0819:PsiDirectoryNode" />
+              <item name="drive" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="FRC-2018" type="b2602c69:ProjectViewProjectNode" />
+              <item name="FRC-2018" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="robot" type="462c0819:PsiDirectoryNode" />
               <item name="subsystems" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="FRC-2018" type="b2602c69:ProjectViewProjectNode" />
+              <item name="FRC-2018" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="robot" type="462c0819:PsiDirectoryNode" />
+              <item name="util" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -744,12 +791,11 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
-    <editor active="true" />
+    <frame x="-8" y="-8" width="1382" height="744" extended-state="7" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="sbt" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3296355" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3296355" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
@@ -816,17 +862,43 @@
     <entry file="file://$PROJECT_DIR$/src/main/java/frc/team4159/robot/commands/PIDcode.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-781">
-          <caret line="34" column="33" lean-forward="true" selection-start-line="34" selection-start-column="33" selection-end-line="34" selection-end-column="33" />
+          <caret line="34" column="33" lean-forward="false" selection-start-line="34" selection-start-column="33" selection-end-line="34" selection-end-column="33" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/frc/team4159/robot/commands/drive/TankDrive.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="7" column="13" lean-forward="false" selection-start-line="7" selection-start-column="13" selection-end-line="7" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/frc/team4159/robot/commands/AutoCommandGroup.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="187">
+          <caret line="11" column="35" lean-forward="false" selection-start-line="11" selection-start-column="35" selection-end-line="11" selection-end-column="35" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/frc/team4159/robot/Robot.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="24" column="0" lean-forward="false" selection-start-line="24" selection-start-column="0" selection-end-line="24" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/frc/team4159/robot/commands/MPcode.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2925">
-          <caret line="262" column="54" lean-forward="false" selection-start-line="262" selection-start-column="54" selection-end-line="262" selection-end-column="54" />
+        <state relative-caret-position="-5113">
+          <caret line="19" column="77" lean-forward="false" selection-start-line="19" selection-start-column="77" selection-end-line="19" selection-end-column="77" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#13631#13632#0" expanded="true" />
@@ -837,10 +909,18 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/frc/team4159/robot/commands/AutoCommandGroup.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/frc/team4159/robot/commands/LeftSwitchTrajectory.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="153">
-          <caret line="16" column="16" lean-forward="false" selection-start-line="16" selection-start-column="16" selection-end-line="16" selection-end-column="16" />
+        <state relative-caret-position="-6320">
+          <caret line="2" column="30" lean-forward="false" selection-start-line="2" selection-start-column="30" selection-end-line="2" selection-end-column="30" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="204">
+          <caret line="12" column="0" lean-forward="true" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
           <folding />
         </state>
       </provider>
