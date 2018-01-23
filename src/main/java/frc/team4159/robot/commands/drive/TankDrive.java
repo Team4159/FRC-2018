@@ -1,4 +1,4 @@
-package frc.team4159.robot.commands;
+package frc.team4159.robot.commands.drive;
 
 import frc.team4159.robot.Robot;
 import frc.team4159.robot.OI;
@@ -17,8 +17,10 @@ public class TankDrive extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-        Robot.drivetrain.setLeftRaw(OI.getLeftY());
-        Robot.drivetrain.setRightRaw(OI.getRightY());
+        //Robot.drivetrain.setRaw(OI.getLeftY(), OI.getRightY());
+        Robot.drivetrain.setLeft(OI.getLeftY()); //Left side only for testing
+
+        Robot.drivetrain.logSmartDashboard();
     }
 
     // Make this return true when this Command no longer needs to run execute()

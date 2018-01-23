@@ -7,30 +7,45 @@ import edu.wpi.first.wpilibj.Joystick;
  * interface to the commands and command groups that allow control of the robot.
  */
 
-public class OI {
-	private static Joystick leftJoy = new Joystick(ControlMap.leftStick);
-	private static Joystick rightJoy = new Joystick(ControlMap.rightStick);
-	private static Joystick secondaryJoy = new Joystick(ControlMap.secondaryStick);
-	
-	public static double getLeftY() {
+public class OI implements ControlMap {
 
-		double leftY = leftJoy.getY();
+    private static OI instance;
 
-		if(leftY < 0)
-		    return -1 * Math.pow(leftY, 2);
+    public static OI getInstance() {
+        if(instance == null)
+            instance = new OI();
+        return instance;
+    }
 
-		return Math.pow(leftY, 2);
+    private static Joystick leftJoy;
+    private static Joystick rightJoy;
+    private static Joystick secondaryJoy;
 
-	}
-	
-	public static double getRightY() {
+    public OI() {
+        leftJoy = new Joystick(leftStick);
+        rightJoy = new Joystick(rightStick);
+        secondaryJoy = new Joystick(secondaryStick);
+        // TODO: Bind joystick buttons to commands
+    }
+
+    public static double getLeftY() {
+
+        double leftY = leftJoy.getY();
+
+        if(leftY < 0)
+            return -1 * Math.pow(leftY, 2);
+        return Math.pow(leftY, 2);
+
+    }
+
+    public static double getRightY() {
 
         double rightY = rightJoy.getY();
 
         if(rightY < 0)
             return -1 * Math.pow(rightY, 2);
-
         return Math.pow(rightY, 2);
+
 	}
 
 	public  boolean testButton(){
@@ -38,6 +53,5 @@ public class OI {
 			return true;
 		return false;
 	}
-	
 }
 

@@ -2,7 +2,7 @@ plugins {
     id "java"
     id "eclipse"
     id "idea"
-    id "jaci.openrio.gradle.GradleRIO" version "2018.01.18"
+    id "jaci.openrio.gradle.GradleRIO" version "2018.01.20"
 }
 
 def TEAM = 4159
@@ -38,6 +38,10 @@ dependencies {
 jar {
     from configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
     manifest jaci.openrio.gradle.GradleRIOPlugin.javaManifest(ROBOT_CLASS)
+}
+
+telemetry {
+    reportTelemetry = false
 }
 
 task wrapper(type: Wrapper) {

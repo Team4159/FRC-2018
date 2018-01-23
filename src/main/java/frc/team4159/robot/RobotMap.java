@@ -6,12 +6,13 @@ package frc.team4159.robot;
  * the wiring easier and significantly reduces the number of magic numbers
  * floating around.
  */
+
 public class RobotMap {
-    // CAN Talons
+    // CAN Talon SRX
     public static int LEFT_TALON = 3;
     public static int RIGHT_TALON = 4;
 
-    // CAN VictorSPX
+    // CAN Victor SPX
     public static int LEFT_VICTOR = 4;
     public static int RIGHT_VICTOR = 3;
 

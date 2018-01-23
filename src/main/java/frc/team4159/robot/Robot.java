@@ -6,41 +6,41 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-import frc.team4159.robot.commands.TankDrive;
+import frc.team4159.robot.commands.drive.TankDrive;
 import frc.team4159.robot.subsystems.Drivetrain;
 import frc.team4159.robot.subsystems.TestPneumatics;
+import frc.team4159.robot.subsystems.Superstructure;
 import openrio.powerup.MatchData;
 
 /**
  * The VM is configured to automatically run this class, and to call the
  * functions corresponding to each mode, as described in the TimedRobot
- * documentation. If you change the name of this class or the package after
- * creating this project, you must also update the build.properties file in the
- * project.
+ * documentation.
  */
-
 
 public class Robot extends TimedRobot {
 
-	public static final Drivetrain drivetrain = new Drivetrain();
-	public static final TestPneumatics pneumatics = new TestPneumatics();
+	public static Drivetrain drivetrain;
+	public static Superstructure superstructure;
+	public static TestPneumatics pneumatics;
 	public static OI oi;
 
 	private MatchData.OwnedSide switchNear;
-    private MatchData.OwnedSide scale;
-    private MatchData.OwnedSide switchFar;
+	private MatchData.OwnedSide scale;
+	private MatchData.OwnedSide switchFar;
 
-    Command m_autonomousCommand;
-	SendableChooser<Command> m_chooser = new SendableChooser<>();
+	private Command m_autonomousCommand;
+	private SendableChooser<Command> m_chooser = new SendableChooser<>();
 
-	/**
-	 * This function is run when the robot is first started up and should be
-	 * used for any initialization code.
-	 */
+	/* This function is run when the robot is first started up */
 	@Override
 	public void robotInit() {
-		oi = new OI();
-		m_chooser.addDefault("Default Auto", new TankDrive()); //change... just placeholder
+
+		drivetrain = Drivetrain.getInstance();
+		superstructure = Superstructure.getInstance();
+		oi = OI.getInstance();
+
+		m_chooser.addDefault("Default Auto", new TankDrive()); // TODO: Change. Just a placeholder
 		// chooser.addObject("My Auto", new MyAutoCommand());
 		SmartDashboard.putData("Auto mode", m_chooser);
 	}
@@ -60,25 +60,14 @@ public class Robot extends TimedRobot {
 		Scheduler.getInstance().run();
 	}
 
-	/**
-	 * This autonomous (along with the chooser code above) shows how to select
-	 * between different autonomous modes using the dashboard. The sendable
-	 * chooser code works with the Java SmartDashboard. If you prefer the
-	 * LabVIEW Dashboard, remove all of the chooser code and uncomment the
-	 * getString code to get the auto name from the text box below the Gyro
-	 *
-	 * <p>You can add additional auto modes by adding additional commands to the
-	 * chooser code above (like the commented example) or additional comparisons
-	 * to the switch structure below with additional strings & commands.
-	 */
 	@Override
 	public void autonomousInit() {
 
-        switchNear = MatchData.getOwnedSide(MatchData.GameFeature.SWITCH_NEAR);
-        scale = MatchData.getOwnedSide(MatchData.GameFeature.SCALE);
-        switchFar = MatchData.getOwnedSide(MatchData.GameFeature.SWITCH_FAR);
+		switchNear = MatchData.getOwnedSide(MatchData.GameFeature.SWITCH_NEAR);
+		scale = MatchData.getOwnedSide(MatchData.GameFeature.SCALE);
+		switchFar = MatchData.getOwnedSide(MatchData.GameFeature.SWITCH_FAR);
 
-        m_autonomousCommand = m_chooser.getSelected();
+		m_autonomousCommand = m_chooser.getSelected();
 
 		/*
 		 * String autoSelected = SmartDashboard.getString("Auto Selector",
@@ -103,10 +92,7 @@ public class Robot extends TimedRobot {
 
 	@Override
 	public void teleopInit() {
-		// This makes sure that the autonomous stops running when
-		// teleop starts running. If you want the autonomous to
-		// continue until interrupted by another command, remove
-		// this line or comment it out.
+		/* Makes sure autonomous stops running when telop starts running */
 		if (m_autonomousCommand != null) {
 			m_autonomousCommand.cancel();
 		}
