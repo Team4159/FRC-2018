@@ -65,11 +65,9 @@ public class Drivetrain extends Subsystem {
 
     }
 
-    public void setLeftRaw(double speed){
-        leftTalon.set(ControlMode.PercentOutput, speed);
-    }
-    public void setRightRaw(double speed){
-        rightTalon.set(ControlMode.PercentOutput, speed);
+    public void setPercentOutput(double leftPercent, double rightPercent){
+        leftTalon.set(ControlMode.PercentOutput, leftPercent);
+        rightTalon.set(ControlMode.PercentOutput, rightPercent);
     }
 
     // See https://github.com/CrossTheRoadElec/Phoenix-Examples-Languages/blob/master/Java/VelocityClosedLoop/src/org/usfirst/frc/team217/robot/Robot.java
