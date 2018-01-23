@@ -14,6 +14,7 @@ public class AutoCommandGroup extends CommandGroup  {
 		//tells what each path does
 		switch(m) {
 			case LEFT_SWITCH:
+				
 				System.out.println("left switch path activated");
 				break;
 			case RIGHT_SWITCH:
