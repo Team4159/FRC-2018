@@ -16,33 +16,33 @@ public class OI implements ControlMap {
             instance = new OI();
         return instance;
     }
-	
-	private static Joystick leftJoy;
-	private static Joystick rightJoy;
 
-	public OI() {
-	    leftJoy = new Joystick(leftStick);
-	    rightJoy = new Joystick(rightStick);
-	    // TODO: Bind joystick buttons to commands
+    private static Joystick leftJoy;
+    private static Joystick rightJoy;
+
+    public OI() {
+        leftJoy = new Joystick(leftStick);
+        rightJoy = new Joystick(rightStick);
+        // TODO: Bind joystick buttons to commands
     }
-	
-	public static double getLeftY() {
 
-		double leftY = leftJoy.getY();
+    public static double getLeftY() {
 
-		if(leftY < 0)
-		    return -1 * Math.pow(leftY, 2);
-		return Math.pow(leftY, 2);
+        double leftY = leftJoy.getY();
 
-	}
-	
-	public static double getRightY() {
+        if(leftY < 0)
+            return -1 * Math.pow(leftY, 2);
+        return Math.pow(leftY, 2);
+
+    }
+
+    public static double getRightY() {
 
         double rightY = rightJoy.getY();
 
         if(rightY < 0)
             return -1 * Math.pow(rightY, 2);
         return Math.pow(rightY, 2);
-	}
-	
+    }
+
 }

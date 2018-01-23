@@ -5,11 +5,11 @@ package frc.team4159.robot;
  */
 
 public interface ControlMap {
-	
-	/* Joystick ports */
-	public static final int leftStick = 0;
-	public static final int rightStick = 1;
-	
-	/* Button mappings */
-	
+
+    /* Joystick ports */
+    public static final int leftStick = 0;
+    public static final int rightStick = 1;
+
+    /* Button mappings */
+
 }

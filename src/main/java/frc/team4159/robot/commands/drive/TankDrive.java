@@ -17,8 +17,9 @@ public class TankDrive extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-        Robot.drivetrain.setLeftRaw(OI.getLeftY());
-        Robot.drivetrain.setRightRaw(OI.getRightY());
+        //Robot.drivetrain.setRaw(OI.getLeftY(), OI.getRightY());
+        Robot.drivetrain.setLeft(OI.getLeftY()); //Left side only for testing
+
         Robot.drivetrain.logSmartDashboard();
     }
 

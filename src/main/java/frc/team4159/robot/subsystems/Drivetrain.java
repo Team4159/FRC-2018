@@ -21,6 +21,9 @@ public class Drivetrain extends Subsystem {
     private VictorSPX leftVictor, rightVictor;
     private AHRS navx;
 
+    private final double MAX_RPM = 5330 / 5.5; // CIM free speed, geared down 66:12
+    private final double ENCODER_UNITS_PER_REV = 4096;
+
     public static Drivetrain getInstance() {
         if(instance == null)
             instance = new Drivetrain();
@@ -49,32 +52,32 @@ public class Drivetrain extends Subsystem {
 
     // TODO: Test velocity pid control on left. If it works, duplicate on right
     private void configureSensors() {
+        final int TIMEOUT_MS = 0;
+        final double NOMINAL_OUT_PERCENT = 0;
+        final double PEAK_OUT_PERCENT = 1;
 
-        leftTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
+        leftTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, TIMEOUT_MS);
         leftTalon.setSensorPhase(true);
 
-        leftTalon.configNominalOutputForward(0, 10);
-        leftTalon.configNominalOutputReverse(0, 10);
-        leftTalon.configPeakOutputForward(1, 10);
-        leftTalon.configPeakOutputReverse(-1, 10);
+        leftTalon.configNominalOutputForward(NOMINAL_OUT_PERCENT, TIMEOUT_MS);
+        leftTalon.configNominalOutputReverse(NOMINAL_OUT_PERCENT, TIMEOUT_MS);
+        leftTalon.configPeakOutputForward(PEAK_OUT_PERCENT, TIMEOUT_MS);
+        leftTalon.configPeakOutputReverse(-PEAK_OUT_PERCENT, TIMEOUT_MS);
 
-        leftTalon.config_kP(0,0,10);
-        leftTalon.config_kI(0,0,10);
-        leftTalon.config_kD(0,0,10);
-        leftTalon.config_kF(0,0,10);
+        leftTalon.config_kP(0, .1, TIMEOUT_MS);
+        leftTalon.config_kI(0, 0, TIMEOUT_MS);
+        leftTalon.config_kD(0, 0, TIMEOUT_MS);
+        leftTalon.config_kF(0, 0, TIMEOUT_MS);
 
     }
 
-    public void setLeftRaw(double speed){
-        leftTalon.set(ControlMode.PercentOutput, speed);
+    public void setRaw(double leftPercent, double rightPercent){
+        leftTalon.set(ControlMode.PercentOutput, leftPercent);
+        rightTalon.set(ControlMode.PercentOutput, rightPercent);
     }
-    public void setRightRaw(double speed){
-        rightTalon.set(ControlMode.PercentOutput, speed);
-    }
-
     // See https://github.com/CrossTheRoadElec/Phoenix-Examples-Languages/blob/master/Java/VelocityClosedLoop/src/org/usfirst/frc/team217/robot/Robot.java
     public void setLeft(double percentage) {
-        double target = percentage * 500 * 4096/600;
+        double target = percentage * MAX_RPM * ENCODER_UNITS_PER_REV/600; // Unit conversion, RPM to encoder units/rev
         leftTalon.set(ControlMode.Velocity, target);
     }
 

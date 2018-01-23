@@ -20,8 +20,8 @@ import openrio.powerup.MatchData;
 public class Robot extends TimedRobot {
 
 	public static Drivetrain drivetrain;
-    public static Superstructure superstructure;
-    public static OI oi;
+	public static Superstructure superstructure;
+	public static OI oi;
 
 	private MatchData.OwnedSide switchNear;
 	private MatchData.OwnedSide scale;
@@ -34,9 +34,9 @@ public class Robot extends TimedRobot {
 	@Override
 	public void robotInit() {
 
-	    drivetrain = Drivetrain.getInstance();
-        superstructure = Superstructure.getInstance();
-        oi = OI.getInstance();
+		drivetrain = Drivetrain.getInstance();
+		superstructure = Superstructure.getInstance();
+		oi = OI.getInstance();
 
 		m_chooser.addDefault("Default Auto", new TankDrive()); // TODO: Change. Just a placeholder
 		// chooser.addObject("My Auto", new MyAutoCommand());
@@ -61,11 +61,11 @@ public class Robot extends TimedRobot {
 	@Override
 	public void autonomousInit() {
 
-        switchNear = MatchData.getOwnedSide(MatchData.GameFeature.SWITCH_NEAR);
-        scale = MatchData.getOwnedSide(MatchData.GameFeature.SCALE);
-        switchFar = MatchData.getOwnedSide(MatchData.GameFeature.SWITCH_FAR);
+		switchNear = MatchData.getOwnedSide(MatchData.GameFeature.SWITCH_NEAR);
+		scale = MatchData.getOwnedSide(MatchData.GameFeature.SCALE);
+		switchFar = MatchData.getOwnedSide(MatchData.GameFeature.SWITCH_FAR);
 
-        m_autonomousCommand = m_chooser.getSelected();
+		m_autonomousCommand = m_chooser.getSelected();
 
 		/*
 		 * String autoSelected = SmartDashboard.getString("Auto Selector",
@@ -90,7 +90,7 @@ public class Robot extends TimedRobot {
 
 	@Override
 	public void teleopInit() {
-	    /* Makes sure autonomous stops running when telop starts running */
+		/* Makes sure autonomous stops running when telop starts running */
 		if (m_autonomousCommand != null) {
 			m_autonomousCommand.cancel();
 		}
