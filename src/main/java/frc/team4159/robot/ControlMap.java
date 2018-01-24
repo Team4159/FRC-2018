@@ -5,9 +5,9 @@ public interface ControlMap {
 
     /* Joystick ports */
 
-    public final static int leftStick = 0;
-    public final static int rightStick = 1;
-    public final static int secondaryStick = 2;
+    public static final int leftStick = 0;
+    public static final int rightStick = 1;
+    public static final int secondaryStick = 2;
 
     /* Button mappings */
 

@@ -48,10 +48,12 @@ public class OI implements ControlMap {
 
 	}
 
-	public  boolean testButton(){
-		if(secondaryJoy.getRawButton(2))
-			return true;
-		return false;
+	public static boolean testButton(){
+		return secondaryJoy.getRawButton(2);
 	}
+    public static boolean testPIDButton(){
+        return leftJoy.getRawButton(2);
+    }
+
 }
 

@@ -19,7 +19,11 @@ public class TankDrive extends Command {
     protected void execute() {
 
         // Robot.drivetrain.setPercentOutput(OI.getLeftY(), OI.getRightY());
-        Robot.drivetrain.setLeft(OI.getLeftY()); //Left side only for testing
+        if(OI.testPIDButton()) {
+            Robot.drivetrain.setLeft(1);
+        } else {
+            Robot.drivetrain.setLeft(0);
+        }
         Robot.drivetrain.logSmartDashboard();
 
     }

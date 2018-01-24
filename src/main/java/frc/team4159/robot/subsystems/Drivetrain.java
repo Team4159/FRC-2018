@@ -21,8 +21,11 @@ public class Drivetrain extends Subsystem {
     private VictorSPX leftVictor, rightVictor;
     private AHRS navx;
 
-    private final double MAX_RPM = 5330 / 5.5; // CIM free speed, geared down 66:12
+    //private final double MAX_RPM = 5330 / 5.5; // CIM free speed, geared down 66:12
+    private final double MAX_RPM = 800;
     private final double ENCODER_UNITS_PER_REV = 4096;
+    private double error = 0;
+    final int TIMEOUT_MS = 10;
 
     public static Drivetrain getInstance() {
         if(instance == null)
@@ -52,22 +55,21 @@ public class Drivetrain extends Subsystem {
 
     // TODO: Test velocity pid control on left. If it works, duplicate on right
     private void configureSensors() {
-        final int TIMEOUT_MS = 0;
         final double NOMINAL_OUT_PERCENT = 0;
         final double PEAK_OUT_PERCENT = 1;
 
         leftTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, TIMEOUT_MS);
-        leftTalon.setSensorPhase(true);
+        leftTalon.setSensorPhase(false);
 
         leftTalon.configNominalOutputForward(NOMINAL_OUT_PERCENT, TIMEOUT_MS);
         leftTalon.configNominalOutputReverse(NOMINAL_OUT_PERCENT, TIMEOUT_MS);
         leftTalon.configPeakOutputForward(PEAK_OUT_PERCENT, TIMEOUT_MS);
         leftTalon.configPeakOutputReverse(-PEAK_OUT_PERCENT, TIMEOUT_MS);
 
-        leftTalon.config_kP(0, .1, TIMEOUT_MS);
+        leftTalon.config_kP(0, 0.1, TIMEOUT_MS);
         leftTalon.config_kI(0, 0, TIMEOUT_MS);
         leftTalon.config_kD(0, 0, TIMEOUT_MS);
-        leftTalon.config_kF(0, 0, TIMEOUT_MS);
+        leftTalon.config_kF(0, 0.186, TIMEOUT_MS); //1023/ max pulses per 100ms
 
     }
 
@@ -78,12 +80,14 @@ public class Drivetrain extends Subsystem {
     // See https://github.com/CrossTheRoadElec/Phoenix-Examples-Languages/blob/master/Java/VelocityClosedLoop/src/org/usfirst/frc/team217/robot/Robot.java
     public void setLeft(double percentage) {
         double target = percentage * MAX_RPM * ENCODER_UNITS_PER_REV/600; // Unit conversion, RPM to encoder units/rev
+        error = target - leftTalon.getSelectedSensorVelocity(0);
         leftTalon.set(ControlMode.Velocity, target);
     }
 
     public void logSmartDashboard() {
         double speed = leftTalon.getSelectedSensorVelocity(0);
-        SmartDashboard.putNumber("Left Encoder", speed);
+        SmartDashboard.putNumber("Left RPM", speed * 600/4096);
+        SmartDashboard.putNumber("Error", error);
     }
 
     public void initDefaultCommand() {
