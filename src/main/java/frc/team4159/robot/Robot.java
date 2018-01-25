@@ -1,5 +1,6 @@
 package frc.team4159.robot;
 
+import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;

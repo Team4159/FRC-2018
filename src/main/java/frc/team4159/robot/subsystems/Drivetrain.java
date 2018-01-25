@@ -21,11 +21,16 @@ public class Drivetrain extends Subsystem {
     private VictorSPX leftVictor, rightVictor;
     private AHRS navx;
 
-    //private final double MAX_RPM = 5330 / 5.5; // CIM free speed, geared down 66:12
-    private final double MAX_RPM = 800;
-    private final double ENCODER_UNITS_PER_REV = 4096;
-    private double error = 0;
-    final int TIMEOUT_MS = 10;
+    private final int MAX_SPEED = 5200; // Native units per 100ms
+    private final int TIMEOUT_MS = 10;
+    private final int PARAM_SLOT = 0;
+    private final int PIDIDX = 0;
+    private final double kF = 0.196730769230769; // 1023 / 5200 where 5200 is our max speed
+    private final double kP = 0.4092; // (10% * 1023) / 250 where 250 is our max error
+    private final double kI = 0;
+    private final double kD = 4.092; // kP * 10
+    private final double NOMINAL_OUT_PERCENT = 0;
+    private final double PEAK_OUT_PERCENT = 1;
 
     public static Drivetrain getInstance() {
         if(instance == null)
@@ -55,8 +60,6 @@ public class Drivetrain extends Subsystem {
 
     // TODO: Test velocity pid control on left. If it works, duplicate on right
     private void configureSensors() {
-        final double NOMINAL_OUT_PERCENT = 0;
-        final double PEAK_OUT_PERCENT = 1;
 
         leftTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, TIMEOUT_MS);
         leftTalon.setSensorPhase(false);
@@ -66,10 +69,10 @@ public class Drivetrain extends Subsystem {
         leftTalon.configPeakOutputForward(PEAK_OUT_PERCENT, TIMEOUT_MS);
         leftTalon.configPeakOutputReverse(-PEAK_OUT_PERCENT, TIMEOUT_MS);
 
-        leftTalon.config_kP(0, 0.1, TIMEOUT_MS);
-        leftTalon.config_kI(0, 0, TIMEOUT_MS);
-        leftTalon.config_kD(0, 0, TIMEOUT_MS);
-        leftTalon.config_kF(0, 0.186, TIMEOUT_MS); //1023/ max pulses per 100ms
+        leftTalon.config_kP(PARAM_SLOT, kP, TIMEOUT_MS);
+        leftTalon.config_kI(PARAM_SLOT, kI, TIMEOUT_MS);
+        leftTalon.config_kD(PARAM_SLOT, kD, TIMEOUT_MS);
+        leftTalon.config_kF(PARAM_SLOT, kF, TIMEOUT_MS);
 
     }
 
@@ -79,15 +82,18 @@ public class Drivetrain extends Subsystem {
     }
     // See https://github.com/CrossTheRoadElec/Phoenix-Examples-Languages/blob/master/Java/VelocityClosedLoop/src/org/usfirst/frc/team217/robot/Robot.java
     public void setLeft(double percentage) {
-        double target = percentage * MAX_RPM * ENCODER_UNITS_PER_REV/600; // Unit conversion, RPM to encoder units/rev
-        error = target - leftTalon.getSelectedSensorVelocity(0);
+        double target = percentage * MAX_SPEED;
         leftTalon.set(ControlMode.Velocity, target);
     }
 
     public void logSmartDashboard() {
-        double speed = leftTalon.getSelectedSensorVelocity(0);
-        SmartDashboard.putNumber("Left RPM", speed * 600/4096);
-        SmartDashboard.putNumber("Error", error);
+        double output = leftTalon.getMotorOutputPercent();
+        double speed = leftTalon.getSelectedSensorVelocity(PIDIDX);
+        double error = leftTalon.getClosedLoopError(PIDIDX);
+        SmartDashboard.putNumber("output", output);
+        SmartDashboard.putNumber("speed", speed);
+        SmartDashboard.putNumber("error", error);
+        //System.out.println("out: " + output + " spd: " + speed + " err: " + error);
     }
 
     public void initDefaultCommand() {

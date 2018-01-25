@@ -18,11 +18,11 @@ public class TankDrive extends Command {
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
 
-        // Robot.drivetrain.setPercentOutput(OI.getLeftY(), OI.getRightY());
+        //Robot.drivetrain.setPercentOutput(OI.getLeftY(), OI.getRightY());
         if(OI.testPIDButton()) {
             Robot.drivetrain.setLeft(1);
         } else {
-            Robot.drivetrain.setLeft(0);
+            Robot.drivetrain.setPercentOutput(0,0);
         }
         Robot.drivetrain.logSmartDashboard();
 
