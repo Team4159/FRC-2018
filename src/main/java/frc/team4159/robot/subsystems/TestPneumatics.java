@@ -8,10 +8,8 @@ import static frc.team4159.robot.RobotMap.WHATEVER2;
 
 
 public class TestPneumatics extends Subsystem{
+
     DoubleSolenoid exampleDouble = new DoubleSolenoid(WHATEVER, WHATEVER2);
-    public void initDefaultCommand() {
-        setDefaultCommand(new TestPiston());
-    }
 
     public void pistonIn(){
         exampleDouble.set(DoubleSolenoid.Value.kReverse);
@@ -20,4 +18,9 @@ public class TestPneumatics extends Subsystem{
     public void pistonOut(){
         exampleDouble.set(DoubleSolenoid.Value.kForward);
     }
+
+    public void initDefaultCommand() {
+        setDefaultCommand(new TestPiston());
+    }
+
 }

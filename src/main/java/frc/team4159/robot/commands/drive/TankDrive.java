@@ -20,9 +20,9 @@ public class TankDrive extends Command {
 
         //Robot.drivetrain.setPercentOutput(OI.getLeftY(), OI.getRightY());
         if(OI.testPIDButton()) {
-            Robot.drivetrain.setLeft(1);
+            Robot.drivetrain.setVelocity(0.25, 0);
         } else {
-            Robot.drivetrain.setPercentOutput(0,0);
+            Robot.drivetrain.setRawOutput(0,0);
         }
         Robot.drivetrain.logSmartDashboard();
 

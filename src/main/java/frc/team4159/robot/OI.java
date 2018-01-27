@@ -25,7 +25,6 @@ public class OI implements ControlMap {
         leftJoy = new Joystick(leftStick);
         rightJoy = new Joystick(rightStick);
         secondaryJoy = new Joystick(secondaryStick);
-        // TODO: Bind joystick buttons to commands
     }
 
     public static double getLeftY() {
@@ -56,4 +55,3 @@ public class OI implements ControlMap {
     }
 
 }
-

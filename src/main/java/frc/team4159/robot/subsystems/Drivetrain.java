@@ -7,6 +7,7 @@ import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team4159.robot.RobotMap;
 import frc.team4159.robot.commands.drive.TankDrive;
@@ -48,20 +49,19 @@ public class Drivetrain extends Subsystem {
         rightVictor = new VictorSPX(RobotMap.RIGHT_VICTOR);
         rightVictor.follow(rightTalon);
 
-        configureSensors();
-
         try {
             navx = new AHRS(SPI.Port.kMXP);
         } catch (RuntimeException ex) {
             DriverStation.reportError("Error instantiating navX-MXP:  " + ex.getMessage(), true);
         }
 
+        configureSensors();
+
     }
 
-    // TODO: Test velocity pid control on left. If it works, duplicate on right
     private void configureSensors() {
 
-        leftTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, TIMEOUT_MS);
+        leftTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, PIDIDX, TIMEOUT_MS);
         leftTalon.setSensorPhase(false);
 
         leftTalon.configNominalOutputForward(NOMINAL_OUT_PERCENT, TIMEOUT_MS);
@@ -74,16 +74,35 @@ public class Drivetrain extends Subsystem {
         leftTalon.config_kD(PARAM_SLOT, kD, TIMEOUT_MS);
         leftTalon.config_kF(PARAM_SLOT, kF, TIMEOUT_MS);
 
+        rightTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, PIDIDX, TIMEOUT_MS);
+        rightTalon.setSensorPhase(true);
+
+        rightTalon.configNominalOutputForward(NOMINAL_OUT_PERCENT, TIMEOUT_MS);
+        rightTalon.configNominalOutputReverse(NOMINAL_OUT_PERCENT, TIMEOUT_MS);
+        rightTalon.configPeakOutputForward(PEAK_OUT_PERCENT, TIMEOUT_MS);
+        rightTalon.configPeakOutputReverse(-PEAK_OUT_PERCENT, TIMEOUT_MS);
+
+        rightTalon.config_kP(PARAM_SLOT, 0, TIMEOUT_MS);
+        rightTalon.config_kI(PARAM_SLOT, 0, TIMEOUT_MS);
+        rightTalon.config_kD(PARAM_SLOT, 0, TIMEOUT_MS);
+        rightTalon.config_kF(PARAM_SLOT, 0, TIMEOUT_MS);
+
     }
 
-    public void setPercentOutput(double leftPercent, double rightPercent){
-        leftTalon.set(ControlMode.PercentOutput, leftPercent);
+    public void setRawOutput(double leftPercent, double rightPercent){
+        leftTalon.set(ControlMode.PercentOutput, -leftPercent);
         rightTalon.set(ControlMode.PercentOutput, rightPercent);
     }
-    // See https://github.com/CrossTheRoadElec/Phoenix-Examples-Languages/blob/master/Java/VelocityClosedLoop/src/org/usfirst/frc/team217/robot/Robot.java
-    public void setLeft(double percentage) {
-        double target = percentage * MAX_SPEED;
-        leftTalon.set(ControlMode.Velocity, target);
+
+    public void setVelocity(double leftPercent, double rightPercent) {
+        double leftTarget = -leftPercent * MAX_SPEED;
+        double rightTarget = rightPercent * MAX_SPEED;
+        leftTalon.set(ControlMode.Velocity, leftTarget);
+        rightTalon.set(ControlMode.Velocity, rightTarget);
+    }
+
+    public void setPosition() {
+
     }
 
     public void logSmartDashboard() {
