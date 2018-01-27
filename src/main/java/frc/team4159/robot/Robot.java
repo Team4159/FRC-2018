@@ -23,7 +23,6 @@ public class Robot extends TimedRobot {
 
 	public static Drivetrain drivetrain;
 	public static Superstructure superstructure;
-	public static TestPneumatics pneumatics;
 	public static OI oi;
 
 	private MatchData.OwnedSide switchNear;
