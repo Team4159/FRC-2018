@@ -1,6 +1,7 @@
 package frc.team4159.robot.commands;
 
 //importing things form other packages etc
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.team4159.robot.Robot;
 
@@ -13,11 +14,18 @@ public class AutoCommandGroup extends CommandGroup  {
 		
 		//tells what each path does
 		switch(m) {
-			case LEFT_SWITCH:
-
+			case LEFT_SWITCH: //not sure if this will work
+                MPcode trailL = new MPcode(new TalonSRX(3), new TalonSRX(4), new LeftSwitchTrajectory());
+                addSequential(trailL);// what does this really do?
+                trailL.reset();
+                trailL.control();
 				System.out.println("left switch path activated");
 				break;
 			case RIGHT_SWITCH:
+                MPcode trailR = new MPcode(new TalonSRX(3), new TalonSRX(4), new LeftSwitchTrajectory());
+                addSequential(trailR);
+                trailR.reset();
+                trailR.control();
 				System.out.println("right switch path activated");
 				break;
 			case DO_NOTHING:

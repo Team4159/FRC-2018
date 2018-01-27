@@ -2,7 +2,8 @@ package frc.team4159.robot.commands;
 
 /*taken from https://github.com/CrossTheRoadElec/Phoenix-Examples-Languages/blob/master/Java/MotionProfile/src/org/usfirst/frc/team217/robot/MotionProfileExample.java*/
 
-//import com.ctre.phoenix.motorcontrol.ControlMode;
+
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.*;
 
 import edu.wpi.first.wpilibj.DriverStation;
@@ -11,10 +12,11 @@ import com.ctre.phoenix.motion.*;
 import com.ctre.phoenix.motion.TrajectoryPoint.TrajectoryDuration;
 
 import frc.team4159.robot.Constants;
+import edu.wpi.first.wpilibj.command.Command;
 
 
 
-public class MPcode {
+public class MPcode extends Command{
 
     /**
      * The status of the motion profile executer and buffer inside the Talon.
@@ -330,6 +332,13 @@ public class MPcode {
      */
     SetValueMotionProfile getSetValue() {
         return _setValue;
+    }
+
+    public boolean isFinished(){
+        // Shut off everything
+        _talonRight.set(ControlMode.Disabled, 0);
+        _talonLeft.set(ControlMode.Disabled, 0);
+        return true;
     }
 }
 

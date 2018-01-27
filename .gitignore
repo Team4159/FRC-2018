@@ -6,7 +6,8 @@ build/
 .idea/
 FRC-2018.iml
 FRC-2018.ipr
+
 # Eclipse
-.classpath/
-.project/
+.classpath
+.project
 
