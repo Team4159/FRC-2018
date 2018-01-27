@@ -1,12 +1,17 @@
 package frc.team4159.robot.commands.test;
 
 import edu.wpi.first.wpilibj.command.Command;
+import frc.team4159.robot.Robot;
+import frc.team4159.robot.OI;
+import frc.team4159.robot.subsystems.Superstructure;
 
 
 public class TestPrototype extends Command {
+
     public TestPrototype() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
+        requires(Superstructure.prototype);
     }
 
 
@@ -26,7 +31,7 @@ public class TestPrototype extends Command {
      */
     @Override
     protected void execute() {
-
+        Superstructure.prototype.operatePiston(OI.testButton());
     }
 
 
