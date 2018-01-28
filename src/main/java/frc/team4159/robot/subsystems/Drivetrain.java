@@ -42,6 +42,7 @@ public class Drivetrain extends Subsystem {
     public Drivetrain() {
 
         leftTalon = new TalonSRX(RobotMap.LEFT_TALON);
+        leftTalon.setInverted(true);
         leftVictor = new VictorSPX(RobotMap.LEFT_VICTOR);
         leftVictor.follow(leftTalon);
 
@@ -90,19 +91,27 @@ public class Drivetrain extends Subsystem {
     }
 
     public void setRawOutput(double leftPercent, double rightPercent){
-        leftTalon.set(ControlMode.PercentOutput, -leftPercent);
+        leftTalon.set(ControlMode.PercentOutput, leftPercent);
         rightTalon.set(ControlMode.PercentOutput, rightPercent);
     }
 
     public void setVelocity(double leftPercent, double rightPercent) {
-        double leftTarget = -leftPercent * MAX_SPEED;
+        double leftTarget = leftPercent * MAX_SPEED;
         double rightTarget = rightPercent * MAX_SPEED;
         leftTalon.set(ControlMode.Velocity, leftTarget);
         rightTalon.set(ControlMode.Velocity, rightTarget);
     }
 
-    public void setPosition() {
+    public int getLeftEncoderPosition() {
+        return leftTalon.getSelectedSensorPosition(PIDIDX);
+    }
 
+    public int getRightEncoderPosition() {
+        return rightTalon.getSelectedSensorPosition(PIDIDX);
+    }
+
+    public double getHeadingDegrees() {
+        return navx.getCompassHeading();
     }
 
     public void logSmartDashboard() {

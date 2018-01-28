@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
+import frc.team4159.robot.commands.auto.DriveStraight;
 import frc.team4159.robot.commands.drive.TankDrive;
 import frc.team4159.robot.subsystems.Drivetrain;
 import frc.team4159.robot.subsystems.Superstructure;
@@ -27,8 +28,8 @@ public class Robot extends TimedRobot {
 	private MatchData.OwnedSide scale;
 	private MatchData.OwnedSide switchFar;
 
-	private Command m_autonomousCommand;
-	private SendableChooser<Command> m_chooser = new SendableChooser<>();
+	private Command autoCommand;
+	private SendableChooser<Command> autoChooser = new SendableChooser<>();
 
 	/* This function is run when the robot is first started up */
 	@Override
@@ -38,9 +39,11 @@ public class Robot extends TimedRobot {
 		superstructure = Superstructure.getInstance();
 		oi = OI.getInstance();
 
-		m_chooser.addDefault("Default Auto", new TankDrive()); // TODO: Change. Just a placeholder
-		// chooser.addObject("My Auto", new MyAutoCommand());
-		SmartDashboard.putData("Auto mode", m_chooser);
+		autoChooser.addDefault("Drive Straight", new DriveStraight(5));
+//		autoChooser.addObject("Left Switch", new MyAutoCommand());
+//		autoChooser.addObject("Middle Switch", new MyAutoCommand());
+//		autoChooser.addObject("Right Switch", new MyAutoCommand());
+		SmartDashboard.putData("!!! CHOOSE AUTO MODE !!!", autoChooser);
 	}
 
 	/**
@@ -64,7 +67,7 @@ public class Robot extends TimedRobot {
 		scale = MatchData.getOwnedSide(MatchData.GameFeature.SCALE);
 		switchFar = MatchData.getOwnedSide(MatchData.GameFeature.SWITCH_FAR);
 
-		m_autonomousCommand = m_chooser.getSelected();
+		autoCommand = autoChooser.getSelected();
 
 		/*
 		 * String autoSelected = SmartDashboard.getString("Auto Selector",
@@ -74,8 +77,8 @@ public class Robot extends TimedRobot {
 		 */
 
 		// schedule the autonomous command (example)
-		if (m_autonomousCommand != null) {
-			m_autonomousCommand.start();
+		if (autoCommand != null) {
+			autoCommand.start();
 		}
 	}
 
@@ -90,8 +93,8 @@ public class Robot extends TimedRobot {
 	@Override
 	public void teleopInit() {
 		/* Makes sure autonomous stops running when telop starts running */
-		if (m_autonomousCommand != null) {
-			m_autonomousCommand.cancel();
+		if (autoCommand != null) {
+            autoCommand.cancel();
 		}
 	}
 

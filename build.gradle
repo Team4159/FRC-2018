@@ -23,13 +23,13 @@ deploy {
     }
 }
 
-// Defining my dependencies. In this case, WPILib (+ friends), CTRE Phoenix (Talon SRX)
-// and NavX.
+// Defining dependencies
 dependencies {
     compile wpilib()
     compile ctre()
     compile navx()
     compile openrio.powerup.matchData()
+    compile pathfinder()
 }
 
 // Setting up my Jar File. In this case, adding all libraries into the main jar ('fat jar')

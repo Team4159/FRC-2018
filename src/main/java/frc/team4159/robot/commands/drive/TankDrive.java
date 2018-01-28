@@ -18,6 +18,8 @@ public class TankDrive extends Command {
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
 
+        Robot.drivetrain.setRawOutput(OI.getLeftY(), OI.getRightY());
+
         if(OI.testPIDButton()) {
             Robot.drivetrain.setRawOutput(0,1);
             //Robot.drivetrain.setVelocity(0.25, 0);
