@@ -18,7 +18,7 @@ public class RobotMap {
     public static final int RIGHT_VICTOR = 4;
 
     // Double Solenoids
-    public static final int WHATEVER = 1;
-    public static final int WHATEVER2 = 2;
+    public static final int SOLENOID_A = 0;
+    public static final int SOLENOID_B = 1;
 
 }
