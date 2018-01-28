@@ -1,6 +1,5 @@
 package frc.team4159.robot;
 
-import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -9,7 +8,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import frc.team4159.robot.commands.drive.TankDrive;
 import frc.team4159.robot.subsystems.Drivetrain;
-import frc.team4159.robot.subsystems.TestPneumatics;
 import frc.team4159.robot.subsystems.Superstructure;
 import openrio.powerup.MatchData;
 
