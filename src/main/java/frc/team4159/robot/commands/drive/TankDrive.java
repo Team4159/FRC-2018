@@ -17,15 +17,22 @@ public class TankDrive extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-
         Robot.drivetrain.setRawOutput(OI.getLeftY(), OI.getRightY());
 
-        if(OI.testPIDButton()) {
-            Robot.drivetrain.setRawOutput(0,1);
-            //Robot.drivetrain.setVelocity(0.25, 0);
-        } else {
-            Robot.drivetrain.setRawOutput(0,0);
-        }
+//        if(OI.getLeftY() == 0.0){ //Doesn't work, maybe set a threshold?
+//            Robot.drivetrain.setRawOutput(0.0,0.0);
+//        }else{
+//            Robot.drivetrain.setVelocity(OI.getLeftY(),-OI.getRightY());
+//        }
+
+        //Robot.drivetrain.setVelocity(OI.getLeftY(),OI.getRightY()); //Doesn't stop
+
+//        if(OI.testPIDButton()) {
+//            Robot.drivetrain.setRawOutput(0,1);
+//            Robot.drivetrain.setVelocity(0.25, 0);
+//        } else {
+//            Robot.drivetrain.setRawOutput(0,0);
+//        }
 
         Robot.drivetrain.logSmartDashboard();
 

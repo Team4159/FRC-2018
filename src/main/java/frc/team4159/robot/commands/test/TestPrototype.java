@@ -31,7 +31,17 @@ public class TestPrototype extends Command {
      */
     @Override
     protected void execute() {
-        Superstructure.prototype.operatePiston(OI.testButton());
+        Superstructure.prototype.operatePiston(OI.intakeOpenPiston());
+
+        if(OI.intakeButton()){
+            Superstructure.prototype.setIntake(1.0);
+        }else if(OI.outtakeButton()){
+            Superstructure.prototype.setIntake(-1.0);
+        }else{
+            Superstructure.prototype.setIntake(0.0);
+        }
+
+        Superstructure.prototype.setLifter(OI.getSecondaryY());
     }
 
 

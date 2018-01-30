@@ -47,11 +47,15 @@ public class OI implements ControlMap {
 
 	}
 
-	public static boolean testButton(){
-		return secondaryJoy.getRawButton(2);
-	}
+
     public static boolean testPIDButton(){
         return leftJoy.getRawButton(2);
     }
+
+    //Slidy Intake buttons
+    public static double getSecondaryY(){return secondaryJoy.getY();}
+    public static boolean intakeOpenPiston(){ return secondaryJoy.getTrigger(); }
+    public static boolean intakeButton() { return secondaryJoy.getRawButton(2);}
+    public static boolean outtakeButton(){ return secondaryJoy.getRawButton(3);}
 
 }

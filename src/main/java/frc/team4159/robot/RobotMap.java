@@ -17,6 +17,10 @@ public class RobotMap {
     public static final int LEFT_VICTOR = 3;
     public static final int RIGHT_VICTOR = 4;
 
+    public static final int PROTOTYPE_MOTOR_LEFT = 5;
+    public static final int PROTOTYPE_MOTOR_RIGHT = 6;
+    public static final int PROTOTYPE_LIFTER = 1;
+
     // Double Solenoids
     public static final int SOLENOID_A = 0;
     public static final int SOLENOID_B = 1;
