@@ -101,7 +101,11 @@ public class Drivetrain extends Subsystem {
         leftTalon.set(ControlMode.Velocity, leftTarget);
         rightTalon.set(ControlMode.Velocity, rightTarget);
     }
-
+    public void setPosition(double leftCount, double rightCount){
+        //TODO: Conversions to angle or RPM
+        leftTalon.set(ControlMode.Position, leftCount);
+        rightTalon.set(ControlMode.Position, rightCount);
+    }
     public int getLeftEncoderPosition() {
         return leftTalon.getSelectedSensorPosition(PIDIDX);
     }
