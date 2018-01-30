@@ -16,7 +16,7 @@ import edu.wpi.first.wpilibj.command.Command;
 
 
 
-public class MPcode extends Command{
+public class MPcode{
 
     /**
      * The status of the motion profile executer and buffer inside the Talon.

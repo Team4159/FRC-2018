@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
+import frc.team4159.robot.commands.AutoCommandGroup;
 import frc.team4159.robot.commands.drive.TankDrive;
 import frc.team4159.robot.subsystems.Drivetrain;
 import frc.team4159.robot.subsystems.Superstructure;
@@ -38,9 +39,15 @@ public class Robot extends TimedRobot {
         superstructure = Superstructure.getInstance();
         oi = OI.getInstance();
 
-		m_chooser.addDefault("Default Auto", new TankDrive()); // TODO: Change. Just a placeholder
-		// chooser.addObject("My Auto", new MyAutoCommand());
-		SmartDashboard.putData("Auto mode", m_chooser);
+//		m_chooser.addDefault("Default Auto", new TankDrive()); // TODO: Change. Just a placeholder
+//		// chooser.addObject("My Auto", new MyAutoCommand());
+//		SmartDashboard.putData("Auto mode", m_chooser);
+
+
+        m_chooser.addDefault("Default(Drive straight)", new AutoCommandGroup(AutoCommandGroup.Mode.DRIVE_STRAIGHT));
+        m_chooser.addObject("Left Switch", new AutoCommandGroup(AutoCommandGroup.Mode.LEFT_SWITCH));
+        m_chooser.addObject("Do Nothing", new AutoCommandGroup(AutoCommandGroup.Mode.DO_NOTHING));
+        m_chooser.addObject("Right Switch", new AutoCommandGroup(AutoCommandGroup.Mode.RIGHT_SWITCH));
 	}
 
 	/**
@@ -50,7 +57,7 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void disabledInit() {
-
+		//I don't need to configure sensors since it should be done when we are making a new drivtrain
 	}
 
 	@Override

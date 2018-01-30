@@ -1,7 +1,7 @@
 package frc.team4159.robot.commands;
 
 //importing things form other packages etc
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.team4159.robot.Robot;
 
@@ -15,18 +15,19 @@ public class AutoCommandGroup extends CommandGroup  {
 		//tells what each path does
 		switch(m) {
 			case LEFT_SWITCH: //not sure if this will work
-                MPcode trailL = new MPcode(new TalonSRX(3), new TalonSRX(4), new LeftSwitchTrajectory());
+                MPcodeRunner trailL = new MPcodeRunner(new LeftSwitchTrajectory());
                 addSequential(trailL);// what does this really do?
-                trailL.reset();
-                trailL.control();
 				System.out.println("left switch path activated");
 				break;
 			case RIGHT_SWITCH:
-                MPcode trailR = new MPcode(new TalonSRX(3), new TalonSRX(4), new LeftSwitchTrajectory());
+                MPcodeRunner trailR = new MPcodeRunner(new RightSwitchTrajectory());
                 addSequential(trailR);
-                trailR.reset();
-                trailR.control();
 				System.out.println("right switch path activated");
+				break;
+			case DRIVE_STRAIGHT:
+				MPcodeRunner trailS = new MPcodeRunner(new StraightTrajectory());
+				addSequential(trailS);
+				System.out.println(" Straight path activated");
 				break;
 			case DO_NOTHING:
 				System.out.println("Standing still");
@@ -38,7 +39,7 @@ public class AutoCommandGroup extends CommandGroup  {
 	
 	//naming different types of Autos
 	public enum Mode{
-		LEFT_SWITCH, RIGHT_SWITCH, DO_NOTHING
+		LEFT_SWITCH, RIGHT_SWITCH, DO_NOTHING, DRIVE_STRAIGHT
 	}
 	
 
