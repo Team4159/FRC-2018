@@ -50,6 +50,16 @@ public class Drivetrain extends Subsystem {
         rightVictor = new VictorSPX(RobotMap.RIGHT_VICTOR);
         rightVictor.follow(rightTalon);
 
+        leftTalon.configPeakCurrentLimit(35,10);
+        leftTalon.configPeakCurrentDuration(200, 20);
+        leftTalon.configContinuousCurrentLimit(30,10);
+        leftTalon.enableCurrentLimit(true);
+
+        rightTalon.configPeakCurrentLimit(35,10);
+        rightTalon.configPeakCurrentDuration(200, 20);
+        rightTalon.configContinuousCurrentLimit(30,10);
+        rightTalon.enableCurrentLimit(true);
+
         try {
             navx = new AHRS(SPI.Port.kMXP);
         } catch (RuntimeException ex) {
