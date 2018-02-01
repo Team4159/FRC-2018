@@ -50,20 +50,20 @@ public class Drivetrain extends Subsystem {
         rightVictor.setInverted(true);
         rightVictor.follow(rightTalon);
 
-        final int PEAK_CURRENT = 35; // Amps
-        final int CONTINUOUS_CURRENT = 30; // Amps
-        final int PEAK_CURRENT_DURATION = 200; // ms
-        final int PEAK_CURRENT_TIMEOUT = 20; // ms
-
-        leftTalon.configPeakCurrentLimit(PEAK_CURRENT,TIMEOUT_MS);
-        leftTalon.configPeakCurrentDuration(PEAK_CURRENT_DURATION, PEAK_CURRENT_TIMEOUT);
-        leftTalon.configContinuousCurrentLimit(CONTINUOUS_CURRENT, TIMEOUT_MS);
-        leftTalon.enableCurrentLimit(true);
-
-        rightTalon.configPeakCurrentLimit(PEAK_CURRENT,TIMEOUT_MS);
-        rightTalon.configPeakCurrentDuration(PEAK_CURRENT_DURATION, PEAK_CURRENT_TIMEOUT);
-        rightTalon.configContinuousCurrentLimit(CONTINUOUS_CURRENT, TIMEOUT_MS);
-        rightTalon.enableCurrentLimit(true);
+//        final int PEAK_CURRENT = 35; // Amps
+//        final int CONTINUOUS_CURRENT = 30; // Amps
+//        final int PEAK_CURRENT_DURATION = 200; // ms
+//        final int PEAK_CURRENT_TIMEOUT = 20; // ms
+//
+//        leftTalon.configPeakCurrentLimit(PEAK_CURRENT,TIMEOUT_MS);
+//        leftTalon.configPeakCurrentDuration(PEAK_CURRENT_DURATION, PEAK_CURRENT_TIMEOUT);
+//        leftTalon.configContinuousCurrentLimit(CONTINUOUS_CURRENT, TIMEOUT_MS);
+        leftTalon.enableCurrentLimit(false);
+//
+//        rightTalon.configPeakCurrentLimit(PEAK_CURRENT,TIMEOUT_MS);
+//        rightTalon.configPeakCurrentDuration(PEAK_CURRENT_DURATION, PEAK_CURRENT_TIMEOUT);
+//        rightTalon.configContinuousCurrentLimit(CONTINUOUS_CURRENT, TIMEOUT_MS);
+        rightTalon.enableCurrentLimit(false);
 
         try {
             navx = new AHRS(SPI.Port.kMXP);
@@ -138,9 +138,13 @@ public class Drivetrain extends Subsystem {
         double output = leftTalon.getMotorOutputPercent();
         double speed = leftTalon.getSelectedSensorVelocity(PIDIDX);
         double error = leftTalon.getClosedLoopError(PIDIDX);
+        double leftCurrent = leftTalon.getOutputCurrent();
+        double rightCurrent = rightTalon.getOutputCurrent();
         SmartDashboard.putNumber("output", output);
         SmartDashboard.putNumber("speed", speed);
         SmartDashboard.putNumber("error", error);
+        SmartDashboard.putNumber("left current", leftCurrent);
+        SmartDashboard.putNumber("right current", rightCurrent);
         //System.out.println("out: " + output + " spd: " + speed + " err: " + error);
     }
 
