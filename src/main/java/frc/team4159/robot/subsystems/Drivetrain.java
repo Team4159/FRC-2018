@@ -42,12 +42,15 @@ public class Drivetrain extends Subsystem {
     public Drivetrain() {
 
         leftTalon = new TalonSRX(RobotMap.LEFT_TALON);
-        leftTalon.setInverted(true);
+        leftTalon.setInverted(false);
         leftVictor = new VictorSPX(RobotMap.LEFT_VICTOR);
+        leftVictor.setInverted(false);
         leftVictor.follow(leftTalon);
 
         rightTalon = new TalonSRX(RobotMap.RIGHT_TALON);
+        rightTalon.setInverted(true);
         rightVictor = new VictorSPX(RobotMap.RIGHT_VICTOR);
+        rightVictor.setInverted(true);
         rightVictor.follow(rightTalon);
 
         try {
