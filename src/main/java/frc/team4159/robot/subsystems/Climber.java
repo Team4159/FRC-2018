@@ -18,7 +18,7 @@ public class Climber extends Subsystem {
 
     private VictorSPX climbVictor;
 
-    public Climber() {
+    private Climber() {
         climbVictor = new VictorSPX(RobotMap.CLIMB_VICTOR);
     }
 
@@ -26,6 +26,7 @@ public class Climber extends Subsystem {
         climbVictor.set(ControlMode.PercentOutput, 0.75);
     }
 
+    /* Slower than climb up for safety reasons when lowering the robot */
     public void climbDown() {
         climbVictor.set(ControlMode.PercentOutput, -0.25);
     }

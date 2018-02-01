@@ -10,6 +10,8 @@ import jaci.pathfinder.modifiers.TankModifier;
 
 public class DriveStraight extends Command {
 
+    // TODO: Check frequency this pid loop gets called
+
     private double distance;
     private final double WHEELBASE_WIDTH = 0.5;
     private final double MAX_VELOCITY = 1.7;

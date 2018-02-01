@@ -20,6 +20,8 @@ public class Drivetrain extends Subsystem {
 
     private TalonSRX leftTalon, rightTalon;
     private VictorSPX leftVictor, rightVictor;
+
+    /* The NavX is a 9-axis inertial/magnetic sensor and motion processor, plugged into the RoboRio's MXP port */
     private AHRS navx;
 
     private final int MAX_SPEED = 5200; // Native units per 100ms
@@ -36,7 +38,7 @@ public class Drivetrain extends Subsystem {
         return instance;
     }
 
-    public Drivetrain() {
+    private Drivetrain() {
 
         leftTalon = new TalonSRX(RobotMap.LEFT_TALON);
         leftTalon.setInverted(false);
@@ -50,20 +52,20 @@ public class Drivetrain extends Subsystem {
         rightVictor.setInverted(true);
         rightVictor.follow(rightTalon);
 
-//        final int PEAK_CURRENT = 35; // Amps
-//        final int CONTINUOUS_CURRENT = 30; // Amps
-//        final int PEAK_CURRENT_DURATION = 200; // ms
-//        final int PEAK_CURRENT_TIMEOUT = 20; // ms
-//
-//        leftTalon.configPeakCurrentLimit(PEAK_CURRENT,TIMEOUT_MS);
-//        leftTalon.configPeakCurrentDuration(PEAK_CURRENT_DURATION, PEAK_CURRENT_TIMEOUT);
-//        leftTalon.configContinuousCurrentLimit(CONTINUOUS_CURRENT, TIMEOUT_MS);
-        leftTalon.enableCurrentLimit(false);
-//
-//        rightTalon.configPeakCurrentLimit(PEAK_CURRENT,TIMEOUT_MS);
-//        rightTalon.configPeakCurrentDuration(PEAK_CURRENT_DURATION, PEAK_CURRENT_TIMEOUT);
-//        rightTalon.configContinuousCurrentLimit(CONTINUOUS_CURRENT, TIMEOUT_MS);
-        rightTalon.enableCurrentLimit(false);
+        final int PEAK_CURRENT = 35; // Amps
+        final int CONTINUOUS_CURRENT = 30; // Amps
+        final int PEAK_CURRENT_DURATION = 200; // ms
+        final int PEAK_CURRENT_TIMEOUT = 20; // ms
+
+        leftTalon.configPeakCurrentLimit(PEAK_CURRENT,TIMEOUT_MS);
+        leftTalon.configPeakCurrentDuration(PEAK_CURRENT_DURATION, PEAK_CURRENT_TIMEOUT);
+        leftTalon.configContinuousCurrentLimit(CONTINUOUS_CURRENT, TIMEOUT_MS);
+        leftTalon.enableCurrentLimit(true);
+
+        rightTalon.configPeakCurrentLimit(PEAK_CURRENT,TIMEOUT_MS);
+        rightTalon.configPeakCurrentDuration(PEAK_CURRENT_DURATION, PEAK_CURRENT_TIMEOUT);
+        rightTalon.configContinuousCurrentLimit(CONTINUOUS_CURRENT, TIMEOUT_MS);
+        rightTalon.enableCurrentLimit(true);
 
         try {
             navx = new AHRS(SPI.Port.kMXP);
@@ -77,6 +79,7 @@ public class Drivetrain extends Subsystem {
 
     private void configureSensors() {
 
+        // Mag encoder attached to its respective talon via the srx data cable
         leftTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, PIDIDX, TIMEOUT_MS);
         leftTalon.setSensorPhase(false);
 
@@ -98,10 +101,12 @@ public class Drivetrain extends Subsystem {
         rightTalon.configPeakOutputForward(PEAK_OUT_PERCENT, TIMEOUT_MS);
         rightTalon.configPeakOutputReverse(-PEAK_OUT_PERCENT, TIMEOUT_MS);
 
-        rightTalon.config_kP(PARAM_SLOT, 0.0, TIMEOUT_MS);
-        rightTalon.config_kI(PARAM_SLOT, 0.0, TIMEOUT_MS);
-        rightTalon.config_kD(PARAM_SLOT, 0.0, TIMEOUT_MS);
-        rightTalon.config_kF(PARAM_SLOT, 0.0, TIMEOUT_MS);
+//        rightTalon.config_kP(PARAM_SLOT, 0.0, TIMEOUT_MS);
+//        rightTalon.config_kI(PARAM_SLOT, 0.0, TIMEOUT_MS);
+//        rightTalon.config_kD(PARAM_SLOT, 0.0, TIMEOUT_MS);
+//        rightTalon.config_kF(PARAM_SLOT, 0.0, TIMEOUT_MS);
+
+        zeroNavX();
 
     }
 
@@ -129,7 +134,7 @@ public class Drivetrain extends Subsystem {
         return navx.getCompassHeading();
     }
 
-    public void zeroNavX() {
+    private void zeroNavX() {
         navx.zeroYaw();
     }
 
@@ -144,6 +149,7 @@ public class Drivetrain extends Subsystem {
         SmartDashboard.putNumber("error", error);
         SmartDashboard.putNumber("left current", leftCurrent);
         SmartDashboard.putNumber("right current", rightCurrent);
+        SmartDashboard.putNumber("heading", getHeadingDegrees());
         //System.out.println("out: " + output + " spd: " + speed + " err: " + error);
     }
 

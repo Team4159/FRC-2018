@@ -9,8 +9,6 @@ import frc.team4159.robot.subsystems.Superstructure;
 public class TestPrototype extends Command {
 
     public TestPrototype() {
-        // Use requires() here to declare subsystem dependencies
-        // eg. requires(chassis);
         requires(Superstructure.prototype);
     }
 
@@ -31,19 +29,18 @@ public class TestPrototype extends Command {
      */
     @Override
     protected void execute() {
-        Superstructure.prototype.operatePiston(OI.intakeOpenPiston());
+        Superstructure.prototype.operatePiston(Robot.oi.intakeOpenPiston());
 
-        if(OI.intakeButton()){
+        if(Robot.oi.intakeButton()){
             Superstructure.prototype.setIntake(1.0);
-        }else if(OI.outtakeButton()){
+        }else if(Robot.oi.outtakeButton()){
             Superstructure.prototype.setIntake(-1.0);
         }else{
             Superstructure.prototype.setIntake(0.0);
         }
 
-        Superstructure.prototype.setLifter(OI.getSecondaryY());
+        Superstructure.prototype.setLifter(Robot.oi.getSecondaryY());
     }
-
 
     /**
      * <p>

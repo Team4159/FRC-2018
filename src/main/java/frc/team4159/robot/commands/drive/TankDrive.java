@@ -12,43 +12,33 @@ public class TankDrive extends Command {
     }
 
     // Called just before this Command runs the first time
+    @Override
     protected void initialize() {
     }
 
     // Called repeatedly when this Command is scheduled to run
+    @Override
     protected void execute() {
-        Robot.drivetrain.setRawOutput(OI.getLeftY(), OI.getRightY());
 
-//        if(OI.getLeftY() == 0.0){ //Doesn't work, maybe set a threshold?
-//            Robot.drivetrain.setRawOutput(0.0,0.0);
-//        }else{
-//            Robot.drivetrain.setVelocity(OI.getLeftY(),OI.getRightY());
-//        }
-
-        //Robot.drivetrain.setVelocity(OI.getLeftY(),OI.getRightY()); //Doesn't stop
-
-//        if(OI.testPIDButton()) {
-//            Robot.drivetrain.setRawOutput(0,1);
-//            Robot.drivetrain.setVelocity(0.25, 0);
-//        } else {
-//            Robot.drivetrain.setRawOutput(0,0);
-//        }
-
+        Robot.drivetrain.setRawOutput(Robot.oi.getLeftY(), Robot.oi.getRightY());
         Robot.drivetrain.logSmartDashboard();
 
     }
 
     // Make this return true when this Command no longer needs to run execute()
+    @Override
     protected boolean isFinished() {
         return false;
     }
 
     // Called once after isFinished returns true
+    @Override
     protected void end() {
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
+    @Override
     protected void interrupted() {
         end();
     }

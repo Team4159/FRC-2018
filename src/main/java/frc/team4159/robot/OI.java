@@ -17,17 +17,17 @@ public class OI implements ControlMap {
         return instance;
     }
 
-    private static Joystick leftJoy;
-    private static Joystick rightJoy;
-    private static Joystick secondaryJoy;
+    private Joystick leftJoy;
+    private Joystick rightJoy;
+    private Joystick secondaryJoy;
 
-    public OI() {
+    private OI() {
         leftJoy = new Joystick(LEFT_STICK);
         rightJoy = new Joystick(RIGHT_STICK);
         secondaryJoy = new Joystick(SECONDARY_STICK);
     }
 
-    public static double getLeftY() {
+    public double getLeftY() {
 
         double leftY = leftJoy.getY();
         if(leftY < 0)
@@ -36,7 +36,7 @@ public class OI implements ControlMap {
 
     }
 
-    public static double getRightY() {
+    public double getRightY() {
 
         double rightY = rightJoy.getY();
         if(rightY < 0)
@@ -46,20 +46,20 @@ public class OI implements ControlMap {
 	}
 
 
-    public static boolean testPIDButton(){
+    public boolean testPIDButton(){
         return leftJoy.getRawButton(2);
     }
-    public static boolean getClimbUp(){
+    public boolean getClimbUp(){
         return secondaryJoy.getRawButton(CLIMB_UP);
     }
-    public static boolean getClimbDown(){
+    public boolean getClimbDown(){
         return secondaryJoy.getRawButton(CLIMB_DOWN);
     }
 
     //Slidy Intake buttons
-    public static double getSecondaryY(){return secondaryJoy.getY();}
-    public static boolean intakeOpenPiston(){ return secondaryJoy.getTrigger(); }
-    public static boolean intakeButton() { return secondaryJoy.getRawButton(2);}
-    public static boolean outtakeButton(){ return secondaryJoy.getRawButton(3);}
+    public double getSecondaryY(){return secondaryJoy.getY();}
+    public boolean intakeOpenPiston(){ return secondaryJoy.getTrigger(); }
+    public boolean intakeButton() { return secondaryJoy.getRawButton(2);}
+    public boolean outtakeButton(){ return secondaryJoy.getRawButton(3);}
 
 }

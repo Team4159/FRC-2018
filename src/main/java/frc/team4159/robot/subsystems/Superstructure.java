@@ -10,17 +10,20 @@ package frc.team4159.robot.subsystems;
 public class Superstructure {
 
     private static Superstructure instance;
-    public static Prototype prototype;
-    public static Climber climber;
-
-    public Superstructure() {
-        prototype = Prototype.getInstance();
-        climber = Climber.getInstance();
-    }
 
     public static Superstructure getInstance() {
         if (instance == null)
             instance = new Superstructure();
         return instance;
     }
+
+    public static Prototype prototype;
+    public Climber climber;
+
+    private Superstructure() {
+        prototype = Prototype.getInstance();
+        climber = Climber.getInstance();
+    }
+
+
 }
