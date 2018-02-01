@@ -22,7 +22,7 @@ public class TankDrive extends Command {
 //        if(OI.getLeftY() == 0.0){ //Doesn't work, maybe set a threshold?
 //            Robot.drivetrain.setRawOutput(0.0,0.0);
 //        }else{
-//            Robot.drivetrain.setVelocity(OI.getLeftY(),-OI.getRightY());
+//            Robot.drivetrain.setVelocity(OI.getLeftY(),OI.getRightY());
 //        }
 
         //Robot.drivetrain.setVelocity(OI.getLeftY(),OI.getRightY()); //Doesn't stop

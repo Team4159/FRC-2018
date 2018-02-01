@@ -50,7 +50,7 @@ public class Drivetrain extends Subsystem {
         rightTalon = new TalonSRX(RobotMap.RIGHT_TALON);
         rightTalon.setInverted(true);
         rightVictor = new VictorSPX(RobotMap.RIGHT_VICTOR);
-        rightTalon.setInverted(true);
+        rightVictor.setInverted(true);
         rightVictor.follow(rightTalon);
 
         try {
@@ -86,10 +86,10 @@ public class Drivetrain extends Subsystem {
         rightTalon.configPeakOutputForward(PEAK_OUT_PERCENT, TIMEOUT_MS);
         rightTalon.configPeakOutputReverse(-PEAK_OUT_PERCENT, TIMEOUT_MS);
 
-        rightTalon.config_kP(PARAM_SLOT, 0, TIMEOUT_MS);
-        rightTalon.config_kI(PARAM_SLOT, 0, TIMEOUT_MS);
-        rightTalon.config_kD(PARAM_SLOT, 0, TIMEOUT_MS);
-        rightTalon.config_kF(PARAM_SLOT, 0, TIMEOUT_MS);
+        rightTalon.config_kP(PARAM_SLOT, 0.0, TIMEOUT_MS);
+        rightTalon.config_kI(PARAM_SLOT, 0.0, TIMEOUT_MS);
+        rightTalon.config_kD(PARAM_SLOT, 0.0, TIMEOUT_MS);
+        rightTalon.config_kF(PARAM_SLOT, 0.0, TIMEOUT_MS);
 
     }
 
