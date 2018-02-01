@@ -1,12 +1,13 @@
 package frc.team4159.robot;
 
-/* Any other constants that are not roborio or joystick related i.e. scale factors, pid constants
- * Store multiple bot constants here and make sure to comment them out when not in use
+/*
+ * Robot-wide constants that are not roborio or joystick related i.e. configurations, scale factors
  * */
 
 public class Constants {
 
-    /* Practice bot */
+    public static final int TIMEOUT_MS = 10;
+    public static final int NOMINAL_OUT_PERCENT = 0;
+    public static final int PEAK_OUT_PERCENT = 1;
 
-    /* Competition bot */
 }

@@ -16,6 +16,7 @@ public class RobotMap {
     // CAN Victor SPX
     public static final int LEFT_VICTOR = 3;
     public static final int RIGHT_VICTOR = 4;
+    public static final int CLIMB_VICTOR = 10;
 
     // Double Solenoids
     public static final int SOLENOID_A = 0;

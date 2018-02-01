@@ -7,10 +7,10 @@ import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.SPI;
-import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team4159.robot.RobotMap;
 import frc.team4159.robot.commands.drive.TankDrive;
+import static frc.team4159.robot.Constants.*;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 
@@ -23,15 +23,12 @@ public class Drivetrain extends Subsystem {
     private AHRS navx;
 
     private final int MAX_SPEED = 5200; // Native units per 100ms
-    private final int TIMEOUT_MS = 10;
     private final int PARAM_SLOT = 0;
     private final int PIDIDX = 0;
     private final double kF = 0.196730769230769; // 1023 / 5200 where 5200 is our max speed
     private final double kP = 0.4092; // (10% * 1023) / 250 where 250 is our max error
     private final double kI = 0;
     private final double kD = 4.092; // kP * 10
-    private final double NOMINAL_OUT_PERCENT = 0;
-    private final double PEAK_OUT_PERCENT = 1;
 
     public static Drivetrain getInstance() {
         if(instance == null)
@@ -53,14 +50,19 @@ public class Drivetrain extends Subsystem {
         rightVictor.setInverted(true);
         rightVictor.follow(rightTalon);
 
-        leftTalon.configPeakCurrentLimit(35,10);
-        leftTalon.configPeakCurrentDuration(200, 20);
-        leftTalon.configContinuousCurrentLimit(30,10);
+        final int PEAK_CURRENT = 35; // Amps
+        final int CONTINUOUS_CURRENT = 30; // Amps
+        final int PEAK_CURRENT_DURATION = 200; // ms
+        final int PEAK_CURRENT_TIMEOUT = 20; // ms
+
+        leftTalon.configPeakCurrentLimit(PEAK_CURRENT,TIMEOUT_MS);
+        leftTalon.configPeakCurrentDuration(PEAK_CURRENT_DURATION, PEAK_CURRENT_TIMEOUT);
+        leftTalon.configContinuousCurrentLimit(CONTINUOUS_CURRENT, TIMEOUT_MS);
         leftTalon.enableCurrentLimit(true);
 
-        rightTalon.configPeakCurrentLimit(35,10);
-        rightTalon.configPeakCurrentDuration(200, 20);
-        rightTalon.configContinuousCurrentLimit(30,10);
+        rightTalon.configPeakCurrentLimit(PEAK_CURRENT,TIMEOUT_MS);
+        rightTalon.configPeakCurrentDuration(PEAK_CURRENT_DURATION, PEAK_CURRENT_TIMEOUT);
+        rightTalon.configContinuousCurrentLimit(CONTINUOUS_CURRENT, TIMEOUT_MS);
         rightTalon.enableCurrentLimit(true);
 
         try {
@@ -82,12 +84,12 @@ public class Drivetrain extends Subsystem {
         leftTalon.configNominalOutputReverse(NOMINAL_OUT_PERCENT, TIMEOUT_MS);
         leftTalon.configPeakOutputForward(PEAK_OUT_PERCENT, TIMEOUT_MS);
         leftTalon.configPeakOutputReverse(-PEAK_OUT_PERCENT, TIMEOUT_MS);
-
-        leftTalon.config_kP(PARAM_SLOT, kP, TIMEOUT_MS);
-        leftTalon.config_kI(PARAM_SLOT, kI, TIMEOUT_MS);
-        leftTalon.config_kD(PARAM_SLOT, kD, TIMEOUT_MS);
-        leftTalon.config_kF(PARAM_SLOT, kF, TIMEOUT_MS);
-
+//
+//        leftTalon.config_kP(PARAM_SLOT, kP, TIMEOUT_MS);
+//        leftTalon.config_kI(PARAM_SLOT, kI, TIMEOUT_MS);
+//        leftTalon.config_kD(PARAM_SLOT, kD, TIMEOUT_MS);
+//        leftTalon.config_kF(PARAM_SLOT, kF, TIMEOUT_MS);
+//
         rightTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, PIDIDX, TIMEOUT_MS);
         rightTalon.setSensorPhase(true);
 
@@ -96,10 +98,10 @@ public class Drivetrain extends Subsystem {
         rightTalon.configPeakOutputForward(PEAK_OUT_PERCENT, TIMEOUT_MS);
         rightTalon.configPeakOutputReverse(-PEAK_OUT_PERCENT, TIMEOUT_MS);
 
-        rightTalon.config_kP(PARAM_SLOT, 0, TIMEOUT_MS);
-        rightTalon.config_kI(PARAM_SLOT, 0, TIMEOUT_MS);
-        rightTalon.config_kD(PARAM_SLOT, 0, TIMEOUT_MS);
-        rightTalon.config_kF(PARAM_SLOT, 0, TIMEOUT_MS);
+//        rightTalon.config_kP(PARAM_SLOT, 0, TIMEOUT_MS);
+//        rightTalon.config_kI(PARAM_SLOT, 0, TIMEOUT_MS);
+//        rightTalon.config_kD(PARAM_SLOT, 0, TIMEOUT_MS);
+//        rightTalon.config_kF(PARAM_SLOT, 0, TIMEOUT_MS);
 
     }
 
@@ -108,17 +110,14 @@ public class Drivetrain extends Subsystem {
         rightTalon.set(ControlMode.PercentOutput, rightPercent);
     }
 
-    public void setVelocity(double leftPercent, double rightPercent) {
-        double leftTarget = leftPercent * MAX_SPEED;
-        double rightTarget = rightPercent * MAX_SPEED;
-        leftTalon.set(ControlMode.Velocity, leftTarget);
-        rightTalon.set(ControlMode.Velocity, rightTarget);
-    }
-    public void setPosition(double leftCount, double rightCount){
-        //TODO: Conversions to angle or RPM
-        leftTalon.set(ControlMode.Position, leftCount);
-        rightTalon.set(ControlMode.Position, rightCount);
-    }
+//    public void setVelocity(double leftPercent, double rightPercent) {
+//        double leftTarget = leftPercent * MAX_SPEED;
+//        double rightTarget = rightPercent * MAX_SPEED;
+//        leftTalon.set(ControlMode.Velocity, leftTarget);
+//        rightTalon.set(ControlMode.Velocity, rightTarget);
+//    }
+
+
     public int getLeftEncoderPosition() {
         return leftTalon.getSelectedSensorPosition(PIDIDX);
     }
@@ -129,6 +128,10 @@ public class Drivetrain extends Subsystem {
 
     public double getHeadingDegrees() {
         return navx.getCompassHeading();
+    }
+
+    public void zeroNavX() {
+        navx.zeroYaw();
     }
 
     public void logSmartDashboard() {
