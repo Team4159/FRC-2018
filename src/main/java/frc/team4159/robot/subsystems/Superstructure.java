@@ -11,9 +11,11 @@ public class Superstructure {
 
     private static Superstructure instance;
     public static Prototype prototype;
+    public static Climber climber;
 
     public Superstructure() {
         prototype = Prototype.getInstance();
+        climber = Climber.getInstance();
     }
 
     public static Superstructure getInstance() {
