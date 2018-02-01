@@ -29,21 +29,24 @@ public class Robot extends TimedRobot {
 	private MatchData.OwnedSide switchFar;
 
 	private Command autoCommand;
-	private SendableChooser<Command> autoChooser = new SendableChooser<>();
+    private SendableChooser<Command> configurationChooser = new SendableChooser<>();
+    private SendableChooser<Command> actionChooser = new SendableChooser<>();
 
-	/* This function is run when the robot is first started up */
+    /* This function is run when the robot is first started up */
 	@Override
 	public void robotInit() {
+
+		// TODO: Add option for auto delay using Preferences class. See https://wpilib.screenstepslive.com/s/currentCS/m/smartdashboard/l/255423-setting-robot-preferences-from-smartdashboard
 
 		drivetrain = Drivetrain.getInstance();
 		superstructure = Superstructure.getInstance();
 		oi = OI.getInstance();
 
-		autoChooser.addDefault("Drive Straight", new DriveStraight(5));
-//		autoChooser.addObject("Left Switch", new MyAutoCommand());
-//		autoChooser.addObject("Middle Switch", new MyAutoCommand());
-//		autoChooser.addObject("Right Switch", new MyAutoCommand());
-		SmartDashboard.putData("!!! CHOOSE AUTO MODE !!!", autoChooser);
+		actionChooser.addDefault("Drive Straight", new DriveStraight(5));
+//		configurationChooser.addObject("Left", new MyAutoCommand());
+//		configurationChooser.addObject("Middle", new MyAutoCommand());
+//		configurationChooser.addObject("Right", new MyAutoCommand());
+//		SmartDashboard.putData("!!! CHOOSE STARTING CONFIGURATION !!!", configurationChooser);
 	}
 
 	/**
@@ -67,7 +70,7 @@ public class Robot extends TimedRobot {
 		scale = MatchData.getOwnedSide(MatchData.GameFeature.SCALE);
 		switchFar = MatchData.getOwnedSide(MatchData.GameFeature.SWITCH_FAR);
 
-		autoCommand = autoChooser.getSelected();
+//		autoCommand = autoChooser.getSelected();
 
 		/*
 		 * String autoSelected = SmartDashboard.getString("Auto Selector",

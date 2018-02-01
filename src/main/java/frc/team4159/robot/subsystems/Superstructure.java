@@ -18,7 +18,7 @@ public class Superstructure {
     }
 
     public static Prototype prototype;
-    public Climber climber;
+    public static Climber climber;
 
     private Superstructure() {
         prototype = Prototype.getInstance();
