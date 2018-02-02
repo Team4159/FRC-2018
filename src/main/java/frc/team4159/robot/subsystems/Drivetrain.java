@@ -137,18 +137,17 @@ public class Drivetrain extends Subsystem {
         navx.zeroYaw();
     }
 
-    public void logSmartDashboard() {
-        double output = leftTalon.getMotorOutputPercent();
-        double speed = leftTalon.getSelectedSensorVelocity(PIDIDX);
-        double error = leftTalon.getClosedLoopError(PIDIDX);
-        double leftCurrent = leftTalon.getOutputCurrent();
-        double rightCurrent = rightTalon.getOutputCurrent();
-        SmartDashboard.putNumber("output", output);
-        SmartDashboard.putNumber("speed", speed);
-        SmartDashboard.putNumber("error", error);
-        SmartDashboard.putNumber("left current", leftCurrent);
-        SmartDashboard.putNumber("right current", rightCurrent);
+    public void logDashboard() {
+
+        double leftOutput = leftTalon.getMotorOutputPercent();
+        double leftSpeed = leftTalon.getSelectedSensorVelocity(PIDIDX);
+        double leftError = leftTalon.getClosedLoopError(PIDIDX);
+
+        SmartDashboard.putNumber("left output", leftOutput);
+        SmartDashboard.putNumber("left speed", leftSpeed);
+        SmartDashboard.putNumber("left error", leftError);
         SmartDashboard.putNumber("heading", getHeadingDegrees());
+
     }
 
     public void initDefaultCommand() {

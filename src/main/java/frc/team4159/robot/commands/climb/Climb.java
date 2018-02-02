@@ -9,12 +9,11 @@ import frc.team4159.robot.subsystems.Superstructure;
 public class Climb extends Command {
 
     public Climb() {
-        requires(Superstructure.climber);
+        requires(Robot.superstructure.climber);
     }
 
     @Override
     protected void initialize() {
-
     }
 
     @Override

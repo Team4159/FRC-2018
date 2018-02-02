@@ -1,6 +1,9 @@
 package frc.team4159.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.buttons.Button;
+import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import frc.team4159.robot.commands.auto.TestMotionProfile;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -17,14 +20,15 @@ public class OI implements ControlMap {
         return instance;
     }
 
-    private Joystick leftJoy;
-    private Joystick rightJoy;
-    private Joystick secondaryJoy;
+    private Joystick leftJoy, rightJoy, secondaryJoy;
 
     private OI() {
         leftJoy = new Joystick(LEFT_STICK);
         rightJoy = new Joystick(RIGHT_STICK);
         secondaryJoy = new Joystick(SECONDARY_STICK);
+
+        Button testButton = new JoystickButton(rightJoy, 2);
+        testButton.whenReleased(new TestMotionProfile());
     }
 
     public double getLeftY() {
@@ -46,9 +50,6 @@ public class OI implements ControlMap {
 	}
 
 
-    public boolean testPIDButton(){
-        return leftJoy.getRawButton(2);
-    }
     public boolean getClimbUp(){
         return secondaryJoy.getRawButton(CLIMB_UP);
     }
@@ -60,8 +61,14 @@ public class OI implements ControlMap {
     public double getSecondaryY() {
         return secondaryJoy.getY();
     }
-    public boolean intakeOpenPiston(){ return secondaryJoy.getTrigger(); }
-    public boolean intakeButton() { return secondaryJoy.getRawButton(2);}
-    public boolean outtakeButton(){ return secondaryJoy.getRawButton(3);}
+    public boolean intakeOpenPiston() {
+        return secondaryJoy.getTrigger();
+    }
+    public boolean intakeButton() {
+        return secondaryJoy.getRawButton(2);
+    }
+    public boolean outtakeButton() {
+        return secondaryJoy.getRawButton(3);
+    }
 
 }

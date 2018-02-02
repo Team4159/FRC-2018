@@ -4,10 +4,10 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-import frc.team4159.robot.commands.auto.DriveStraight;
-import frc.team4159.robot.commands.drive.TankDrive;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.team4159.robot.commands.auto.SetPosition;
+import frc.team4159.robot.commands.auto.TestMotionProfile;
 import frc.team4159.robot.subsystems.Drivetrain;
 import frc.team4159.robot.subsystems.Superstructure;
 import openrio.powerup.MatchData;
@@ -27,17 +27,16 @@ public class Robot extends TimedRobot {
 	private MatchData.OwnedSide switchNear;
 	private MatchData.OwnedSide scale;
 	private MatchData.OwnedSide switchFar;
+	private static StartingConfiguration autoPosition;
 
-	private Command autoCommand;
-    //private SendableChooser<Command> configurationChooser = new SendableChooser<>();
+	private Command actionCommand;
+    private Command setPositionCommand;
+    private SendableChooser<Command> positionChooser = new SendableChooser<>();
     private SendableChooser<Command> actionChooser = new SendableChooser<>();
 
     /* This function is run when the robot is first started up */
 	@Override
 	public void robotInit() {
-
-        System.out.println("robot init");
-
 
         // TODO: Add option for auto delay using Preferences class. See https://wpilib.screenstepslive.com/s/currentCS/m/smartdashboard/l/255423-setting-robot-preferences-from-smartdashboard
 
@@ -45,11 +44,13 @@ public class Robot extends TimedRobot {
 		superstructure = Superstructure.getInstance();
 		oi = OI.getInstance();
 
-		actionChooser.addDefault("Drive Straight", new DriveStraight(3)); // in meters
-//		configurationChooser.addObject("Left", new MyAutoCommand());
-//		configurationChooser.addObject("Middle", new MyAutoCommand());
-//		configurationChooser.addObject("Right", new MyAutoCommand());
-//		SmartDashboard.putData("!!! CHOOSE STARTING CONFIGURATION !!!", configurationChooser);
+		actionChooser.addDefault("Drive Straight (Default)", new TestMotionProfile());
+		SmartDashboard.putData("!!! CHOOSE AUTO COMMAND !!!", actionChooser);
+
+		positionChooser.addDefault("Left", new SetPosition(StartingConfiguration.LEFT));
+		positionChooser.addObject("Middle", new SetPosition(StartingConfiguration.MIDDLE));
+		positionChooser.addObject("Right", new SetPosition(StartingConfiguration.RIGHT));
+		SmartDashboard.putData("!!! CHOOSE STARTING CONFIGURATION !!!", positionChooser);
 	}
 
 	/**
@@ -69,26 +70,20 @@ public class Robot extends TimedRobot {
 	@Override
 	public void autonomousInit() {
 
-		System.out.println("auto init");
-
 		switchNear = MatchData.getOwnedSide(MatchData.GameFeature.SWITCH_NEAR);
 		scale = MatchData.getOwnedSide(MatchData.GameFeature.SCALE);
 		switchFar = MatchData.getOwnedSide(MatchData.GameFeature.SWITCH_FAR);
 
-		autoCommand = actionChooser.getSelected();
+		setPositionCommand = positionChooser.getSelected();
+		actionCommand = actionChooser.getSelected();
 
-		/*
-		 * String autoSelected = SmartDashboard.getString("Auto Selector",
-		 * "Default"); switch(autoSelected) { case "My Auto": autonomousCommand
-		 * = new MyAutoCommand(); break; case "Default Auto": default:
-		 * autonomousCommand = new ExampleCommand(); break; }
-		 */
-
-		// schedule the autonomous command (example)
-		if (autoCommand != null) {
-			System.out.println("auto started");
-			autoCommand.start();
+        if (setPositionCommand != null) {
+            setPositionCommand.start();
+        }
+		if (actionCommand != null) {
+            actionCommand.start();
 		}
+
 	}
 
 	/**
@@ -102,8 +97,8 @@ public class Robot extends TimedRobot {
 	@Override
 	public void teleopInit() {
 		/* Makes sure autonomous stops running when telop starts running */
-		if (autoCommand != null) {
-            autoCommand.cancel();
+		if (actionCommand != null) {
+            actionCommand.cancel();
 		}
 	}
 
@@ -121,4 +116,17 @@ public class Robot extends TimedRobot {
 	@Override
 	public void testPeriodic() {
 	}
+
+	public static void setAutoPosition(StartingConfiguration position) {
+        autoPosition = position;
+    }
+
+    public StartingConfiguration getAutoPosition() {
+	    return autoPosition;
+    }
+
+	public enum StartingConfiguration {
+        LEFT, MIDDLE, RIGHT
+    }
+
 }
