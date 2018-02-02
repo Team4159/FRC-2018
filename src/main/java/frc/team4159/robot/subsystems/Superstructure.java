@@ -25,5 +25,4 @@ public class Superstructure {
         climber = Climber.getInstance();
     }
 
-
 }

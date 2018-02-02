@@ -57,7 +57,9 @@ public class OI implements ControlMap {
     }
 
     //Slidy Intake buttons
-    public double getSecondaryY(){return secondaryJoy.getY();}
+    public double getSecondaryY() {
+        return secondaryJoy.getY();
+    }
     public boolean intakeOpenPiston(){ return secondaryJoy.getTrigger(); }
     public boolean intakeButton() { return secondaryJoy.getRawButton(2);}
     public boolean outtakeButton(){ return secondaryJoy.getRawButton(3);}

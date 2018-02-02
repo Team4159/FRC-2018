@@ -19,7 +19,6 @@ public class Drivetrain extends Subsystem {
     private static Drivetrain instance;
 
     private TalonSRX leftTalon, rightTalon;
-    private VictorSPX leftVictor, rightVictor;
 
     /* The NavX is a 9-axis inertial/magnetic sensor and motion processor, plugged into the RoboRio's MXP port */
     private AHRS navx;
@@ -42,13 +41,13 @@ public class Drivetrain extends Subsystem {
 
         leftTalon = new TalonSRX(RobotMap.LEFT_TALON);
         leftTalon.setInverted(false);
-        leftVictor = new VictorSPX(RobotMap.LEFT_VICTOR);
+        VictorSPX leftVictor = new VictorSPX(RobotMap.LEFT_VICTOR);
         leftVictor.setInverted(false);
         leftVictor.follow(leftTalon);
 
         rightTalon = new TalonSRX(RobotMap.RIGHT_TALON);
         rightTalon.setInverted(true);
-        rightVictor = new VictorSPX(RobotMap.RIGHT_VICTOR);
+        VictorSPX rightVictor = new VictorSPX(RobotMap.RIGHT_VICTOR);
         rightVictor.setInverted(true);
         rightVictor.follow(rightTalon);
 
@@ -131,7 +130,7 @@ public class Drivetrain extends Subsystem {
     }
 
     public double getHeadingDegrees() {
-        return navx.getCompassHeading();
+        return navx.getYaw();
     }
 
     private void zeroNavX() {
@@ -150,7 +149,6 @@ public class Drivetrain extends Subsystem {
         SmartDashboard.putNumber("left current", leftCurrent);
         SmartDashboard.putNumber("right current", rightCurrent);
         SmartDashboard.putNumber("heading", getHeadingDegrees());
-        //System.out.println("out: " + output + " spd: " + speed + " err: " + error);
     }
 
     public void initDefaultCommand() {

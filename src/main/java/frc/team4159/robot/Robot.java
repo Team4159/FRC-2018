@@ -29,20 +29,23 @@ public class Robot extends TimedRobot {
 	private MatchData.OwnedSide switchFar;
 
 	private Command autoCommand;
-    private SendableChooser<Command> configurationChooser = new SendableChooser<>();
+    //private SendableChooser<Command> configurationChooser = new SendableChooser<>();
     private SendableChooser<Command> actionChooser = new SendableChooser<>();
 
     /* This function is run when the robot is first started up */
 	@Override
 	public void robotInit() {
 
-		// TODO: Add option for auto delay using Preferences class. See https://wpilib.screenstepslive.com/s/currentCS/m/smartdashboard/l/255423-setting-robot-preferences-from-smartdashboard
+        System.out.println("robot init");
+
+
+        // TODO: Add option for auto delay using Preferences class. See https://wpilib.screenstepslive.com/s/currentCS/m/smartdashboard/l/255423-setting-robot-preferences-from-smartdashboard
 
 		drivetrain = Drivetrain.getInstance();
 		superstructure = Superstructure.getInstance();
 		oi = OI.getInstance();
 
-		actionChooser.addDefault("Drive Straight", new DriveStraight(5));
+		actionChooser.addDefault("Drive Straight", new DriveStraight(3)); // in meters
 //		configurationChooser.addObject("Left", new MyAutoCommand());
 //		configurationChooser.addObject("Middle", new MyAutoCommand());
 //		configurationChooser.addObject("Right", new MyAutoCommand());
@@ -66,11 +69,13 @@ public class Robot extends TimedRobot {
 	@Override
 	public void autonomousInit() {
 
+		System.out.println("auto init");
+
 		switchNear = MatchData.getOwnedSide(MatchData.GameFeature.SWITCH_NEAR);
 		scale = MatchData.getOwnedSide(MatchData.GameFeature.SCALE);
 		switchFar = MatchData.getOwnedSide(MatchData.GameFeature.SWITCH_FAR);
 
-//		autoCommand = autoChooser.getSelected();
+		autoCommand = actionChooser.getSelected();
 
 		/*
 		 * String autoSelected = SmartDashboard.getString("Auto Selector",
@@ -81,6 +86,7 @@ public class Robot extends TimedRobot {
 
 		// schedule the autonomous command (example)
 		if (autoCommand != null) {
+			System.out.println("auto started");
 			autoCommand.start();
 		}
 	}
