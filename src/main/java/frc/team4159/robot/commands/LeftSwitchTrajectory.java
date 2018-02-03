@@ -8,6 +8,7 @@ public class LeftSwitchTrajectory extends Trajectory {
 	public static final int numPoints = 185;
 		
 	//Trajectory for Right wheels
+	
 	public static double [][]RightWheelPoints = new double[][]{
 			{0,	0	,10},
 			{4.76190476190476E-05,	0.571428571	,10},
