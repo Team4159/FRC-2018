@@ -21,7 +21,7 @@ public class TankDrive extends Command {
     protected void execute() {
 
         Robot.drivetrain.setRawOutput(Robot.oi.getLeftY(), Robot.oi.getRightY());
-        Robot.drivetrain.logSmartDashboard();
+        //Robot.drivetrain.logSmartDashboard();
 
     }
 

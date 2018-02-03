@@ -3,7 +3,7 @@ package frc.team4159.robot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
-import frc.team4159.robot.commands.auto.TestMotionProfile;
+//import frc.team4159.robot.commands.auto.TestMotionProfile;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -28,7 +28,7 @@ public class OI implements ControlMap {
         secondaryJoy = new Joystick(SECONDARY_STICK);
 
         Button testButton = new JoystickButton(rightJoy, 2);
-        testButton.whenReleased(new TestMotionProfile());
+        //testButton.whenReleased(new TestMotionProfile());
     }
 
     public double getLeftY() {
