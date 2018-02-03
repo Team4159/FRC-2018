@@ -11,10 +11,10 @@ import jaci.pathfinder.modifiers.TankModifier;
 
 public class TestMotionProfile extends Command {
 
-    private final double MAX_VELOCITY = 1.7; // meters per second
+    private final double MAX_VELOCITY = 2; // meters per second
     private final double MAX_ACCELERATION = 2.0; // meters per second squared
     private final double MAX_JERK = 60.0; // meters per second cubed
-    private final double DELTA_TIME = 0.05;
+    private final double DELTA_TIME = 0.1;
     private final double kV = 1 / MAX_VELOCITY;
     private final double kA = 0;
     private final double kP_ANGLE = 0.8;
@@ -30,10 +30,15 @@ public class TestMotionProfile extends Command {
     @Override
     protected void initialize() {
 
+        Robot.drivetrain.zeroNavX();
+
         Waypoint[] points = new Waypoint[] {
-                new Waypoint(-4, -1, Pathfinder.d2r(-45)),
-                new Waypoint(-2, -2, 0),
-                new Waypoint(0, 0, 0)
+                new Waypoint(1, 0.0, Pathfinder.d2r(0)),
+                new Waypoint(2, 0.0, Pathfinder.d2r(0)),
+                new Waypoint(3, 0.0, Pathfinder.d2r(0)),
+                new Waypoint(2, 0.0, Pathfinder.d2r(0)),
+                new Waypoint(1, 0.0, Pathfinder.d2r(0))
+
         };
         Trajectory.Config config = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC,
                 Trajectory.Config.SAMPLES_HIGH, DELTA_TIME, MAX_VELOCITY, MAX_ACCELERATION, MAX_JERK);
@@ -44,10 +49,10 @@ public class TestMotionProfile extends Command {
         right = new EncoderFollower(modifier.getRightTrajectory());
 
         left.configureEncoder(Robot.drivetrain.getLeftEncoderPosition(), UNITS_PER_REV, WHEEL_DIAMETER);
-        left.configurePIDVA(0.8, 0.0, 0.0, kV, kA);
+        left.configurePIDVA(.1, 0.0, 0.0, kV, kA);
 
         right.configureEncoder(Robot.drivetrain.getRightEncoderPosition(), UNITS_PER_REV, WHEEL_DIAMETER);
-        right.configurePIDVA(0.8, 0.0, 0.0, kV, kA);
+        right.configurePIDVA(.1, 0.0, 0.0, kV, kA);
     }
 
     @Override

@@ -27,7 +27,7 @@ public class OI implements ControlMap {
         rightJoy = new Joystick(RIGHT_STICK);
         secondaryJoy = new Joystick(SECONDARY_STICK);
 
-        Button testButton = new JoystickButton(rightJoy, 2);
+        Button testButton = new JoystickButton(rightJoy, 8);
         testButton.whenReleased(new TestMotionProfile());
     }
 
@@ -35,8 +35,8 @@ public class OI implements ControlMap {
 
         double leftY = leftJoy.getY();
         if(leftY < 0)
-            return -1 * Math.pow(leftY, 2);
-        return Math.pow(leftY, 2);
+            return 1 * Math.pow(leftY, 2);
+        return -Math.pow(leftY, 2);
 
     }
 
@@ -44,8 +44,8 @@ public class OI implements ControlMap {
 
         double rightY = rightJoy.getY();
         if(rightY < 0)
-            return -1 * Math.pow(rightY, 2);
-        return Math.pow(rightY, 2);
+            return 1 * Math.pow(rightY, 2);
+        return -Math.pow(rightY, 2);
 
 	}
 
@@ -62,13 +62,13 @@ public class OI implements ControlMap {
         return secondaryJoy.getY();
     }
     public boolean intakeOpenPiston() {
-        return secondaryJoy.getTrigger();
+        return rightJoy.getTrigger();
     }
     public boolean intakeButton() {
-        return secondaryJoy.getRawButton(2);
+        return rightJoy.getRawButton(2);
     }
     public boolean outtakeButton() {
-        return secondaryJoy.getRawButton(3);
+        return rightJoy.getRawButton(3);
     }
 
 }

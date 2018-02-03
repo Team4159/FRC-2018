@@ -80,9 +80,10 @@ public class Robot extends TimedRobot {
         if (setPositionCommand != null) {
             setPositionCommand.start();
         }
-		if (actionCommand != null) {
+
+        if (actionCommand != null) {
             actionCommand.start();
-		}
+        }
 
 	}
 
@@ -123,6 +124,10 @@ public class Robot extends TimedRobot {
 
     public StartingConfiguration getAutoPosition() {
 	    return autoPosition;
+    }
+
+    public MatchData.OwnedSide getSwitchNear() {
+        return switchNear;
     }
 
 	public enum StartingConfiguration {

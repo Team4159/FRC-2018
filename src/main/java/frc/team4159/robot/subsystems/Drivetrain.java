@@ -40,15 +40,15 @@ public class Drivetrain extends Subsystem {
     private Drivetrain() {
 
         leftTalon = new TalonSRX(RobotMap.LEFT_TALON);
-        leftTalon.setInverted(false);
+        leftTalon.setInverted(true);
         VictorSPX leftVictor = new VictorSPX(RobotMap.LEFT_VICTOR);
-        leftVictor.setInverted(false);
+        leftVictor.setInverted(true);
         leftVictor.follow(leftTalon);
 
         rightTalon = new TalonSRX(RobotMap.RIGHT_TALON);
-        rightTalon.setInverted(true);
+        rightTalon.setInverted(false);
         VictorSPX rightVictor = new VictorSPX(RobotMap.RIGHT_VICTOR);
-        rightVictor.setInverted(true);
+        rightVictor.setInverted(false);
         rightVictor.follow(rightTalon);
 
         final int PEAK_CURRENT = 35; // Amps
@@ -133,7 +133,7 @@ public class Drivetrain extends Subsystem {
         return navx.getYaw();
     }
 
-    private void zeroNavX() {
+    public void zeroNavX() {
         navx.zeroYaw();
     }
 
@@ -141,10 +141,12 @@ public class Drivetrain extends Subsystem {
 
         double leftOutput = leftTalon.getMotorOutputPercent();
         double leftSpeed = leftTalon.getSelectedSensorVelocity(PIDIDX);
+        double rightSpeed = rightTalon.getSelectedSensorVelocity(PIDIDX);
         double leftError = leftTalon.getClosedLoopError(PIDIDX);
 
         SmartDashboard.putNumber("left output", leftOutput);
         SmartDashboard.putNumber("left speed", leftSpeed);
+        SmartDashboard.putNumber("right speed", leftSpeed);
         SmartDashboard.putNumber("left error", leftError);
         SmartDashboard.putNumber("heading", getHeadingDegrees());
 
