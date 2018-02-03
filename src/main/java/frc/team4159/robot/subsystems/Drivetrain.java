@@ -6,7 +6,9 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team4159.robot.RobotMap;
 import frc.team4159.robot.commands.drive.TankDrive;
@@ -14,7 +16,7 @@ import static frc.team4159.robot.Constants.*;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 
-public class Drivetrain extends Subsystem {
+public class Drivetrain extends Subsystem implements PIDOutput {
 
     private static Drivetrain instance;
 
@@ -134,11 +136,15 @@ public class Drivetrain extends Subsystem {
     }
 
     public void zeroNavX() {
-        navx.zeroYaw();
+        navx.reset();
     }
 
     public AHRS getNavx() {
         return navx;
+    }
+
+    public void pidWrite(double output) {
+
     }
 
     public void logDashboard() {
@@ -157,7 +163,6 @@ public class Drivetrain extends Subsystem {
         SmartDashboard.putNumber("heading", getHeadingDegrees());
         SmartDashboard.putNumber("acc", acceleration);
         SmartDashboard.putNumber("vel", velocity);
-
 
     }
 
