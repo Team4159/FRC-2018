@@ -16,8 +16,10 @@ public class MPcodeRunner extends Command {
         mp = new MPcode(leftTalon,rightTalon,path);
         mp.reset();
         SetValueMotionProfile setOutput = mp.getSetValue();
+
         leftTalon.set(ControlMode.MotionProfile, setOutput.value);
         rightTalon.set(ControlMode.MotionProfile, setOutput.value);
+
 
         mp.startMotionProfile();
         mp.control();

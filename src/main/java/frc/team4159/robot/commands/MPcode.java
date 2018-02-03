@@ -194,6 +194,7 @@ public class MPcode{
                      */
                     //_state = 1;
                     _loopTimeout = kNumLoopsTimeout;
+                    System.out.println("We are filling in points");
 
                 }
                 break;
@@ -208,6 +209,7 @@ public class MPcode{
                     /* MP will start once the control frame gets scheduled */
                     _state = 2;
                     _loopTimeout = kNumLoopsTimeout;
+                    System.out.println("Streaming pts");
                 }
                 break;
             case 2: /* check the status of the MP */
@@ -232,6 +234,7 @@ public class MPcode{
                     _setValue = SetValueMotionProfile.Hold;
                     _state = 0;
                     _loopTimeout = -1;
+                    System.out.println("We are at last pt");
                 }
                 break;
         }

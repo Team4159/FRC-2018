@@ -26,8 +26,9 @@ public class AutoCommandGroup extends CommandGroup  {
 //				break;
 			case DRIVE_STRAIGHT:
 				//MPcodeRunner trailS = new MPcodeRunner(new StraightTrajectory());
-				addSequential(new MPcodeRunner(new StraightTrajectory()));
 				System.out.println(" Straight path activated");
+				addSequential(new MPcodeRunner(new StraightTrajectory()));
+
 				break;
 //			case DO_NOTHING:
 //				System.out.println("Standing still");
