@@ -13,6 +13,7 @@ import com.ctre.phoenix.motion.TrajectoryPoint.TrajectoryDuration;
 
 import frc.team4159.robot.Constants;
 import edu.wpi.first.wpilibj.command.Command;
+import frc.team4159.robot.commands.StraightTrajectory;
 
 
 
@@ -106,6 +107,7 @@ public class MPcode{
         _talonLeft.changeMotionControlFramePeriod(5);
         _talonRight.changeMotionControlFramePeriod(5);
         _notifer.startPeriodic(0.005);
+        System.out.println("MP made");
     }
 
     /**
@@ -130,6 +132,8 @@ public class MPcode{
          * button press
          */
         _bStart = false;
+
+        System.out.println("MP in Talon resets");
     }
 
     /**
@@ -139,6 +143,9 @@ public class MPcode{
         /* Get the motion profile status every loop */
         _talonLeft.getMotionProfileStatus(_status);// _status should be the same for both Talon I believe
         _talonRight.getMotionProfileStatus(_status);
+
+        _state = 0;
+        System.out.println("We are in the control function");
         /*
          * track time, this is rudimentary but that's okay, we just want to make
          * sure things never get stuck.
@@ -174,16 +181,20 @@ public class MPcode{
          */
         switch (_state) {
             case 0: /* wait for application to tell us to start an MP */
+                //_bStart = true;
+                //^^self added
                 if (_bStart) {
                     _bStart = false;
 
                     _setValue = SetValueMotionProfile.Disable;
                     startFilling(_talonRight, _talonLeft);
+                    System.out.println();
                     /*
                      * MP is being sent to CAN bus, wait a small amount of time
                      */
-                    _state = 1;
+                    //_state = 1;
                     _loopTimeout = kNumLoopsTimeout;
+
                 }
                 break;
             case 1: /*
@@ -261,8 +272,9 @@ public class MPcode{
     // /** Start filling the MPs to all of the involved Talons. */
     private void startFilling(TalonSRX talonRight, TalonSRX talonLeft) { //you can specify which talons to run the trajectories through
         /* since this example only has one talon, just update that one */
-        startFilling(path.rightWheelPoints, path.numPoints, talonRight);
-        startFilling(path.leftWheelPoints, path.numPoints, talonLeft);
+        startFilling(StraightTrajectory.RightWheelPoints, path.numPoints, talonRight);
+        startFilling(StraightTrajectory.LeftWheelPoints, path.numPoints, talonLeft);
+        System.out.println("It is actually feeding points in, gotta change trajectory");
     }
 
     private void startFilling(double[][] profile, int totalCnt, TalonSRX talon) { // Should work for all Talons
@@ -309,6 +321,7 @@ public class MPcode{
                 point.isLastPoint = true; /* set this to true on the last point  */
 
             talon.pushMotionProfileTrajectory(point);
+            System.out.println("Points feeding");
         }
     }
     private Object GetTrajectoryDuration(int i) {
@@ -322,6 +335,7 @@ public class MPcode{
      */
     void startMotionProfile() {
         _bStart = true;
+        System.out.println("Starting MP");
     }
 
     /**

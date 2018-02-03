@@ -14,24 +14,24 @@ public class AutoCommandGroup extends CommandGroup  {
 		
 		//tells what each path does
 		switch(m) {
-			case LEFT_SWITCH: //not sure if this will work
-                //MPcodeRunner trailL = new MPcodeRunner(new LeftSwitchTrajectory());
-                addSequential(new MPcodeRunner(new LeftSwitchTrajectory()));// what does this really do?
-				System.out.println("left switch path activated");
-				break;
-			case RIGHT_SWITCH:
-                //MPcodeRunner trailR = new MPcodeRunner(new RightSwitchTrajectory());
-                addSequential(new MPcodeRunner(new RightSwitchTrajectory()));
-				System.out.println("right switch path activated");
-				break;
+//			case LEFT_SWITCH: //not sure if this will work
+//                //MPcodeRunner trailL = new MPcodeRunner(new LeftSwitchTrajectory());
+//                addSequential(new MPcodeRunner(new LeftSwitchTrajectory()));// what does this really do?
+//				System.out.println("left switch path activated");
+//				break;
+//			case RIGHT_SWITCH:
+//                //MPcodeRunner trailR = new MPcodeRunner(new RightSwitchTrajectory());
+//                addSequential(new MPcodeRunner(new RightSwitchTrajectory()));
+//				System.out.println("right switch path activated");
+//				break;
 			case DRIVE_STRAIGHT:
 				//MPcodeRunner trailS = new MPcodeRunner(new StraightTrajectory());
 				addSequential(new MPcodeRunner(new StraightTrajectory()));
 				System.out.println(" Straight path activated");
 				break;
-			case DO_NOTHING:
-				System.out.println("Standing still");
-				break;
+//			case DO_NOTHING:
+//				System.out.println("Standing still");
+//				break;
 		}
 	}
 	

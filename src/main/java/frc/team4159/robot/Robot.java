@@ -48,10 +48,11 @@ public class Robot extends TimedRobot {
 		oi = OI.getInstance();
 
 		SmartDashboard.putData("!!! CHOOSE AUTO COMMAND !!!(Andrew's version)", m_chooser);
-        m_chooser.addDefault("Default(Drive straight)", new AutoCommandGroup(AutoCommandGroup.Mode.DRIVE_STRAIGHT));
-        m_chooser.addObject("Left Switch", new AutoCommandGroup(AutoCommandGroup.Mode.LEFT_SWITCH));
-        m_chooser.addObject("Do Nothing", new AutoCommandGroup(AutoCommandGroup.Mode.DO_NOTHING));
-        m_chooser.addObject("Right Switch", new AutoCommandGroup(AutoCommandGroup.Mode.RIGHT_SWITCH));
+//        m_chooser.addDefault("Default(Drive straight SGN)", new AutoCommandGroup(AutoCommandGroup.Mode.DRIVE_STRAIGHT));
+          m_chooser.addDefault("Default(Drive straight SGN)", new AutoCommandGroup(AutoCommandGroup.Mode.DRIVE_STRAIGHT));
+//        m_chooser.addObject("Left Switch", new AutoCommandGroup(AutoCommandGroup.Mode.LEFT_SWITCH));
+//        m_chooser.addObject("Do Nothing", new AutoCommandGroup(AutoCommandGroup.Mode.DO_NOTHING));
+//        m_chooser.addObject("Right Switch", new AutoCommandGroup(AutoCommandGroup.Mode.RIGHT_SWITCH));
 
 		//actionChooser.addDefault("Drive Straight (Default)", new TestMotionProfile());
 		SmartDashboard.putData("!!! CHOOSE AUTO COMMAND !!!", actionChooser);
