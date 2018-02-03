@@ -4,10 +4,11 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
 import frc.team4159.robot.commands.AutoCommandGroup;
 import frc.team4159.robot.commands.drive.TankDrive;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.team4159.robot.commands.auto.SetPosition;
+//import frc.team4159.robot.commands.auto.TestMotionProfile;
 import frc.team4159.robot.subsystems.Drivetrain;
 import frc.team4159.robot.subsystems.Superstructure;
 import openrio.powerup.MatchData;
@@ -21,33 +22,45 @@ import openrio.powerup.MatchData;
 public class Robot extends TimedRobot {
 
 	public static Drivetrain drivetrain;
-    public static Superstructure superstructure;
-    public static OI oi;
+	public static Superstructure superstructure;
+	public static OI oi;
 
 	private MatchData.OwnedSide switchNear;
 	private MatchData.OwnedSide scale;
 	private MatchData.OwnedSide switchFar;
+	private static StartingConfiguration autoPosition;
 
-	private Command m_autonomousCommand;
-	private SendableChooser<Command> m_chooser = new SendableChooser<>();
+	private Command actionCommand;
+    private Command setPositionCommand;
+    private Command mpCode;
+    private SendableChooser<Command> positionChooser = new SendableChooser<>();
+    private SendableChooser<Command> actionChooser = new SendableChooser<>();
+    private SendableChooser<Command> m_chooser = new SendableChooser<>();
 
-	/* This function is run when the robot is first started up */
+    /* This function is run when the robot is first started up */
 	@Override
 	public void robotInit() {
 
-	    drivetrain = Drivetrain.getInstance();
-        superstructure = Superstructure.getInstance();
-        oi = OI.getInstance();
+        // TODO: Add option for auto delay using Preferences class. See https://wpilib.screenstepslive.com/s/currentCS/m/smartdashboard/l/255423-setting-robot-preferences-from-smartdashboard
 
-//		m_chooser.addDefault("Default Auto", new TankDrive()); // TODO: Change. Just a placeholder
-//		// chooser.addObject("My Auto", new MyAutoCommand());
-//		SmartDashboard.putData("Auto mode", m_chooser);
+		drivetrain = Drivetrain.getInstance();
+		superstructure = Superstructure.getInstance();
+		oi = OI.getInstance();
 
-
+		SmartDashboard.putData("!!! CHOOSE AUTO COMMAND !!!(Andrew's version)", m_chooser);
         m_chooser.addDefault("Default(Drive straight)", new AutoCommandGroup(AutoCommandGroup.Mode.DRIVE_STRAIGHT));
         m_chooser.addObject("Left Switch", new AutoCommandGroup(AutoCommandGroup.Mode.LEFT_SWITCH));
         m_chooser.addObject("Do Nothing", new AutoCommandGroup(AutoCommandGroup.Mode.DO_NOTHING));
         m_chooser.addObject("Right Switch", new AutoCommandGroup(AutoCommandGroup.Mode.RIGHT_SWITCH));
+
+		//actionChooser.addDefault("Drive Straight (Default)", new TestMotionProfile());
+		SmartDashboard.putData("!!! CHOOSE AUTO COMMAND !!!", actionChooser);
+
+		positionChooser.addDefault("Left", new SetPosition(StartingConfiguration.LEFT));
+		positionChooser.addObject("Middle", new SetPosition(StartingConfiguration.MIDDLE));
+		positionChooser.addObject("Right", new SetPosition(StartingConfiguration.RIGHT));
+		SmartDashboard.putData("!!! CHOOSE STARTING CONFIGURATION !!!", positionChooser);
+
 	}
 
 	/**
@@ -57,7 +70,9 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void disabledInit() {
+
 		//I don't need to configure sensors since it should be done when we are making a new drivtrain
+
 	}
 
 	@Override
@@ -68,22 +83,23 @@ public class Robot extends TimedRobot {
 	@Override
 	public void autonomousInit() {
 
-        switchNear = MatchData.getOwnedSide(MatchData.GameFeature.SWITCH_NEAR);
-        scale = MatchData.getOwnedSide(MatchData.GameFeature.SCALE);
-        switchFar = MatchData.getOwnedSide(MatchData.GameFeature.SWITCH_FAR);
+		switchNear = MatchData.getOwnedSide(MatchData.GameFeature.SWITCH_NEAR);
+		scale = MatchData.getOwnedSide(MatchData.GameFeature.SCALE);
+		switchFar = MatchData.getOwnedSide(MatchData.GameFeature.SWITCH_FAR);
 
-        m_autonomousCommand = m_chooser.getSelected();
+		setPositionCommand = positionChooser.getSelected();
+		actionCommand = actionChooser.getSelected();
+		mpCode = m_chooser.getSelected();
+        if (setPositionCommand != null) {
+            setPositionCommand.start();
+        }
 
-		/*
-		 * String autoSelected = SmartDashboard.getString("Auto Selector",
-		 * "Default"); switch(autoSelected) { case "My Auto": autonomousCommand
-		 * = new MyAutoCommand(); break; case "Default Auto": default:
-		 * autonomousCommand = new ExampleCommand(); break; }
-		 */
+		if (actionCommand != null) {
+            actionCommand.start();
+		}
 
-		// schedule the autonomous command (example)
-		if (m_autonomousCommand != null) {
-			m_autonomousCommand.start();
+		if(mpCode != null) {
+        	mpCode.start();
 		}
 	}
 
@@ -97,9 +113,9 @@ public class Robot extends TimedRobot {
 
 	@Override
 	public void teleopInit() {
-	    /* Makes sure autonomous stops running when telop starts running */
-		if (m_autonomousCommand != null) {
-			m_autonomousCommand.cancel();
+		/* Makes sure autonomous stops running when telop starts running */
+		if (actionCommand != null) {
+            actionCommand.cancel();
 		}
 	}
 
@@ -117,4 +133,17 @@ public class Robot extends TimedRobot {
 	@Override
 	public void testPeriodic() {
 	}
+
+	public static void setAutoPosition(StartingConfiguration position) {
+        autoPosition = position;
+    }
+
+    public StartingConfiguration getAutoPosition() {
+	    return autoPosition;
+    }
+
+	public enum StartingConfiguration {
+        LEFT, MIDDLE, RIGHT
+    }
+
 }

@@ -12,9 +12,17 @@ public class Superstructure {
     private static Superstructure instance;
 
     public static Superstructure getInstance() {
-        if(instance == null)
+        if (instance == null)
             instance = new Superstructure();
         return instance;
+    }
+
+    public static Prototype prototype;
+    public static Climber climber;
+
+    private Superstructure() {
+        prototype = Prototype.getInstance();
+        climber = Climber.getInstance();
     }
 
 }
