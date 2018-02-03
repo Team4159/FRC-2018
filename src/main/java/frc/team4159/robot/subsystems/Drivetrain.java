@@ -137,18 +137,27 @@ public class Drivetrain extends Subsystem {
         navx.zeroYaw();
     }
 
+    public AHRS getNavx() {
+        return navx;
+    }
+
     public void logDashboard() {
 
         double leftOutput = leftTalon.getMotorOutputPercent();
         double leftSpeed = leftTalon.getSelectedSensorVelocity(PIDIDX);
         double rightSpeed = rightTalon.getSelectedSensorVelocity(PIDIDX);
         double leftError = leftTalon.getClosedLoopError(PIDIDX);
+        double acceleration = navx.getRawAccelX();
+        double velocity = navx.getVelocityX();
 
         SmartDashboard.putNumber("left output", leftOutput);
         SmartDashboard.putNumber("left speed", leftSpeed);
-        SmartDashboard.putNumber("right speed", leftSpeed);
+        SmartDashboard.putNumber("right speed", rightSpeed);
         SmartDashboard.putNumber("left error", leftError);
         SmartDashboard.putNumber("heading", getHeadingDegrees());
+        SmartDashboard.putNumber("acc", acceleration);
+        SmartDashboard.putNumber("vel", velocity);
+
 
     }
 

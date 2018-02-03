@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team4159.robot.commands.auto.SetPosition;
 import frc.team4159.robot.commands.auto.TestMotionProfile;
+import frc.team4159.robot.commands.auto.TurnToAngle;
 import frc.team4159.robot.subsystems.Drivetrain;
 import frc.team4159.robot.subsystems.Superstructure;
 import openrio.powerup.MatchData;

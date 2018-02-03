@@ -20,7 +20,7 @@ public class Constants {
     // For SRX mag encoder. Aka ticks per revolution or pulses per revolution
     public static final int UNITS_PER_REV = 4096;
 
-    public static final double WHEELBASE_WIDTH = 0.6566535; // 25.8525 inches to meters
+    public static final double WHEELBASE_WIDTH = .6566535; // 25.8525 inches to meters 0.
 
     public static final double WHEEL_DIAMETER = 0.1016; // 4 inches to meters
 

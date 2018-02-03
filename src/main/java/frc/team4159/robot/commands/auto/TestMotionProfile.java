@@ -11,10 +11,10 @@ import jaci.pathfinder.modifiers.TankModifier;
 
 public class TestMotionProfile extends Command {
 
-    private final double MAX_VELOCITY = 2; // meters per second
+    private final double MAX_VELOCITY = 1.7; // meters per second
     private final double MAX_ACCELERATION = 2.0; // meters per second squared
     private final double MAX_JERK = 60.0; // meters per second cubed
-    private final double DELTA_TIME = 0.1;
+    private final double DELTA_TIME = 0.05;
     private final double kV = 1 / MAX_VELOCITY;
     private final double kA = 0;
     private final double kP_ANGLE = 0.8;
@@ -33,26 +33,34 @@ public class TestMotionProfile extends Command {
         Robot.drivetrain.zeroNavX();
 
         Waypoint[] points = new Waypoint[] {
-                new Waypoint(1, 0.0, Pathfinder.d2r(0)),
-                new Waypoint(2, 0.0, Pathfinder.d2r(0)),
-                new Waypoint(3, 0.0, Pathfinder.d2r(0)),
-                new Waypoint(2, 0.0, Pathfinder.d2r(0)),
-                new Waypoint(1, 0.0, Pathfinder.d2r(0))
+
+                new Waypoint(5, 0, 0),
+                new Waypoint(-5, 0, 0),
 
         };
+
         Trajectory.Config config = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC,
                 Trajectory.Config.SAMPLES_HIGH, DELTA_TIME, MAX_VELOCITY, MAX_ACCELERATION, MAX_JERK);
         Trajectory trajectory = Pathfinder.generate(points, config);
+
+        for (int i = 0; i < trajectory.length(); i++) {
+            Trajectory.Segment seg = trajectory.get(i);
+
+            System.out.printf("%f,%f,%f,%f,%f,%f,%f,%f\n",
+                    seg.dt, seg.x, seg.y, seg.position, seg.velocity,
+                    seg.acceleration, seg.jerk, seg.heading);
+        }
+
         TankModifier modifier = new TankModifier(trajectory).modify(WHEELBASE_WIDTH);
 
         left = new EncoderFollower(modifier.getLeftTrajectory());
         right = new EncoderFollower(modifier.getRightTrajectory());
 
         left.configureEncoder(Robot.drivetrain.getLeftEncoderPosition(), UNITS_PER_REV, WHEEL_DIAMETER);
-        left.configurePIDVA(.1, 0.0, 0.0, kV, kA);
+        left.configurePIDVA(1, 0.0, 0.0, kV, kA);
 
         right.configureEncoder(Robot.drivetrain.getRightEncoderPosition(), UNITS_PER_REV, WHEEL_DIAMETER);
-        right.configurePIDVA(.1, 0.0, 0.0, kV, kA);
+        right.configurePIDVA(1, 0.0, 0.0, kV, kA);
     }
 
     @Override
@@ -67,7 +75,7 @@ public class TestMotionProfile extends Command {
         double angleDifference = Pathfinder.boundHalfDegrees(desired_heading - gyro_heading);
         double turn = kP_ANGLE * (-1.0/80.0) * angleDifference;
 
-        Robot.drivetrain.setRawOutput(l + turn, r - turn);
+        Robot.drivetrain.setRawOutput(l, r);
         Robot.drivetrain.logDashboard();
 
     }
