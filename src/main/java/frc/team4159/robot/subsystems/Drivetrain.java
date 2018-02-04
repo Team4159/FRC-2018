@@ -6,18 +6,19 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.PIDController;
+import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.SPI;
-import edu.wpi.first.wpilibj.Victor;
+import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.team4159.robot.Robot;
 import frc.team4159.robot.RobotMap;
 import frc.team4159.robot.commands.drive.Drive;
 import static frc.team4159.robot.Constants.*;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 
-// TODO: Move turning PID Controller to this class
-
-public class Drivetrain extends Subsystem {
+public class Drivetrain extends Subsystem implements PIDOutput {
 
     private static Drivetrain instance;
 
@@ -44,6 +45,15 @@ public class Drivetrain extends Subsystem {
     /* Stores state if controls should be reversed or not */
     private boolean reverse;
 
+    private PIDController turnController;
+    private final double kP_turn = 0.1;
+    private final double kI_turn = 0.0;
+    private final double kD_turn = 0.0;
+    private final double kF_turn = 0.0;
+    private final double kToleranceDegrees = 2.0f;
+
+    private double rotateToAngleRate;
+
     private Drivetrain() {
 
         /* Inverts left talon and followed by victor */
@@ -69,6 +79,14 @@ public class Drivetrain extends Subsystem {
         limitCurrent();
         configureSensors();
 
+        turnController = new PIDController(kP_turn,kI_turn,kD_turn, kF_turn, navx, this);
+        turnController.setInputRange(-180.0f, 180.0f);
+        turnController.setOutputRange(-1, 1);
+        turnController.setAbsoluteTolerance(kToleranceDegrees);
+        turnController.setContinuous(true);
+        turnController.disable();
+
+        LiveWindow.add(this);
     }
 
     private void configureSensors() {
@@ -122,6 +140,33 @@ public class Drivetrain extends Subsystem {
         reverse = !reverse;
     }
 
+    public void turnToAngle(double angle) {
+        if(!turnController.isEnabled()) {
+            turnController.setSetpoint( /*Robot.drivetrain.getHeadingDegrees() + */ angle); // TODO: Write function that keeps angle (-180, 180)
+            rotateToAngleRate = 0;
+            turnController.enable();
+        }
+        setRawOutput(-rotateToAngleRate, rotateToAngleRate);
+    }
+
+    public void driveStraight(double magnitude) {
+        if(!turnController.isEnabled()) {
+            turnController.setSetpoint(navx.getYaw());
+            rotateToAngleRate = 0;
+            turnController.enable();
+        }
+        setRawOutput(magnitude + rotateToAngleRate, magnitude - rotateToAngleRate);
+    }
+
+    public boolean turnOnTarget() {
+        return turnController.onTarget();
+    }
+
+    public void disableTurnControl() {
+        if(turnController.isEnabled())
+            turnController.disable();
+    }
+
     /* Stops running drive motors */
     public void stop() {
         leftTalon.set(ControlMode.PercentOutput, 0);
@@ -134,6 +179,9 @@ public class Drivetrain extends Subsystem {
         double rightTarget = rightPercent * MAX_SPEED;
         leftTalon.set(ControlMode.Velocity, leftTarget);
         rightTalon.set(ControlMode.Velocity, rightTarget);
+    }
+
+    public void driveStraight(double leftValue, double rightValue) {
     }
 
     public int getLeftEncoderPosition() {
@@ -155,6 +203,7 @@ public class Drivetrain extends Subsystem {
     public AHRS getNavx() {
         return navx;
     }
+
 
     public void logDashboard() {
 
@@ -199,6 +248,11 @@ public class Drivetrain extends Subsystem {
     @Override
     public void initDefaultCommand() {
         setDefaultCommand(new Drive());
+    }
+
+    @Override
+    public void pidWrite(double output) {
+        rotateToAngleRate = output;
     }
 
 }

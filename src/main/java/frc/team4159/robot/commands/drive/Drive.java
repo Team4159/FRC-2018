@@ -1,12 +1,13 @@
 package frc.team4159.robot.commands.drive;
 
+import edu.wpi.first.wpilibj.PIDController;
+import edu.wpi.first.wpilibj.PIDOutput;
+import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import frc.team4159.robot.Robot;
-import frc.team4159.robot.OI;
 
 import edu.wpi.first.wpilibj.command.Command;
-import frc.team4159.robot.commands.auto.TurnToAngle;
 
-public class Drive extends Command {
+public class Drive extends Command{
 
     public Drive() {
         requires(Robot.drivetrain);
@@ -15,6 +16,7 @@ public class Drive extends Command {
     // Called just before this Command runs the first time
     @Override
     protected void initialize() {
+
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -26,21 +28,25 @@ public class Drive extends Command {
         }
 
         if(Robot.oi.left90Button()) {
-            new TurnToAngle(-90);
+            Robot.drivetrain.turnToAngle(-90);
 
         } else if(Robot.oi.right90Button()) {
-            new TurnToAngle(90);
+            Robot.drivetrain.turnToAngle(90);
 
         } else if(Robot.oi.cw180Button()) {
-            new TurnToAngle(180);
+            Robot.drivetrain.turnToAngle(180);
 
         } else if(Robot.oi.ccw180Buton()) {
-            new TurnToAngle(-180);
+            Robot.drivetrain.turnToAngle(-180);
 
         } else if(Robot.oi.driveStraightButton()) {
-            //Robot.drivetrain.driveStraight();
+            double magnitude = (Robot.oi.getLeftY() + Robot.oi.getRightY()) /2;
+            Robot.drivetrain.driveStraight(magnitude);
+
         } else {
+            Robot.drivetrain.disableTurnControl();
             Robot.drivetrain.setRawOutput(Robot.oi.getLeftY(), Robot.oi.getRightY());
+
         }
 
         Robot.drivetrain.logDashboard();

@@ -30,20 +30,14 @@ public class OI implements ControlMap {
     * getLeftY() and getRightY() squares the joystick y-axis value and changes its sign
      */
     public double getLeftY() {
-
         double leftY = leftJoy.getY();
-        if(leftY < 0)
-            return 1 * Math.pow(leftY, 2);
-        return -Math.pow(leftY, 2);
+        return -Math.copySign(Math.pow(leftY, 2), leftY);
 
     }
 
     public double getRightY() {
-
         double rightY = rightJoy.getY();
-        if(rightY < 0)
-            return 1 * Math.pow(rightY, 2);
-        return -Math.pow(rightY, 2);
+        return -Math.copySign(Math.pow(rightY, 2), rightY);
 
 	}
 
@@ -57,21 +51,20 @@ public class OI implements ControlMap {
         return (leftJoy.getRawButtonPressed(2));
     }
 
-
     public boolean left90Button() {
-        return rightJoy.getRawButtonPressed(LEFT_90);
+        return rightJoy.getRawButton(LEFT_90);
     }
 
     public boolean right90Button() {
-        return rightJoy.getRawButtonPressed(RIGHT_90);
+        return rightJoy.getRawButton(RIGHT_90);
     }
 
     public boolean cw180Button() {
-        return rightJoy.getRawButtonPressed(CW_180);
+        return rightJoy.getRawButton(CW_180);
     }
 
     public boolean ccw180Buton() {
-        return rightJoy.getRawButtonPressed(CCW_180);
+        return rightJoy.getRawButton(CCW_180);
     }
 
     public boolean driveStraightButton() {
