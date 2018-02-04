@@ -18,7 +18,7 @@ public class Superstructure {
         return instance;
     }
 
-    public static Prototype prototype;
+    //public static Prototype prototype;
     public static Climber climber;
     public static CubeHolder cubeHolder;
 
@@ -26,7 +26,6 @@ public class Superstructure {
     private Compressor compressor;
 
     private Superstructure() {
-        prototype = Prototype.getInstance();
         climber = Climber.getInstance();
         cubeHolder = CubeHolder.getInstance();
 

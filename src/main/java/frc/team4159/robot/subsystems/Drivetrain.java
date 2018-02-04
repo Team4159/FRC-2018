@@ -46,7 +46,7 @@ public class Drivetrain extends Subsystem implements PIDOutput {
     private boolean reverse;
 
     private PIDController turnController;
-    private final double kP_turn = 0.1;
+    private final double kP_turn = 0.003;
     private final double kI_turn = 0.0;
     private final double kD_turn = 0.0;
     private final double kF_turn = 0.0;
@@ -60,11 +60,13 @@ public class Drivetrain extends Subsystem implements PIDOutput {
         leftTalon = new TalonSRX(RobotMap.LEFT_TALON);
         leftTalon.setInverted(true);
         leftVictor = new VictorSPX(RobotMap.LEFT_DRIVE_VICTOR);
+        leftVictor.setInverted(true);
         leftVictor.follow(leftTalon);
-
         /* Right victor follow right talon */
         rightTalon = new TalonSRX(RobotMap.RIGHT_TALON);
+        rightTalon.setInverted(false);
         rightVictor = new VictorSPX(RobotMap.RIGHT_DRIVE_VICTOR);
+        rightVictor.setInverted(false);
         rightVictor.follow(rightTalon);
 
         /* The NavX is a 9-axis inertial/magnetic sensor and motion processor, plugged into the RoboRio's MXP port */
