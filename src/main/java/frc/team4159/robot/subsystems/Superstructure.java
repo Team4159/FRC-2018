@@ -1,11 +1,13 @@
 package frc.team4159.robot.subsystems;
 
 /*
- * Previously known as a "CommandBase class"
- * Initialize all subsystems except drive here
- * Initialize all hardware not part of subsystems e.g. compressor, pressure switch, etc.
- * Robot.java <--> Superstructure <--> Individual subsystems
+* The "CommandBase" class
+* All subsystems and other hardware other than the Drivetrain are initialized here.
  */
+
+import edu.wpi.first.wpilibj.Compressor;
+import edu.wpi.first.wpilibj.PowerDistributionPanel;
+import frc.team4159.robot.RobotMap;
 
 public class Superstructure {
 
@@ -19,10 +21,43 @@ public class Superstructure {
 
     public static Prototype prototype;
     public static Climber climber;
+    public static CubeHolder cubeHolder;
+
+    private PowerDistributionPanel pdp;
+    private Compressor compressor;
 
     private Superstructure() {
         prototype = Prototype.getInstance();
         climber = Climber.getInstance();
+        cubeHolder = CubeHolder.getInstance();
+
+        pdp = new PowerDistributionPanel();
+        compressor = new Compressor(RobotMap.PCM);
+        compressor.setClosedLoopControl(true);
+    }
+
+    public double getPDPCurrent(int channel) {
+        return pdp.getCurrent(channel);
+    }
+
+    public double getTotalCurrent() {
+        return pdp.getTotalCurrent();
+    }
+
+    public double getVoltage() {
+        return pdp.getVoltage();
+    }
+
+    public double compressorCurrent() {
+        return compressor.getCompressorCurrent();
+    }
+
+    public boolean compressorEnabled() {
+        return compressor.enabled();
+    }
+
+    public boolean pressureSwitch() {
+        return compressor.getPressureSwitchValue();
     }
 
 }

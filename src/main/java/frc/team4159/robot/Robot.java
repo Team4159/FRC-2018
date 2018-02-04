@@ -38,7 +38,8 @@ public class Robot extends TimedRobot {
 	@Override
 	public void robotInit() {
 
-        // TODO: Add option for auto delay using Preferences class. See https://wpilib.screenstepslive.com/s/currentCS/m/smartdashboard/l/255423-setting-robot-preferences-from-smartdashboard
+        // TODO: Add option for auto delay using Preferences class.
+		// See https://wpilib.screenstepslive.com/s/currentCS/m/smartdashboard/l/255423-setting-robot-preferences-from-smartdashboard
 
 		drivetrain = Drivetrain.getInstance();
 		superstructure = Superstructure.getInstance();

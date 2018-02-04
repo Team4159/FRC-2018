@@ -1,14 +1,11 @@
 package frc.team4159.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.buttons.Button;
-import edu.wpi.first.wpilibj.buttons.JoystickButton;
-import frc.team4159.robot.commands.auto.TestMotionProfile;
 
-/**
- * This class is the glue that binds the controls on the physical operator
- * interface to the commands and command groups that allow control of the robot.
- */
+/*
+* The OI (Operator Interface) class binds the controls on the physical operator interface to the commands and command
+* groups that allow control of the robot.
+*/
 
 public class OI implements ControlMap {
 
@@ -20,15 +17,13 @@ public class OI implements ControlMap {
         return instance;
     }
 
+    /* Logitech Attack 3 joysticks, plugged in via USB to the driver station laptop */
     private Joystick leftJoy, rightJoy, secondaryJoy;
 
     private OI() {
         leftJoy = new Joystick(LEFT_STICK);
         rightJoy = new Joystick(RIGHT_STICK);
         secondaryJoy = new Joystick(SECONDARY_STICK);
-
-        Button testButton = new JoystickButton(rightJoy, 8);
-        testButton.whenReleased(new TestMotionProfile());
     }
 
     public double getLeftY() {
@@ -49,26 +44,51 @@ public class OI implements ControlMap {
 
 	}
 
-
-    public boolean getClimbUp(){
-        return secondaryJoy.getRawButton(CLIMB_UP);
-    }
-    public boolean getClimbDown(){
-        return secondaryJoy.getRawButton(CLIMB_DOWN);
+	public boolean reverseControls() {
+        return (leftJoy.getRawButtonPressed(2));
     }
 
-    //Slidy Intake buttons
     public double getSecondaryY() {
         return secondaryJoy.getY();
     }
-    public boolean intakeOpenPiston() {
+
+    public boolean left90Button() {
+        return rightJoy.getRawButtonPressed(LEFT_90);
+    }
+
+    public boolean right90Button() {
+        return rightJoy.getRawButtonPressed(RIGHT_90);
+    }
+
+    public boolean cw180Button() {
+        return rightJoy.getRawButtonPressed(CW_180);
+    }
+
+    public boolean ccw180Buton() {
+        return rightJoy.getRawButtonPressed(CCW_180);
+    }
+
+    public boolean driveStraightButton() {
         return rightJoy.getTrigger();
     }
+
+    public boolean climbUpButton() {
+        return secondaryJoy.getRawButton(CLIMB_UP);
+    }
+
+    public boolean climbDownButton() {
+        return secondaryJoy.getRawButton(CLIMB_DOWN);
+    }
+
     public boolean intakeButton() {
-        return rightJoy.getRawButton(2);
+        return secondaryJoy.getRawButton(INTAKE);
     }
     public boolean outtakeButton() {
-        return rightJoy.getRawButton(3);
+        return secondaryJoy.getRawButton(OUTTAKE);
+    }
+
+    public boolean openClaw() {
+        return secondaryJoy.getTrigger();
     }
 
 }

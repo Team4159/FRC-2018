@@ -11,11 +11,11 @@ public class TurnToAngle extends Command implements PIDOutput {
 
     private PIDController turnController;
 
-    private double kP = 0.0;
-    private double kI = 0.0;
-    private double kD = 0.0;
-    private double kF = 0.0;
-    private double kToleranceDegrees = 2.0f;
+    private final double kP = 0.1;
+    private final double kI = 0.0;
+    private final double kD = 0.0;
+    private final double kF = 0.0;
+    private final double kToleranceDegrees = 2.0f;
 
     private double angle;
     private double rotateToAngleRate;
@@ -56,12 +56,13 @@ public class TurnToAngle extends Command implements PIDOutput {
     }
 
     @Override
-    protected void end() {
-
-    }
-
     public void pidWrite(double output) {
         rotateToAngleRate = output;
+    }
+
+    @Override
+    protected void end() {
+        turnController.disable();
     }
 
     @Override

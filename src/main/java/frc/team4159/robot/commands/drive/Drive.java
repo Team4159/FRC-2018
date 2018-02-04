@@ -4,10 +4,11 @@ import frc.team4159.robot.Robot;
 import frc.team4159.robot.OI;
 
 import edu.wpi.first.wpilibj.command.Command;
+import frc.team4159.robot.commands.auto.TurnToAngle;
 
-public class TankDrive extends Command {
+public class Drive extends Command {
 
-    public TankDrive() {
+    public Drive() {
         requires(Robot.drivetrain);
     }
 
@@ -20,7 +21,28 @@ public class TankDrive extends Command {
     @Override
     protected void execute() {
 
-        Robot.drivetrain.setRawOutput(Robot.oi.getLeftY(), Robot.oi.getRightY());
+        if(Robot.oi.reverseControls()) {
+            Robot.drivetrain.reverseControls();
+        }
+
+        if(Robot.oi.left90Button()) {
+            new TurnToAngle(-90);
+
+        } else if(Robot.oi.right90Button()) {
+            new TurnToAngle(90);
+
+        } else if(Robot.oi.cw180Button()) {
+            new TurnToAngle(180);
+
+        } else if(Robot.oi.ccw180Buton()) {
+            new TurnToAngle(-180);
+
+        } else if(Robot.oi.driveStraightButton()) {
+            //Robot.drivetrain.driveStraight();
+        } else {
+            Robot.drivetrain.setRawOutput(Robot.oi.getLeftY(), Robot.oi.getRightY());
+        }
+
         Robot.drivetrain.logDashboard();
 
     }
@@ -34,6 +56,7 @@ public class TankDrive extends Command {
     // Called once after isFinished returns true
     @Override
     protected void end() {
+        Robot.drivetrain.stop();
     }
 
     // Called when another command which requires one or more of the same

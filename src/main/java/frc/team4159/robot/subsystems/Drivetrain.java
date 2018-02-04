@@ -6,17 +6,17 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.SPI;
-import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team4159.robot.RobotMap;
-import frc.team4159.robot.commands.drive.TankDrive;
+import frc.team4159.robot.commands.drive.Drive;
 import static frc.team4159.robot.Constants.*;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 
-public class Drivetrain extends Subsystem implements PIDOutput {
+// TODO: Move turning PID Controller to this class
+
+public class Drivetrain extends Subsystem {
 
     private static Drivetrain instance;
 
@@ -33,6 +33,8 @@ public class Drivetrain extends Subsystem implements PIDOutput {
     private final double kI = 0;
     private final double kD = 4.092; // kP * 10
 
+    private boolean reverse;
+
     public static Drivetrain getInstance() {
         if(instance == null)
             instance = new Drivetrain();
@@ -43,13 +45,13 @@ public class Drivetrain extends Subsystem implements PIDOutput {
 
         leftTalon = new TalonSRX(RobotMap.LEFT_TALON);
         leftTalon.setInverted(true);
-        VictorSPX leftVictor = new VictorSPX(RobotMap.LEFT_VICTOR);
+        VictorSPX leftVictor = new VictorSPX(RobotMap.LEFT_DRIVE_VICTOR);
         leftVictor.setInverted(true);
         leftVictor.follow(leftTalon);
 
         rightTalon = new TalonSRX(RobotMap.RIGHT_TALON);
         rightTalon.setInverted(false);
-        VictorSPX rightVictor = new VictorSPX(RobotMap.RIGHT_VICTOR);
+        VictorSPX rightVictor = new VictorSPX(RobotMap.RIGHT_DRIVE_VICTOR);
         rightVictor.setInverted(false);
         rightVictor.follow(rightTalon);
 
@@ -68,6 +70,8 @@ public class Drivetrain extends Subsystem implements PIDOutput {
         rightTalon.configContinuousCurrentLimit(CONTINUOUS_CURRENT, TIMEOUT_MS);
         rightTalon.enableCurrentLimit(true);
 
+        reverse = false;
+
         try {
             navx = new AHRS(SPI.Port.kMXP);
         } catch (RuntimeException ex) {
@@ -83,37 +87,41 @@ public class Drivetrain extends Subsystem implements PIDOutput {
         // Mag encoder attached to its respective talon via the srx data cable
         leftTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, PIDIDX, TIMEOUT_MS);
         leftTalon.setSensorPhase(false);
-
         leftTalon.configNominalOutputForward(NOMINAL_OUT_PERCENT, TIMEOUT_MS);
         leftTalon.configNominalOutputReverse(NOMINAL_OUT_PERCENT, TIMEOUT_MS);
         leftTalon.configPeakOutputForward(PEAK_OUT_PERCENT, TIMEOUT_MS);
         leftTalon.configPeakOutputReverse(-PEAK_OUT_PERCENT, TIMEOUT_MS);
-//
-//        leftTalon.config_kP(PARAM_SLOT, kP, TIMEOUT_MS);
-//        leftTalon.config_kI(PARAM_SLOT, kI, TIMEOUT_MS);
-//        leftTalon.config_kD(PARAM_SLOT, kD, TIMEOUT_MS);
-//        leftTalon.config_kF(PARAM_SLOT, kF, TIMEOUT_MS);
-//
+
         rightTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, PIDIDX, TIMEOUT_MS);
         rightTalon.setSensorPhase(true);
-
         rightTalon.configNominalOutputForward(NOMINAL_OUT_PERCENT, TIMEOUT_MS);
         rightTalon.configNominalOutputReverse(NOMINAL_OUT_PERCENT, TIMEOUT_MS);
         rightTalon.configPeakOutputForward(PEAK_OUT_PERCENT, TIMEOUT_MS);
         rightTalon.configPeakOutputReverse(-PEAK_OUT_PERCENT, TIMEOUT_MS);
-
-//        rightTalon.config_kP(PARAM_SLOT, 0.0, TIMEOUT_MS);
-//        rightTalon.config_kI(PARAM_SLOT, 0.0, TIMEOUT_MS);
-//        rightTalon.config_kD(PARAM_SLOT, 0.0, TIMEOUT_MS);
-//        rightTalon.config_kF(PARAM_SLOT, 0.0, TIMEOUT_MS);
 
         zeroNavX();
 
     }
 
     public void setRawOutput(double leftPercent, double rightPercent){
-        leftTalon.set(ControlMode.PercentOutput, leftPercent);
-        rightTalon.set(ControlMode.PercentOutput, rightPercent);
+
+        if(reverse) {
+            leftTalon.set(ControlMode.PercentOutput, -rightPercent);
+            rightTalon.set(ControlMode.PercentOutput, -leftPercent);
+        } else {
+            leftTalon.set(ControlMode.PercentOutput, leftPercent);
+            rightTalon.set(ControlMode.PercentOutput, rightPercent);
+        }
+
+    }
+
+    public void reverseControls() {
+        reverse = !reverse;
+    }
+
+    public void stop() {
+        leftTalon.set(ControlMode.PercentOutput, 0);
+        rightTalon.set(ControlMode.PercentOutput, 0);
     }
 
 //    public void setVelocity(double leftPercent, double rightPercent) {
@@ -136,15 +144,11 @@ public class Drivetrain extends Subsystem implements PIDOutput {
     }
 
     public void zeroNavX() {
-        navx.reset();
+        navx.zeroYaw();
     }
 
     public AHRS getNavx() {
         return navx;
-    }
-
-    public void pidWrite(double output) {
-
     }
 
     public void logDashboard() {
@@ -167,7 +171,7 @@ public class Drivetrain extends Subsystem implements PIDOutput {
     }
 
     public void initDefaultCommand() {
-        setDefaultCommand(new TankDrive());
+        setDefaultCommand(new Drive());
     }
 
 }
