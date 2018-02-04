@@ -1,7 +1,6 @@
 package frc.team4159.robot.subsystems;
 
 /*
-* The "CommandBase" class
 * All subsystems and other hardware other than the Drivetrain are initialized here.
  */
 

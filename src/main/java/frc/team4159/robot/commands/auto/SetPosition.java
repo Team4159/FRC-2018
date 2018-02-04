@@ -3,15 +3,12 @@ package frc.team4159.robot.commands.auto;
 import edu.wpi.first.wpilibj.command.InstantCommand;
 import frc.team4159.robot.Robot;
 
+/* This Command sets the starting configuration as determined from user input. */
 
 public class SetPosition extends InstantCommand {
 
     public SetPosition(Robot.StartingConfiguration position) {
         Robot.setAutoPosition(position);
-    }
-
-    public boolean isFinished() {
-        return true;
     }
 
 }

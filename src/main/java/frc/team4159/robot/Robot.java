@@ -20,15 +20,16 @@ import openrio.powerup.MatchData;
 
 public class Robot extends TimedRobot {
 
+    /* All the hardware */
 	public static Drivetrain drivetrain;
 	public static Superstructure superstructure;
 	public static OI oi;
 
+	/* Auto match data */
 	private MatchData.OwnedSide switchNear;
-	private MatchData.OwnedSide scale;
-	private MatchData.OwnedSide switchFar;
 	private static StartingConfiguration autoPosition;
 
+	/* Auto command choosers */
 	private Command actionCommand;
     private Command setPositionCommand;
     private SendableChooser<Command> positionChooser = new SendableChooser<>();
@@ -44,6 +45,8 @@ public class Robot extends TimedRobot {
 		drivetrain = Drivetrain.getInstance();
 		superstructure = Superstructure.getInstance();
 		oi = OI.getInstance();
+
+		/* Adds options to Shuffleboard/Smartdashboard to choose from */
 
 		actionChooser.addDefault("Drive Straight (Default)", new TestMotionProfile());
 		SmartDashboard.putData("!!! CHOOSE AUTO COMMAND !!!", actionChooser);
@@ -61,60 +64,60 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void disabledInit() {
+	    // TODO: Reset subsystem info e.g. sensors (maybe)
 	}
 
+	/* Called periodically when robot is disabled */
 	@Override
 	public void disabledPeriodic() {
 		Scheduler.getInstance().run();
 	}
 
+	/* Runs once at the start of autonomous */
 	@Override
 	public void autonomousInit() {
 
+	    /* Gets match data of the closest switch from FMS */
 		switchNear = MatchData.getOwnedSide(MatchData.GameFeature.SWITCH_NEAR);
-		scale = MatchData.getOwnedSide(MatchData.GameFeature.SCALE);
-		switchFar = MatchData.getOwnedSide(MatchData.GameFeature.SWITCH_FAR);
 
+		/* Gets user determined auto settings */
 		setPositionCommand = positionChooser.getSelected();
 		actionCommand = actionChooser.getSelected();
 
+		/* First, starts the command to get user determined starting configuration */
         if (setPositionCommand != null) {
             setPositionCommand.start();
         }
 
+        /* Then, starts the command to run an action based on starting configuration and match data */
         if (actionCommand != null) {
             actionCommand.start();
         }
 
 	}
 
-	/**
-	 * This function is called periodically during autonomous.
-	 */
+    /* Periodically called during autonomous */
 	@Override
 	public void autonomousPeriodic() {
 		Scheduler.getInstance().run();
 	}
 
+	/* Runs once at the start of teleop */
 	@Override
 	public void teleopInit() {
-		/* Makes sure autonomous stops running when telop starts running */
+		/* Makes sure autonomous action stops running when teleop starts running */
 		if (actionCommand != null) {
             actionCommand.cancel();
 		}
 	}
 
-	/**
-	 * This function is called periodically during operator control.
-	 */
+    /* Periodically called during operator control. */
 	@Override
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
 	}
 
-	/**
-	 * This function is called periodically during test mode.
-	 */
+	/* This function is called periodically during test mode. */
 	@Override
 	public void testPeriodic() {
 	}

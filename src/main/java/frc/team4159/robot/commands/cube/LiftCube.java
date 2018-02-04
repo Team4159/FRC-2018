@@ -18,6 +18,7 @@ public class LiftCube extends Command {
     @Override
     protected void execute() {
 
+        /* Controls intake/outtake */
         if(Robot.oi.intakeButton() && Robot.oi.outtakeButton()) {
             Superstructure.cubeHolder.stopFlywheels();
         } else if(Robot.oi.intakeButton()) {
@@ -38,11 +39,11 @@ public class LiftCube extends Command {
         Superstructure.cubeHolder.move();
     }
 
-
     @Override
     protected boolean isFinished() {
         return false;
     }
+
     @Override
     protected void end() {
 

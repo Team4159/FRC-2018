@@ -26,6 +26,9 @@ public class OI implements ControlMap {
         secondaryJoy = new Joystick(SECONDARY_STICK);
     }
 
+    /*
+    * getLeftY() and getRightY() squares the joystick y-axis value and changes its sign
+     */
     public double getLeftY() {
 
         double leftY = leftJoy.getY();
@@ -44,13 +47,16 @@ public class OI implements ControlMap {
 
 	}
 
+    public double getSecondaryY() {
+        return secondaryJoy.getY();
+    }
+
+	/* Boolean methods called from commands. Constants can be changed in Constants.java */
+
 	public boolean reverseControls() {
         return (leftJoy.getRawButtonPressed(2));
     }
 
-    public double getSecondaryY() {
-        return secondaryJoy.getY();
-    }
 
     public boolean left90Button() {
         return rightJoy.getRawButtonPressed(LEFT_90);

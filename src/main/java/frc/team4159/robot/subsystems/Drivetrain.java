@@ -7,6 +7,7 @@ import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team4159.robot.RobotMap;
 import frc.team4159.robot.commands.drive.Drive;
@@ -20,71 +21,60 @@ public class Drivetrain extends Subsystem {
 
     private static Drivetrain instance;
 
-    private TalonSRX leftTalon, rightTalon;
-
-    /* The NavX is a 9-axis inertial/magnetic sensor and motion processor, plugged into the RoboRio's MXP port */
-    private AHRS navx;
-
-    private final int MAX_SPEED = 5200; // Native units per 100ms
-    private final int PARAM_SLOT = 0;
-    private final int PIDIDX = 0;
-    private final double kF = 0.196730769230769; // 1023 / 5200 where 5200 is our max speed
-    private final double kP = 0.4092; // (10% * 1023) / 250 where 250 is our max error
-    private final double kI = 0;
-    private final double kD = 4.092; // kP * 10
-
-    private boolean reverse;
-
     public static Drivetrain getInstance() {
         if(instance == null)
             instance = new Drivetrain();
         return instance;
     }
 
+    /* Motor controllers and sensors */
+    private TalonSRX leftTalon, rightTalon;
+    private VictorSPX leftVictor, rightVictor;
+    private AHRS navx;
+
+    /* Constants for PID control */
+    private final int MAX_SPEED = 5200; // Native units per 100ms
+    private final int SLOTIDX = 0;
+    private final int PIDIDX = 0;
+    private final double kF_left = 0.196730769230769; // 1023 / 5200 where 5200 is our max speed
+    private final double kP_left = 0.4092; // (10% * 1023) / 250 where 250 is our max error
+    private final double kI_left = 0;
+    private final double kD_left = 4.092; // kP * 10
+
+    /* Stores state if controls should be reversed or not */
+    private boolean reverse;
+
     private Drivetrain() {
 
+        /* Inverts left talon and followed by victor */
         leftTalon = new TalonSRX(RobotMap.LEFT_TALON);
         leftTalon.setInverted(true);
-        VictorSPX leftVictor = new VictorSPX(RobotMap.LEFT_DRIVE_VICTOR);
-        leftVictor.setInverted(true);
+        leftVictor = new VictorSPX(RobotMap.LEFT_DRIVE_VICTOR);
         leftVictor.follow(leftTalon);
 
+        /* Right victor follow right talon */
         rightTalon = new TalonSRX(RobotMap.RIGHT_TALON);
-        rightTalon.setInverted(false);
-        VictorSPX rightVictor = new VictorSPX(RobotMap.RIGHT_DRIVE_VICTOR);
-        rightVictor.setInverted(false);
+        rightVictor = new VictorSPX(RobotMap.RIGHT_DRIVE_VICTOR);
         rightVictor.follow(rightTalon);
 
-        final int PEAK_CURRENT = 35; // Amps
-        final int CONTINUOUS_CURRENT = 30; // Amps
-        final int PEAK_CURRENT_DURATION = 200; // ms
-        final int PEAK_CURRENT_TIMEOUT = 20; // ms
-
-        leftTalon.configPeakCurrentLimit(PEAK_CURRENT,TIMEOUT_MS);
-        leftTalon.configPeakCurrentDuration(PEAK_CURRENT_DURATION, PEAK_CURRENT_TIMEOUT);
-        leftTalon.configContinuousCurrentLimit(CONTINUOUS_CURRENT, TIMEOUT_MS);
-        leftTalon.enableCurrentLimit(true);
-
-        rightTalon.configPeakCurrentLimit(PEAK_CURRENT,TIMEOUT_MS);
-        rightTalon.configPeakCurrentDuration(PEAK_CURRENT_DURATION, PEAK_CURRENT_TIMEOUT);
-        rightTalon.configContinuousCurrentLimit(CONTINUOUS_CURRENT, TIMEOUT_MS);
-        rightTalon.enableCurrentLimit(true);
-
-        reverse = false;
-
+        /* The NavX is a 9-axis inertial/magnetic sensor and motion processor, plugged into the RoboRio's MXP port */
         try {
             navx = new AHRS(SPI.Port.kMXP);
         } catch (RuntimeException ex) {
             DriverStation.reportError("Error instantiating navX-MXP:  " + ex.getMessage(), true);
         }
 
+        reverse = false;
+
+        limitCurrent();
         configureSensors();
 
     }
 
     private void configureSensors() {
 
-        // Mag encoder attached to its respective talon via the srx data cable
+        /* Configure SRX Mag encoder sensors on both sides, connected to the talon via the SRX data cable */
+
         leftTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, PIDIDX, TIMEOUT_MS);
         leftTalon.setSensorPhase(false);
         leftTalon.configNominalOutputForward(NOMINAL_OUT_PERCENT, TIMEOUT_MS);
@@ -93,11 +83,23 @@ public class Drivetrain extends Subsystem {
         leftTalon.configPeakOutputReverse(-PEAK_OUT_PERCENT, TIMEOUT_MS);
 
         rightTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, PIDIDX, TIMEOUT_MS);
-        rightTalon.setSensorPhase(true);
+        rightTalon.setSensorPhase(true); // Reverses encoder output to match with motor output
         rightTalon.configNominalOutputForward(NOMINAL_OUT_PERCENT, TIMEOUT_MS);
         rightTalon.configNominalOutputReverse(NOMINAL_OUT_PERCENT, TIMEOUT_MS);
         rightTalon.configPeakOutputForward(PEAK_OUT_PERCENT, TIMEOUT_MS);
         rightTalon.configPeakOutputReverse(-PEAK_OUT_PERCENT, TIMEOUT_MS);
+
+        // TODO: Retune PIDF values for both sides of drivetrain
+
+        leftTalon.config_kF(SLOTIDX, kF_left, TIMEOUT_MS);
+        leftTalon.config_kP(SLOTIDX, kP_left, TIMEOUT_MS);
+        leftTalon.config_kI(SLOTIDX, kI_left, TIMEOUT_MS);
+        leftTalon.config_kD(SLOTIDX, kD_left, TIMEOUT_MS);
+
+        rightTalon.config_kF(SLOTIDX, 0, TIMEOUT_MS);
+        rightTalon.config_kP(SLOTIDX, 0, TIMEOUT_MS);
+        rightTalon.config_kI(SLOTIDX, 0, TIMEOUT_MS);
+        rightTalon.config_kD(SLOTIDX, 0, TIMEOUT_MS);
 
         zeroNavX();
 
@@ -115,21 +117,24 @@ public class Drivetrain extends Subsystem {
 
     }
 
+    /* Changes state of reversed controls */
     public void reverseControls() {
         reverse = !reverse;
     }
 
+    /* Stops running drive motors */
     public void stop() {
         leftTalon.set(ControlMode.PercentOutput, 0);
         rightTalon.set(ControlMode.PercentOutput, 0);
     }
 
-//    public void setVelocity(double leftPercent, double rightPercent) {
-//        double leftTarget = leftPercent * MAX_SPEED;
-//        double rightTarget = rightPercent * MAX_SPEED;
-//        leftTalon.set(ControlMode.Velocity, leftTarget);
-//        rightTalon.set(ControlMode.Velocity, rightTarget);
-//    }
+    /* Sets left and right motors to a target velocity */
+    public void setVelocity(double leftPercent, double rightPercent) {
+        double leftTarget = leftPercent * MAX_SPEED;
+        double rightTarget = rightPercent * MAX_SPEED;
+        leftTalon.set(ControlMode.Velocity, leftTarget);
+        rightTalon.set(ControlMode.Velocity, rightTarget);
+    }
 
     public int getLeftEncoderPosition() {
         return leftTalon.getSelectedSensorPosition(PIDIDX);
@@ -170,6 +175,28 @@ public class Drivetrain extends Subsystem {
 
     }
 
+    private void limitCurrent() {
+
+        /* Sets and limits the peak and continuous current for both sides of motors to prevent brownouts */
+
+        final int PEAK_CURRENT = 30; // Amps
+        final int CONTINUOUS_CURRENT = 25; // Amps
+        final int PEAK_CURRENT_DURATION = 200; // ms
+        final int PEAK_CURRENT_TIMEOUT = 20; // ms
+
+        leftTalon.configPeakCurrentLimit(PEAK_CURRENT,TIMEOUT_MS);
+        leftTalon.configPeakCurrentDuration(PEAK_CURRENT_DURATION, PEAK_CURRENT_TIMEOUT);
+        leftTalon.configContinuousCurrentLimit(CONTINUOUS_CURRENT, TIMEOUT_MS);
+        leftTalon.enableCurrentLimit(true);
+
+        rightTalon.configPeakCurrentLimit(PEAK_CURRENT,TIMEOUT_MS);
+        rightTalon.configPeakCurrentDuration(PEAK_CURRENT_DURATION, PEAK_CURRENT_TIMEOUT);
+        rightTalon.configContinuousCurrentLimit(CONTINUOUS_CURRENT, TIMEOUT_MS);
+        rightTalon.enableCurrentLimit(true);
+
+    }
+
+    @Override
     public void initDefaultCommand() {
         setDefaultCommand(new Drive());
     }

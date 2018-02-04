@@ -4,8 +4,10 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.team4159.robot.Robot;
 import frc.team4159.robot.subsystems.Superstructure;
 
+/* The climber subsystem consists of a motor running a winch to move the one stage elevator up and down */
 
 public class Climb extends Command {
+
     public Climb() {
         requires(Superstructure.climber);
     }
