@@ -71,13 +71,9 @@ public class OI implements ControlMap {
         return rightJoy.getTrigger();
     }
 
-    public boolean climbUpButton() {
-        return secondaryJoy.getRawButton(CLIMB_UP);
-    }
-
-    public boolean climbDownButton() {
-        return secondaryJoy.getRawButton(CLIMB_DOWN);
-    }
+    public boolean climbTopButton() { return secondaryJoy.getRawButton(CLIMB_TOP);}
+    public boolean climbUpButton() { return secondaryJoy.getRawButton(CLIMB_UP);}
+    public boolean climbDownButton() { return secondaryJoy.getRawButton(CLIMB_DOWN); }
 
     public boolean intakeButton() {
         return secondaryJoy.getRawButton(INTAKE);

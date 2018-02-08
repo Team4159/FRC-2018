@@ -14,6 +14,7 @@ public interface ControlMap {
     int RIGHT_90 = 5;
     int CW_180 = 3;
     int CCW_180 = 2;
+    int CLIMB_TOP = 10;
     int CLIMB_UP = 8;
     int CLIMB_DOWN = 9;
     int INTAKE = 3;

@@ -19,19 +19,18 @@ public class Climb extends Command {
     @Override
     protected void execute() {
 
-        if(Robot.oi.climbUpButton() && Robot.oi.climbDownButton()) {
-            Superstructure.climber.stopClimb();
-
-        } else if(Robot.oi.climbUpButton()) {
-            Superstructure.climber.stopClimb();
-
-        } else if (Robot.oi.climbDownButton()) {
+        if (Robot.oi.climbUpButton()){
+            Superstructure.climber.climbTop();
+        }else if(Robot.oi.climbUpButton()){
+            Superstructure.climber.climbUp();
+        }else if(Robot.oi.climbDownButton()) {
             Superstructure.climber.climbDown();
+        }else
+            Superstructure.climber.holdPosition();
 
-        } else {
-            Superstructure.climber.stopClimb();
-        }
+        Superstructure.climber.climberRun();
 
+        Superstructure.climber.logSmartDashboard();
     }
 
     @Override
@@ -41,7 +40,6 @@ public class Climb extends Command {
 
     @Override
     protected void end() {
-        Superstructure.climber.stopClimb();
     }
 
     @Override
