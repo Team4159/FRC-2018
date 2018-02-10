@@ -9,14 +9,13 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.team4159.robot.Robot;
-import frc.team4159.robot.RobotMap;
 import frc.team4159.robot.commands.drive.Drive;
-import static frc.team4159.robot.Constants.*;
 
-import edu.wpi.first.wpilibj.command.Subsystem;
+import static frc.team4159.robot.Constants.*;
+import static frc.team4159.robot.RobotMap.*;
 
 public class Drivetrain extends Subsystem implements PIDOutput {
 
@@ -57,15 +56,15 @@ public class Drivetrain extends Subsystem implements PIDOutput {
     private Drivetrain() {
 
         /* Inverts left talon and followed by victor */
-        leftTalon = new TalonSRX(RobotMap.LEFT_TALON);
+        leftTalon = new TalonSRX(LEFT_TALON);
         leftTalon.setInverted(true);
-        leftVictor = new VictorSPX(RobotMap.LEFT_DRIVE_VICTOR);
+        leftVictor = new VictorSPX(LEFT_DRIVE_VICTOR);
         leftVictor.setInverted(true);
         leftVictor.follow(leftTalon);
         /* Right victor follow right talon */
-        rightTalon = new TalonSRX(RobotMap.RIGHT_TALON);
+        rightTalon = new TalonSRX(RIGHT_TALON);
         rightTalon.setInverted(false);
-        rightVictor = new VictorSPX(RobotMap.RIGHT_DRIVE_VICTOR);
+        rightVictor = new VictorSPX(RIGHT_DRIVE_VICTOR);
         rightVictor.setInverted(false);
         rightVictor.follow(rightTalon);
 
@@ -145,7 +144,7 @@ public class Drivetrain extends Subsystem implements PIDOutput {
 
     public void turnToAngle(double angle) {
         if(!turnController.isEnabled()) {
-            turnController.setSetpoint( /*Robot.drivetrain.getHeadingDegrees() + */ angle); // TODO: Write function that keeps angle (-180, 180)
+            turnController.setSetpoint(boundAngle(navx.getYaw() + angle));
             rotateToAngleRate = 0;
             turnController.enable();
         }
@@ -256,6 +255,17 @@ public class Drivetrain extends Subsystem implements PIDOutput {
     @Override
     public void pidWrite(double output) {
         rotateToAngleRate = output;
+    }
+
+    /* Bounds angle to a value between -180 to 180 degrees */
+    private double boundAngle(double angle) {
+        if(angle > 180) {
+            return (angle - 360);
+        } else if (angle < -180) {
+            return (angle + 360);
+        } else {
+            return angle;
+        }
     }
 
 }

@@ -5,10 +5,10 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.team4159.robot.RobotMap;
 import frc.team4159.robot.commands.climb.Climb;
-import static frc.team4159.robot.Constants.*;
 
+import static frc.team4159.robot.Constants.TIMEOUT_MS;
+import static frc.team4159.robot.RobotMap.CLIMB_TALON;
 
 public class Climber extends Subsystem {
 
@@ -31,7 +31,7 @@ public class Climber extends Subsystem {
     private TalonSRX climbTalon;
 
     private Climber() {
-        climbTalon = new TalonSRX(RobotMap.CLIMB_TALON);
+        climbTalon = new TalonSRX(CLIMB_TALON);
 
         climbTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, TIMEOUT_MS);
         configureSensors();
@@ -69,7 +69,6 @@ public class Climber extends Subsystem {
 
     public void climbTop(){
         climberPosition = target;
-        System.out.println("Climb");
     }
 
     public void holdPosition() {

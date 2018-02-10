@@ -22,7 +22,7 @@ public class Robot extends TimedRobot {
 
     /* All the hardware */
 	public static Drivetrain drivetrain;
-	public static Superstructure superstructure;
+	private static Superstructure superstructure;
 	public static OI oi;
 
 	/* Auto match data */

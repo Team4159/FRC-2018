@@ -1,13 +1,14 @@
 package frc.team4159.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
+import static frc.team4159.robot.ControlMap.*;
 
 /*
 * The OI (Operator Interface) class binds the controls on the physical operator interface to the commands and command
 * groups that allow control of the robot.
 */
 
-public class OI implements ControlMap {
+public class OI {
 
     private static OI instance;
 
