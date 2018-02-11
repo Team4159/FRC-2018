@@ -35,12 +35,9 @@ public class Robot extends TimedRobot {
     private SendableChooser<Command> positionChooser = new SendableChooser<>();
     private SendableChooser<Command> actionChooser = new SendableChooser<>();
 
-    /* This function is run when the robot is first started up */
+    /* This function is called when the robot is first started up */
 	@Override
 	public void robotInit() {
-
-        // TODO: Add option for auto delay using Preferences class.
-		// See https://wpilib.screenstepslive.com/s/currentCS/m/smartdashboard/l/255423-setting-robot-preferences-from-smartdashboard
 
 		drivetrain = Drivetrain.getInstance();
 		superstructure = Superstructure.getInstance();
@@ -57,11 +54,9 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putData("!!! CHOOSE STARTING CONFIGURATION !!!", positionChooser);
 	}
 
-	/**
-	 * This function is called once each time the robot enters Disabled mode.
-	 * You can use it to reset any subsystem information you want to clear when
-	 * the robot is disabled.
-	 */
+    /**
+     * Called once each time robot enters Disabled mode. Use to reset subsystem info you want cleared when robot is disabled.
+     */
 	@Override
 	public void disabledInit() {
 	    // TODO: Reset subsystem info e.g. sensors (maybe)

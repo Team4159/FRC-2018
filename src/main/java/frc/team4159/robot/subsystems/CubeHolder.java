@@ -7,10 +7,10 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import frc.team4159.robot.RobotMap;
 import frc.team4159.robot.commands.cube.LiftCube;
 
 import static frc.team4159.robot.Constants.*;
+import static frc.team4159.robot.RobotMap.*;
 
 public class CubeHolder extends Subsystem {
 
@@ -35,11 +35,11 @@ public class CubeHolder extends Subsystem {
 
     private CubeHolder() {
 
-        leftVictor = new VictorSPX(RobotMap.LEFT_CUBE_VICTOR);
-        rightVictor = new VictorSPX(RobotMap.RIGHT_CUBE_VICTOR);
-        liftTalon = new TalonSRX(RobotMap.LIFT_TALON);
-        leftPiston = new DoubleSolenoid(RobotMap.LEFT_FORWARD,RobotMap.LEFT_REVERSE);
-        rightPiston = new DoubleSolenoid(RobotMap.RIGHT_FORWARD,RobotMap.RIGHT_REVERSE);
+        leftVictor = new VictorSPX(LEFT_CUBE_VICTOR);
+        rightVictor = new VictorSPX(RIGHT_CUBE_VICTOR);
+        liftTalon = new TalonSRX(LIFT_TALON);
+        leftPiston = new DoubleSolenoid(LEFT_FORWARD, LEFT_REVERSE);
+        rightPiston = new DoubleSolenoid(RIGHT_FORWARD, RIGHT_REVERSE);
 
         targetPosition = 0; // Initial encoder value when lifter is down
 

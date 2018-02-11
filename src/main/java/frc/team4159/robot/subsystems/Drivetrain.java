@@ -40,37 +40,44 @@ public class Drivetrain extends Subsystem implements PIDOutput {
     private final double kP_left = 0.4092; // (10% * 1023) / 250 where 250 is our max error
     private final double kI_left = 0;
     private final double kD_left = 4.092; // kP * 10
+    private final double kF_right = 0.0;
+    private final double kP_right = 0.0;
+    private final double kI_right = 0.0;
+    private final double kD_right = 0.0;
 
     /* Stores state if controls should be reversed or not */
     private boolean reverse;
 
+    /* Turning PID constants */
     private PIDController turnController;
     private final double kP_turn = 0.003;
     private final double kI_turn = 0.0;
     private final double kD_turn = 0.0;
     private final double kF_turn = 0.0;
     private final double kToleranceDegrees = 2.0f;
+    private final byte NAVX_RATE = (byte)200; // Hz
 
     private double rotateToAngleRate;
 
     private Drivetrain() {
 
-        /* Inverts left talon and followed by victor */
+        /* Invert left motors and set victors to follow talons */
+
         leftTalon = new TalonSRX(LEFT_TALON);
-        leftTalon.setInverted(true);
         leftVictor = new VictorSPX(LEFT_DRIVE_VICTOR);
+        leftTalon.setInverted(true);
         leftVictor.setInverted(true);
         leftVictor.follow(leftTalon);
-        /* Right victor follow right talon */
+
         rightTalon = new TalonSRX(RIGHT_TALON);
-        rightTalon.setInverted(false);
         rightVictor = new VictorSPX(RIGHT_DRIVE_VICTOR);
+        rightTalon.setInverted(false);
         rightVictor.setInverted(false);
         rightVictor.follow(rightTalon);
 
         /* The NavX is a 9-axis inertial/magnetic sensor and motion processor, plugged into the RoboRio's MXP port */
         try {
-            navx = new AHRS(SPI.Port.kMXP);
+            navx = new AHRS(SPI.Port.kMXP, NAVX_RATE);
         } catch (RuntimeException ex) {
             DriverStation.reportError("Error instantiating navX-MXP:  " + ex.getMessage(), true);
         }
@@ -80,7 +87,7 @@ public class Drivetrain extends Subsystem implements PIDOutput {
         limitCurrent();
         configureSensors();
 
-        turnController = new PIDController(kP_turn,kI_turn,kD_turn, kF_turn, navx, this);
+        turnController = new PIDController(kP_turn,kI_turn,kD_turn, kF_turn, navx, this, 1000/NAVX_RATE);
         turnController.setInputRange(-180.0f, 180.0f);
         turnController.setOutputRange(-1, 1);
         turnController.setAbsoluteTolerance(kToleranceDegrees);
@@ -115,10 +122,10 @@ public class Drivetrain extends Subsystem implements PIDOutput {
         leftTalon.config_kI(SLOTIDX, kI_left, TIMEOUT_MS);
         leftTalon.config_kD(SLOTIDX, kD_left, TIMEOUT_MS);
 
-        rightTalon.config_kF(SLOTIDX, 0, TIMEOUT_MS);
-        rightTalon.config_kP(SLOTIDX, 0, TIMEOUT_MS);
-        rightTalon.config_kI(SLOTIDX, 0, TIMEOUT_MS);
-        rightTalon.config_kD(SLOTIDX, 0, TIMEOUT_MS);
+        rightTalon.config_kF(SLOTIDX, kF_right, TIMEOUT_MS);
+        rightTalon.config_kP(SLOTIDX, kP_right, TIMEOUT_MS);
+        rightTalon.config_kI(SLOTIDX, kI_right, TIMEOUT_MS);
+        rightTalon.config_kD(SLOTIDX, kD_right, TIMEOUT_MS);
 
         zeroNavX();
 
@@ -151,6 +158,7 @@ public class Drivetrain extends Subsystem implements PIDOutput {
         setRawOutput(-rotateToAngleRate, rotateToAngleRate);
     }
 
+    /* Drives straight on current heading given a speed */
     public void driveStraight(double magnitude) {
         if(!turnController.isEnabled()) {
             turnController.setSetpoint(navx.getYaw());
@@ -183,7 +191,8 @@ public class Drivetrain extends Subsystem implements PIDOutput {
         rightTalon.set(ControlMode.Velocity, rightTarget);
     }
 
-    public void driveStraight(double leftValue, double rightValue) {
+    /* Drives straight a certain amount of distance for auto */
+    public void driveDistance(double distance) {
     }
 
     public int getLeftEncoderPosition() {
