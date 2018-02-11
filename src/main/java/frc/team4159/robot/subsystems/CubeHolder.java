@@ -4,12 +4,14 @@ package frc.team4159.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.team4159.robot.commands.cube.LiftCube;
 
-import static frc.team4159.robot.Constants.*;
+import static frc.team4159.robot.Constants.NOMINAL_OUT_PERCENT;
+import static frc.team4159.robot.Constants.PEAK_OUT_PERCENT;
+import static frc.team4159.robot.Constants.TIMEOUT_MS;
 import static frc.team4159.robot.RobotMap.*;
 
 public class CubeHolder extends Subsystem {
@@ -22,8 +24,8 @@ public class CubeHolder extends Subsystem {
         return instance;
     }
 
-    private VictorSPX leftVictor, rightVictor;
-    private DoubleSolenoid leftPiston, rightPiston;
+    private VictorSP leftVictor, rightVictor;
+    private DoubleSolenoid pistons;
     private TalonSRX liftTalon;
     private final int PIDIDX = 0;
     private final int MAX_SPEED = 5; // encoder units per cycle TODO: Test and change as necessary
@@ -35,11 +37,10 @@ public class CubeHolder extends Subsystem {
 
     private CubeHolder() {
 
-        leftVictor = new VictorSPX(LEFT_CUBE_VICTOR);
-        rightVictor = new VictorSPX(RIGHT_CUBE_VICTOR);
+        leftVictor = new VictorSP(LEFT_CUBE_VICTOR);
+        rightVictor = new VictorSP(RIGHT_CUBE_VICTOR);
         liftTalon = new TalonSRX(LIFT_TALON);
-        leftPiston = new DoubleSolenoid(LEFT_FORWARD, LEFT_REVERSE);
-        rightPiston = new DoubleSolenoid(RIGHT_FORWARD, RIGHT_REVERSE);
+        pistons = new DoubleSolenoid(FORWARD_CHANNEL, REVERSE_CHANNEL);
 
         targetPosition = 0; // Initial encoder value when lifter is down
 
@@ -71,32 +72,31 @@ public class CubeHolder extends Subsystem {
 
     /* Runs wheels inwards to intake the cube */
     public void intake() {
-        leftVictor.set(ControlMode.PercentOutput, -1);
-        rightVictor.set(ControlMode.PercentOutput, 1);
+        leftVictor.set(-1);
+        rightVictor.set(1);
     }
 
     /* Runs wheels outwards to outtake the cube */
     public void outtake() {
-        leftVictor.set(ControlMode.PercentOutput, 1);
-        rightVictor.set(ControlMode.PercentOutput, -1);
+        leftVictor.set(1);
+        rightVictor.set(-1);
     }
 
     /* Stops running the wheels */
     public void stopFlywheels() {
-        leftVictor.set(ControlMode.PercentOutput, 0);
-        rightVictor.set(ControlMode.PercentOutput, 0);
+        leftVictor.set(0);
+        rightVictor.set(0);
     }
 
     /* Opens the claw */
     public void open() {
-        leftPiston.set(DoubleSolenoid.Value.kForward);
-        rightPiston.set(DoubleSolenoid.Value.kForward);
+        pistons.set(DoubleSolenoid.Value.kForward);
     }
 
     /* Closes the claw */
     public void close() {
-        leftPiston.set(DoubleSolenoid.Value.kReverse);
-        rightPiston.set(DoubleSolenoid.Value.kReverse);
+        pistons.set(DoubleSolenoid.Value.kReverse);
+
     }
 
     public void setRawLift(double value) {
@@ -128,4 +128,3 @@ public class CubeHolder extends Subsystem {
         setDefaultCommand(new LiftCube());
     }
 }
-

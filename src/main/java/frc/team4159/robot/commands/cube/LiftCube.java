@@ -21,10 +21,13 @@ public class LiftCube extends Command {
         /* Controls intake/outtake */
         if(Robot.oi.intakeButton() && Robot.oi.outtakeButton()) {
             Superstructure.cubeHolder.stopFlywheels();
+
         } else if(Robot.oi.intakeButton()) {
             Superstructure.cubeHolder.intake();
+
         } else if(Robot.oi.outtakeButton()) {
             Superstructure.cubeHolder.outtake();
+
         } else {
             Superstructure.cubeHolder.stopFlywheels();
         }

@@ -9,6 +9,8 @@ package frc.team4159.robot;
 
 public interface RobotMap {
 
+    /* PRACTICE BOT */
+
     // CAN Talon SRX
     int LEFT_TALON = 4;
     int RIGHT_TALON = 3;
@@ -18,8 +20,35 @@ public interface RobotMap {
     // CAN Victor SPX
     int LEFT_DRIVE_VICTOR = 3;
     int RIGHT_DRIVE_VICTOR = 4;
-    int LEFT_CUBE_VICTOR = 1;
-    int RIGHT_CUBE_VICTOR = 2;
+    int CLIMB_VICTOR = 1; // TODO: Change
+
+    // Victor SP PWM ports
+    int LEFT_CUBE_VICTOR = 0;
+    int RIGHT_CUBE_VICTOR = 1;
+
+    // Double Solenoid PCM IDs
+    int FORWARD_CHANNEL = 0;
+    int REVERSE_CHANNEL = 0;
+
+    // Pneumatics Control Module CAN ID
+    int PCM = 0;
+
+    /* COMPETITION BOT */
+    /*
+        // CAN Talon SRX
+    int LEFT_TALON = 4;
+    int RIGHT_TALON = 3;
+    int LIFT_TALON = 2;
+    int CLIMB_TALON = 1;
+
+    // CAN Victor SPX
+    int LEFT_DRIVE_VICTOR = 3;
+    int RIGHT_DRIVE_VICTOR = 4;
+    int CLIMB_VICTOR = 1;
+
+    // Victor SP PWM ports
+    int LEFT_CUBE_VICTOR = 0;
+    int RIGHT_CUBE_VICTOR = 1;
 
     // Double Solenoid PCM IDs
     int LEFT_FORWARD = 0;
@@ -29,5 +58,6 @@ public interface RobotMap {
 
     // Pneumatics Control Module CAN ID
     int PCM = 0;
+     */
 
 }

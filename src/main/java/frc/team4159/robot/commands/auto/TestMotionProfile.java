@@ -9,8 +9,6 @@ import jaci.pathfinder.Waypoint;
 import jaci.pathfinder.followers.EncoderFollower;
 import jaci.pathfinder.modifiers.TankModifier;
 
-import java.io.File;
-
 public class TestMotionProfile extends Command {
 
     private final double MAX_VELOCITY = 1.7; // meters per second
@@ -35,7 +33,7 @@ public class TestMotionProfile extends Command {
 
         Waypoint[] points = new Waypoint[] {
                 new Waypoint(0, 0, 0),
-                new Waypoint(3, 0, 0)
+                new Waypoint(3, 0, 0) // goes forward 3 meters
         };
 
         Trajectory.Config config = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC,
@@ -47,8 +45,8 @@ public class TestMotionProfile extends Command {
         left = new EncoderFollower(modifier.getLeftTrajectory());
         right = new EncoderFollower(modifier.getRightTrajectory());
 
-        left.configureEncoder(Robot.drivetrain.getLeftEncoderPosition(), 4096, WHEEL_DIAMETER);
-        right.configureEncoder(Robot.drivetrain.getRightEncoderPosition(), 4096, WHEEL_DIAMETER);
+        left.configureEncoder(Robot.drivetrain.getLeftEncoderPosition(), UNITS_PER_REV, WHEEL_DIAMETER);
+        right.configureEncoder(Robot.drivetrain.getRightEncoderPosition(), UNITS_PER_REV, WHEEL_DIAMETER);
         left.configurePIDVA(.08,0,0,kV,kA);
         right.configurePIDVA(.08,0,0,kV,kA);
 
@@ -58,8 +56,6 @@ public class TestMotionProfile extends Command {
 
     @Override
     protected void execute() {
-
-        System.out.println("testttttt");
 
         double l = left.calculate(Robot.drivetrain.getLeftEncoderPosition());
         double r = right.calculate(Robot.drivetrain.getRightEncoderPosition());
