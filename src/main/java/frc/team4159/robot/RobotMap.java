@@ -20,15 +20,15 @@ public interface RobotMap {
     // CAN Victor SPX
     int LEFT_DRIVE_VICTOR = 3;
     int RIGHT_DRIVE_VICTOR = 4;
-    int CLIMB_VICTOR = 1; // TODO: Change
 
     // Victor SP PWM ports
     int LEFT_CUBE_VICTOR = 0;
     int RIGHT_CUBE_VICTOR = 1;
+    int CLIMB_VICTOR = 2;
 
     // Double Solenoid PCM IDs
-    int FORWARD_CHANNEL = 0;
-    int REVERSE_CHANNEL = 0;
+    int FORWARD_CHANNEL = 6;
+    int REVERSE_CHANNEL = 7;
 
     // Pneumatics Control Module CAN ID
     int PCM = 0;

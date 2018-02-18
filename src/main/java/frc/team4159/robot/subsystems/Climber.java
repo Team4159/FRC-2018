@@ -3,7 +3,7 @@ package frc.team4159.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-import com.ctre.phoenix.motorcontrol.can.VictorSPX;
+import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team4159.robot.commands.climb.Climb;
@@ -30,13 +30,13 @@ public class Climber extends Subsystem {
         return instance;
     }
 
-    private TalonSRX climbTalon;
-    private VictorSPX climbVictor;
+    private TalonSRX climbTalon; // hook
+    private VictorSP climbVictor; // winch
 
     private Climber() {
 
         climbTalon = new TalonSRX(CLIMB_TALON);
-        climbVictor = new VictorSPX(CLIMB_VICTOR);
+        climbVictor = new VictorSP(CLIMB_VICTOR);
 
         climbTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, TIMEOUT_MS);
         configureSensors();
