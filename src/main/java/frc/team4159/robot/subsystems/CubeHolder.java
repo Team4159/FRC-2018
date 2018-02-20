@@ -28,8 +28,9 @@ public class CubeHolder extends Subsystem {
     private VictorSP intakeVictor;
     private DoubleSolenoid pistons;
     private TalonSRX liftTalon;
+
     private final int PIDIDX = 0;
-    private final int MAX_SPEED = 5; // encoder units per cycle TODO: Test and change as necessary
+    private final double MAX_SPEED = 50.0; // encoder units per cycle TODO: Test and change as necessary
     private double targetPosition; // In encoder units. 4096 per revolution.
     private final double kF = 0.0;
     private final double kP = 1.5;
@@ -109,6 +110,8 @@ public class CubeHolder extends Subsystem {
 //            targetPosition = 0;
 //        }
 
+        //Positions set for auto starting configuration (to stay within frame perimeter)
+        // TODO: move to new command for auto
         if(targetPosition < -1200)
             targetPosition = -1200;
         if(targetPosition > 1500) // 90 degrees is 1024
@@ -118,10 +121,12 @@ public class CubeHolder extends Subsystem {
     }
 
     /* Updates target position to a value from -MAX_SPEED to +MAX_SPEED according to the joystick value */
-    public void updatePosition(double input) {
-        double value = input*50.0;
+    public void updatePosition(double value) {
+        value *= MAX_SPEED;
         targetPosition += value;
     }
+
+    //TODO: Add reset zero function w/ button and switch to raw input function
 
     public void logDashboard() {
         SmartDashboard.putNumber("lift target", targetPosition);

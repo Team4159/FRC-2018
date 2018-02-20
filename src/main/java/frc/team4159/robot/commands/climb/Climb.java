@@ -31,7 +31,6 @@ public class Climb extends Command {
 
         Superstructure.climber.climberRun();
 
-
         Superstructure.climber.logSmartDashboard();
     }
 

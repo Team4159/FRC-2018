@@ -15,14 +15,6 @@ import static frc.team4159.robot.RobotMap.CLIMB_VICTOR;
 public class Climber extends Subsystem {
 
     private static Climber instance;
-    private double kF = 0;
-    private double kP = .1;
-    private double kI = 0;
-    private double kD = 0;
-    private final int SLOTIDX = 0;
-    private final int PIDIDX = 0;
-    private double target = 0;
-    private double climberPosition = 0;
 
     public static Climber getInstance() {
         if(instance == null)
@@ -32,6 +24,15 @@ public class Climber extends Subsystem {
 
     private TalonSRX climbTalon; // hook
     private VictorSP climbVictor; // winch
+
+    private double kF = 0;
+    private double kP = .1;
+    private double kI = 0;
+    private double kD = 0;
+    private final int SLOTIDX = 0;
+    private final int PIDIDX = 0;
+    private double target = 0;
+    private double climberPosition = 0;
 
     private Climber() {
 
@@ -81,9 +82,9 @@ public class Climber extends Subsystem {
 
     public void winch(boolean winching){
         if(winching)
-            climbVictor.set(.5);
+            climbVictor.set(1.0);
         else
-            climbVictor.set(0);
+            climbVictor.set(0.0);
     }
 
     public void logSmartDashboard() {
@@ -100,6 +101,6 @@ public class Climber extends Subsystem {
     }
 
     public void initDefaultCommand() {
-        new Climb();
+        setDefaultCommand(new Climb());
     }
 }

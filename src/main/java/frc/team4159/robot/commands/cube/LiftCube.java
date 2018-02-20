@@ -43,7 +43,10 @@ public class LiftCube extends Command {
         else{
             Superstructure.cubeHolder.updatePosition(0);
         }
-// Superstructure.cubeHolder.setRawLift(Robot.oi.getSecondaryY());
+
+        //TODO: Add reset zero function w/ button and switch to raw input function
+
+        // Superstructure.cubeHolder.setRawLift(Robot.oi.getSecondaryY());
 
         Superstructure.cubeHolder.move();
 
