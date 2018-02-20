@@ -7,6 +7,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team4159.robot.commands.cube.LiftCube;
 
 import static frc.team4159.robot.Constants.NOMINAL_OUT_PERCENT;
@@ -24,25 +25,24 @@ public class CubeHolder extends Subsystem {
         return instance;
     }
 
-    private VictorSP leftVictor, rightVictor;
+    private VictorSP intakeVictor;
     private DoubleSolenoid pistons;
     private TalonSRX liftTalon;
     private final int PIDIDX = 0;
     private final int MAX_SPEED = 5; // encoder units per cycle TODO: Test and change as necessary
-    private int targetPosition; // In encoder units. 4096 per revolution.
+    private double targetPosition; // In encoder units. 4096 per revolution.
     private final double kF = 0.0;
-    private final double kP = 0.1;
+    private final double kP = 1.5;
     private final double kI = 0.0;
     private final double kD = 0.0;
 
     private CubeHolder() {
 
-        leftVictor = new VictorSP(LEFT_CUBE_VICTOR);
-        rightVictor = new VictorSP(RIGHT_CUBE_VICTOR);
+        intakeVictor = new VictorSP(INTAKE_VICTOR);
         liftTalon = new TalonSRX(LIFT_TALON);
         pistons = new DoubleSolenoid(FORWARD_CHANNEL, REVERSE_CHANNEL);
 
-        targetPosition = 0; // Initial encoder value when lifter is down
+        targetPosition = 1500.0; // Initial encoder value when lifter is down
 
         configureSensors();
     }
@@ -54,7 +54,7 @@ public class CubeHolder extends Subsystem {
         final int SLOTIDX = 0;
 
         liftTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, PIDIDX, TIMEOUT_MS);
-        liftTalon.setSensorPhase(false);
+        liftTalon.setSensorPhase(true);
         liftTalon.configNominalOutputForward(NOMINAL_OUT_PERCENT, TIMEOUT_MS);
         liftTalon.configNominalOutputReverse(NOMINAL_OUT_PERCENT, TIMEOUT_MS);
         liftTalon.configPeakOutputForward(PEAK_OUT_PERCENT, TIMEOUT_MS);
@@ -68,24 +68,23 @@ public class CubeHolder extends Subsystem {
         liftTalon.config_kI(SLOTIDX, kI, TIMEOUT_MS);
         liftTalon.config_kD(SLOTIDX, kD, TIMEOUT_MS);
 
+        liftTalon.setSelectedSensorPosition(1500,PIDIDX, TIMEOUT_MS);
+
     }
 
     /* Runs wheels inwards to intake the cube */
     public void intake() {
-        leftVictor.set(-1);
-        rightVictor.set(1);
+        intakeVictor.set(1);
     }
 
     /* Runs wheels outwards to outtake the cube */
     public void outtake() {
-        leftVictor.set(1);
-        rightVictor.set(-1);
+        intakeVictor.set(-1);
     }
 
     /* Stops running the wheels */
     public void stopFlywheels() {
-        leftVictor.set(0);
-        rightVictor.set(0);
+        intakeVictor.set(0);
     }
 
     /* Opens the claw */
@@ -110,18 +109,23 @@ public class CubeHolder extends Subsystem {
 //            targetPosition = 0;
 //        }
 
-        if(targetPosition < 0)
-            targetPosition = 0;
-        if(targetPosition > 1050) // 90 degrees is 1024
-            targetPosition = 1024;
+        if(targetPosition < -1200)
+            targetPosition = -1200;
+        if(targetPosition > 1500) // 90 degrees is 1024
+            targetPosition = 1500;
 
         liftTalon.set(ControlMode.Position, targetPosition);
     }
 
     /* Updates target position to a value from -MAX_SPEED to +MAX_SPEED according to the joystick value */
-    public void updatePosition(double value) {
-        value *= MAX_SPEED;
-        targetPosition += (int)value;
+    public void updatePosition(double input) {
+        double value = input*50.0;
+        targetPosition += value;
+    }
+
+    public void logDashboard() {
+        SmartDashboard.putNumber("lift target", targetPosition);
+        SmartDashboard.putNumber("lift position", liftTalon.getSelectedSensorPosition(0));
     }
 
     public void initDefaultCommand() {

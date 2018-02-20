@@ -18,6 +18,7 @@ public class Climb extends Command {
 
     @Override
     protected void execute() {
+        Superstructure.climber.winch(Robot.oi.climbWinch());
 
         if (Robot.oi.climbUpButton()){
             Superstructure.climber.climbTop();
@@ -29,6 +30,7 @@ public class Climb extends Command {
             Superstructure.climber.holdPosition();
 
         Superstructure.climber.climberRun();
+
 
         Superstructure.climber.logSmartDashboard();
     }

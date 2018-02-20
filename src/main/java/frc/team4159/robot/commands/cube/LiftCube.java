@@ -38,8 +38,16 @@ public class LiftCube extends Command {
             Superstructure.cubeHolder.close();
         }
 
-        Superstructure.cubeHolder.updatePosition(Robot.oi.getSecondaryY());
+        if(Math.abs(Robot.oi.getSecondaryY())>.1)
+            Superstructure.cubeHolder.updatePosition(Robot.oi.getSecondaryY());
+        else{
+            Superstructure.cubeHolder.updatePosition(0);
+        }
+// Superstructure.cubeHolder.setRawLift(Robot.oi.getSecondaryY());
+
         Superstructure.cubeHolder.move();
+
+        Superstructure.cubeHolder.logDashboard();
     }
 
     @Override

@@ -87,7 +87,7 @@ public class Drivetrain extends Subsystem implements PIDOutput {
         limitCurrent();
         configureSensors();
 
-        turnController = new PIDController(kP_turn,kI_turn,kD_turn, kF_turn, navx, this, 1000/NAVX_RATE);
+        turnController = new PIDController(kP_turn,kI_turn,kD_turn, kF_turn, navx, this,5);
         turnController.setInputRange(-180.0f, 180.0f);
         turnController.setOutputRange(-1, 1);
         turnController.setAbsoluteTolerance(kToleranceDegrees);

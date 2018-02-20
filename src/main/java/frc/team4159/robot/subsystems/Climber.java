@@ -79,6 +79,13 @@ public class Climber extends Subsystem {
     public void holdPosition() {
     }
 
+    public void winch(boolean winching){
+        if(winching)
+            climbVictor.set(.5);
+        else
+            climbVictor.set(0);
+    }
+
     public void logSmartDashboard() {
 
         kP = SmartDashboard.getNumber("kP_climb", 0.0);
