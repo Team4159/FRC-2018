@@ -25,17 +25,20 @@ public class CubeHolder extends Subsystem {
         return instance;
     }
 
+    private TalonSRX liftTalon;
     private VictorSP intakeVictor;
     private DoubleSolenoid pistons;
-    private TalonSRX liftTalon;
 
     private final int PIDIDX = 0;
     private final double MAX_SPEED = 50.0; // encoder units per cycle TODO: Test and change as necessary
-    private double targetPosition; // In encoder units. 4096 per revolution.
     private final double kF = 0.0;
     private final double kP = 1.5;
     private final double kI = 0.0;
     private final double kD = 0.0;
+
+    private double targetPosition; // In encoder units. 4096 per revolution.
+    private final int upperEncoderLimit = 2700; // Lifter is up
+    private final int lowerEncoderLimit = 0; // Lifter is down
 
     private CubeHolder() {
 
@@ -43,7 +46,7 @@ public class CubeHolder extends Subsystem {
         liftTalon = new TalonSRX(LIFT_TALON);
         pistons = new DoubleSolenoid(FORWARD_CHANNEL, REVERSE_CHANNEL);
 
-        targetPosition = 1500.0; // Initial encoder value when lifter is down
+        targetPosition = upperEncoderLimit; // Initial target value in starting configuration (raised)
 
         configureSensors();
     }
@@ -69,7 +72,8 @@ public class CubeHolder extends Subsystem {
         liftTalon.config_kI(SLOTIDX, kI, TIMEOUT_MS);
         liftTalon.config_kD(SLOTIDX, kD, TIMEOUT_MS);
 
-        liftTalon.setSelectedSensorPosition(1500,PIDIDX, TIMEOUT_MS);
+        // Sets initial encoder value in  starting configuration (raised)
+        liftTalon.setSelectedSensorPosition(upperEncoderLimit, PIDIDX, TIMEOUT_MS);
 
     }
 
@@ -91,12 +95,12 @@ public class CubeHolder extends Subsystem {
     /* Opens the claw */
     public void open() {
         pistons.set(DoubleSolenoid.Value.kForward);
+        intake();
     }
 
     /* Closes the claw */
     public void close() {
         pistons.set(DoubleSolenoid.Value.kReverse);
-
     }
 
     public void setRawLift(double value) {
@@ -105,17 +109,11 @@ public class CubeHolder extends Subsystem {
 
     public void move() {
 
-//        if(limit switch triggered) {
-//            liftTalon.setSelectedSensorPosition(0, PIDIDX, TIMEOUT_MS);
-//            targetPosition = 0;
-//        }
-
-        //Positions set for auto starting configuration (to stay within frame perimeter)
-        // TODO: move to new command for auto
-        if(targetPosition < -1200)
-            targetPosition = -1200;
-        if(targetPosition > 1500) // 90 degrees is 1024
-            targetPosition = 1500;
+        // Limits to avoid hitting into hardstop
+        if(targetPosition < lowerEncoderLimit)
+            targetPosition = lowerEncoderLimit;
+        if(targetPosition > upperEncoderLimit)
+            targetPosition = upperEncoderLimit;
 
         liftTalon.set(ControlMode.Position, targetPosition);
     }
@@ -129,7 +127,6 @@ public class CubeHolder extends Subsystem {
     //TODO: Add reset zero function w/ button and switch to raw input function
 
     public void logDashboard() {
-        SmartDashboard.putNumber("lift target", targetPosition);
         SmartDashboard.putNumber("lift position", liftTalon.getSelectedSensorPosition(0));
     }
 

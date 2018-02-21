@@ -18,7 +18,6 @@ public class Superstructure {
         return instance;
     }
 
-    //public static Prototype prototype;
     public static Climber climber;
     public static CubeHolder cubeHolder;
 
@@ -32,6 +31,14 @@ public class Superstructure {
         pdp = new PowerDistributionPanel();
         compressor = new Compressor(RobotMap.PCM);
         compressor.setClosedLoopControl(true);
+    }
+
+    public Climber getClimber() {
+        return climber;
+    }
+
+    public CubeHolder getCubeHolder() {
+        return cubeHolder;
     }
 
     public double getPDPCurrent(int channel) {

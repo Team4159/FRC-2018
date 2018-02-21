@@ -20,6 +20,8 @@ import openrio.powerup.MatchData;
 
 public class Robot extends TimedRobot {
 
+	private Robot instance;
+
     /* All the hardware */
 	public static Drivetrain drivetrain;
 	private static Superstructure superstructure;
@@ -133,4 +135,7 @@ public class Robot extends TimedRobot {
         LEFT, MIDDLE, RIGHT
     }
 
+	public static Drivetrain getDrivetrain() {
+		return drivetrain;
+	}
 }

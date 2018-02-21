@@ -1,12 +1,16 @@
 package frc.team4159.robot.commands.climb;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.team4159.robot.Robot;
+import frc.team4159.robot.subsystems.Climber;
 import frc.team4159.robot.subsystems.Superstructure;
 
 /* The climber subsystem consists of a motor running a winch to move the one stage elevator up and down */
 
 public class Climb extends Command {
+
+    private Climber climber = Superstructure.getInstance().getClimber();
 
     public Climb() {
         requires(Superstructure.climber);
@@ -18,20 +22,21 @@ public class Climb extends Command {
 
     @Override
     protected void execute() {
-        Superstructure.climber.winch(Robot.oi.climbWinch());
+
+        climber.winch(Robot.oi.climbWinch());
 
         if (Robot.oi.climbUpButton()){
-            Superstructure.climber.climbTop();
+            climber.climbTop();
         }else if(Robot.oi.climbUpButton()){
-            Superstructure.climber.climbUp();
+            climber.climbUp();
         }else if(Robot.oi.climbDownButton()) {
-            Superstructure.climber.climbDown();
+            climber.climbDown();
         }else
-            Superstructure.climber.holdPosition();
+            climber.holdPosition();
 
-        Superstructure.climber.climberRun();
+        climber.climberRun();
 
-        Superstructure.climber.logSmartDashboard();
+        climber.logSmartDashboard();
     }
 
     @Override

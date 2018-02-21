@@ -2,10 +2,12 @@ package frc.team4159.robot.commands.drive;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.team4159.robot.Robot;
+import frc.team4159.robot.subsystems.Drivetrain;
 
 
 public class TurnToAngle extends Command{
 
+    private Drivetrain drivetrain = Robot.getDrivetrain();
     private double angle;
 
     public TurnToAngle(double angle) {
@@ -19,12 +21,12 @@ public class TurnToAngle extends Command{
 
     @Override
     protected void execute() {
-        Robot.drivetrain.turnToAngle(angle);
+        drivetrain.turnToAngle(angle);
     }
 
     @Override
     protected boolean isFinished() {
-        return Robot.drivetrain.turnOnTarget();
+        return drivetrain.turnOnTarget();
     }
 
     @Override

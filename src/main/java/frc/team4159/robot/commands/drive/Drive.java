@@ -1,13 +1,13 @@
 package frc.team4159.robot.commands.drive;
 
-import edu.wpi.first.wpilibj.PIDController;
-import edu.wpi.first.wpilibj.PIDOutput;
-import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import frc.team4159.robot.Robot;
 
 import edu.wpi.first.wpilibj.command.Command;
+import frc.team4159.robot.subsystems.Drivetrain;
 
 public class Drive extends Command{
+
+    private Drivetrain drivetrain = Robot.getDrivetrain();
 
     public Drive() {
         requires(Robot.drivetrain);
@@ -24,32 +24,32 @@ public class Drive extends Command{
     protected void execute() {
 
         if(Robot.oi.reverseControls()) {
-            Robot.drivetrain.reverseControls();
+            drivetrain.reverseControls();
         }
 
         if(Robot.oi.left90Button()) {
-            Robot.drivetrain.turnToAngle(-90);
+            drivetrain.turnToAngle(-90);
 
         } else if(Robot.oi.right90Button()) {
-            Robot.drivetrain.turnToAngle(90);
+            drivetrain.turnToAngle(90);
 
         } else if(Robot.oi.cw180Button()) {
-            Robot.drivetrain.turnToAngle(180);
+            drivetrain.turnToAngle(180);
 
         } else if(Robot.oi.ccw180Buton()) {
-            Robot.drivetrain.turnToAngle(-180);
+            drivetrain.turnToAngle(-180);
 
         } else if(Robot.oi.driveStraightButton()) {
             double magnitude = (Robot.oi.getLeftY() + Robot.oi.getRightY()) /2;
-            Robot.drivetrain.driveStraight(magnitude);
+            drivetrain.driveStraight(magnitude);
 
         } else {
-            Robot.drivetrain.disableTurnControl();
-            Robot.drivetrain.setRawOutput(Robot.oi.getLeftY(), Robot.oi.getRightY());
+            drivetrain.disableTurnControl();
+            drivetrain.setRawOutput(Robot.oi.getLeftY(), Robot.oi.getRightY());
 
         }
 
-        Robot.drivetrain.logDashboard();
+        drivetrain.logDashboard();
 
     }
 
@@ -62,7 +62,7 @@ public class Drive extends Command{
     // Called once after isFinished returns true
     @Override
     protected void end() {
-        Robot.drivetrain.stop();
+        drivetrain.stop();
     }
 
     // Called when another command which requires one or more of the same

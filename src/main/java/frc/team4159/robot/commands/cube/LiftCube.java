@@ -2,10 +2,13 @@ package frc.team4159.robot.commands.cube;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.team4159.robot.Robot;
+import frc.team4159.robot.subsystems.CubeHolder;
 import frc.team4159.robot.subsystems.Superstructure;
 
 
 public class LiftCube extends Command {
+
+    private CubeHolder cubeHolder = Superstructure.getInstance().getCubeHolder();
 
     public LiftCube() {
         requires(Superstructure.cubeHolder);
@@ -20,37 +23,32 @@ public class LiftCube extends Command {
 
         /* Controls intake/outtake */
         if(Robot.oi.intakeButton() && Robot.oi.outtakeButton()) {
-            Superstructure.cubeHolder.stopFlywheels();
+            cubeHolder.stopFlywheels();
 
         } else if(Robot.oi.intakeButton()) {
-            Superstructure.cubeHolder.intake();
+            cubeHolder.intake();
 
         } else if(Robot.oi.outtakeButton()) {
-            Superstructure.cubeHolder.outtake();
+            cubeHolder.outtake();
 
         } else {
-            Superstructure.cubeHolder.stopFlywheels();
+            cubeHolder.stopFlywheels();
         }
 
         if(Robot.oi.openClaw()) {
-            Superstructure.cubeHolder.open();
+            cubeHolder.open();
         } else {
-            Superstructure.cubeHolder.close();
+            cubeHolder.close();
         }
 
-        if(Math.abs(Robot.oi.getSecondaryY())>.1)
-            Superstructure.cubeHolder.updatePosition(Robot.oi.getSecondaryY());
+        if(Math.abs(Robot.oi.getSecondaryY()) > .1)
+            cubeHolder.updatePosition(Robot.oi.getSecondaryY());
         else{
-            Superstructure.cubeHolder.updatePosition(0);
+            cubeHolder.updatePosition(0);
         }
 
-        //TODO: Add reset zero function w/ button and switch to raw input function
-
-        // Superstructure.cubeHolder.setRawLift(Robot.oi.getSecondaryY());
-
-        Superstructure.cubeHolder.move();
-
-        Superstructure.cubeHolder.logDashboard();
+        cubeHolder.move();
+        cubeHolder.logDashboard();
     }
 
     @Override
@@ -60,7 +58,7 @@ public class LiftCube extends Command {
 
     @Override
     protected void end() {
-
+        cubeHolder.stopFlywheels();
     }
 
     @Override
