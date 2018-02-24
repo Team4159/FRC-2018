@@ -21,7 +21,7 @@ public class LiftCube extends Command {
     @Override
     protected void execute() {
 
-        /* Controls intake/outtake */
+        /* Control intake/outtake */
         if(Robot.oi.intakeButton() && Robot.oi.outtakeButton()) {
             cubeHolder.stopFlywheels();
 
@@ -35,16 +35,19 @@ public class LiftCube extends Command {
             cubeHolder.stopFlywheels();
         }
 
+        /* Control piston claw. Closes by default. Intakes automatically when claw is open. */
         if(Robot.oi.openClaw()) {
+            cubeHolder.intake();
             cubeHolder.open();
         } else {
             cubeHolder.close();
         }
 
+        /* Updates target position to feed into position PID based on joystick values */
         if(Math.abs(Robot.oi.getSecondaryY()) > .1)
             cubeHolder.updatePosition(Robot.oi.getSecondaryY());
-        else{
-            cubeHolder.updatePosition(0);
+        else {
+            cubeHolder.updatePosition(0); // Don't update current lift position
         }
 
         cubeHolder.move();

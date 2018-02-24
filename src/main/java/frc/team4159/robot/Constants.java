@@ -9,15 +9,15 @@ public interface Constants {
     // TODO: Test the effects of lowering the pid timeout
 
     // Timeout value in ms. If nonzero, function will wait for config success and report an error if it times out. If zero, no blocking or checking is performed.
-    int TIMEOUT_MS = 10;
+    int TIMEOUT_MS = 3;
 
     // Nominal (minimal) percent output
     int NOMINAL_OUT_PERCENT = 0;
 
-    // Desired peak output percentage
+    // Desired peak percent output
     int PEAK_OUT_PERCENT = 1;
 
-    // For SRX mag encoder. Aka ticks per revolution or pulses per revolution
+    // For SRX mag encoder. AKA ticks per revolution or pulses per revolution
     int UNITS_PER_REV = 4096;
 
     // Distance between wheels of two sides

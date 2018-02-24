@@ -32,7 +32,7 @@ public class Drivetrain extends Subsystem implements PIDOutput {
     private VictorSPX leftVictor, rightVictor;
     private AHRS navx;
 
-    /* Constants for PID control */
+    /* Constants for drivetrain PID control */
     private final int MAX_SPEED = 5200; // Native units per 100ms
     private final int SLOTIDX = 0;
     private final int PIDIDX = 0;
@@ -54,8 +54,10 @@ public class Drivetrain extends Subsystem implements PIDOutput {
     private final double kI_turn = 0.0;
     private final double kD_turn = 0.0;
     private final double kF_turn = 0.0;
-    private final double kToleranceDegrees = 2.0f;
-    private final byte NAVX_RATE = (byte)200; // Hz
+    private final double kToleranceDegrees = 2.0f; // 2 degrees of error for turning PID
+    private final byte NAVX_RATE_HZ = (byte)200;
+    private final int NAVX_RATE_MS = 5;
+    private final int MOTOR_OUTPUT_RANGE = 1;
 
     private double rotateToAngleRate;
 
@@ -75,9 +77,9 @@ public class Drivetrain extends Subsystem implements PIDOutput {
         rightVictor.setInverted(false);
         rightVictor.follow(rightTalon);
 
-        /* The NavX is a 9-axis inertial/magnetic sensor and motion processor, plugged into the RoboRio's MXP port */
+        /* NavX is a 9-axis inertial/magnetic sensor and motion processor, plugged into the RoboRio's MXP port */
         try {
-            navx = new AHRS(SPI.Port.kMXP, NAVX_RATE);
+            navx = new AHRS(SPI.Port.kMXP, NAVX_RATE_HZ);
         } catch (RuntimeException ex) {
             DriverStation.reportError("Error instantiating navX-MXP:  " + ex.getMessage(), true);
         }
@@ -87,9 +89,9 @@ public class Drivetrain extends Subsystem implements PIDOutput {
         limitCurrent();
         configureSensors();
 
-        turnController = new PIDController(kP_turn,kI_turn,kD_turn, kF_turn, navx, this,5);
+        turnController = new PIDController(kP_turn,kI_turn,kD_turn, kF_turn, navx, this, NAVX_RATE_MS);
         turnController.setInputRange(-180.0f, 180.0f);
-        turnController.setOutputRange(-1, 1);
+        turnController.setOutputRange(-MOTOR_OUTPUT_RANGE, MOTOR_OUTPUT_RANGE);
         turnController.setAbsoluteTolerance(kToleranceDegrees);
         turnController.setContinuous(true);
         turnController.disable();
@@ -141,7 +143,6 @@ public class Drivetrain extends Subsystem implements PIDOutput {
             rightTalon.set(ControlMode.PercentOutput, rightPercent);
         }
 
-
     }
 
     /* Changes state of reversed controls */
@@ -149,6 +150,7 @@ public class Drivetrain extends Subsystem implements PIDOutput {
         reverse = !reverse;
     }
 
+    /* Turns to a specific angle relative to robot heading when first powered on */
     public void turnToAngle(double angle) {
         if(!turnController.isEnabled()) {
             turnController.setSetpoint(boundAngle(navx.getYaw() + angle));
@@ -168,10 +170,12 @@ public class Drivetrain extends Subsystem implements PIDOutput {
         setRawOutput(magnitude + rotateToAngleRate, magnitude - rotateToAngleRate);
     }
 
+    /* Returns true if error is less than tolerance */
     public boolean turnOnTarget() {
         return turnController.onTarget();
     }
 
+    /* Stops running turning PID controller */
     public void disableTurnControl() {
         if(turnController.isEnabled())
             turnController.disable();
@@ -210,11 +214,6 @@ public class Drivetrain extends Subsystem implements PIDOutput {
     public void zeroNavX() {
         navx.zeroYaw();
     }
-
-    public AHRS getNavx() {
-        return navx;
-    }
-
 
     public void logDashboard() {
 
@@ -256,17 +255,13 @@ public class Drivetrain extends Subsystem implements PIDOutput {
 
     }
 
-    @Override
-    public void initDefaultCommand() {
-        setDefaultCommand(new Drive());
-    }
-
+    /* Updates rotateToAngleRate from output given by turnController */
     @Override
     public void pidWrite(double output) {
         rotateToAngleRate = output;
     }
 
-    /* Bounds angle to a value between -180 to 180 degrees */
+    /* Bounds an angle to a value between -180 to 180 degrees */
     private double boundAngle(double angle) {
         if(angle > 180) {
             return (angle - 360);
@@ -275,6 +270,11 @@ public class Drivetrain extends Subsystem implements PIDOutput {
         } else {
             return angle;
         }
+    }
+
+    @Override
+    public void initDefaultCommand() {
+        setDefaultCommand(new Drive());
     }
 
 }

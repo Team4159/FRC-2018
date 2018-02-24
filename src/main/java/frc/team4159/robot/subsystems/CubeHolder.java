@@ -1,6 +1,5 @@
 package frc.team4159.robot.subsystems;
 
-
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
@@ -95,7 +94,6 @@ public class CubeHolder extends Subsystem {
     /* Opens the claw */
     public void open() {
         pistons.set(DoubleSolenoid.Value.kForward);
-        intake();
     }
 
     /* Closes the claw */
