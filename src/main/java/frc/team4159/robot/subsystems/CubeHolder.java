@@ -53,8 +53,6 @@ public class CubeHolder extends Subsystem {
 
     private void configureSensors() {
 
-        // TODO: Add a limit switch, hall effect, talon tech, etc. to zero out encoder
-
         final int SLOTIDX = 0;
 
         liftTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, PIDIDX, TIMEOUT_MS);
