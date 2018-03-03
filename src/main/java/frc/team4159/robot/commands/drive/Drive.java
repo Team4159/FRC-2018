@@ -28,16 +28,16 @@ public class Drive extends Command{
         }
 
         if(Robot.oi.left90Button()) {
-            drivetrain.turnToAngle(-90);
+            drivetrain.turnToAngle(-90.0f);
 
         } else if(Robot.oi.right90Button()) {
-            drivetrain.turnToAngle(90);
+            drivetrain.turnToAngle(90.0f);
 
         } else if(Robot.oi.cw180Button()) {
-            drivetrain.turnToAngle(180);
+            drivetrain.turnToAngle(0.0f);
 
         } else if(Robot.oi.ccw180Buton()) {
-            drivetrain.turnToAngle(-180);
+            drivetrain.turnToAngle(180.0f);
 
         } else if(Robot.oi.driveStraightButton()) {
             double magnitude = (Robot.oi.getLeftY() + Robot.oi.getRightY()) /2;

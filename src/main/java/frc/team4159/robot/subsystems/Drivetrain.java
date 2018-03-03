@@ -32,6 +32,8 @@ public class Drivetrain extends Subsystem implements PIDOutput {
     private VictorSPX leftVictor, rightVictor;
     private AHRS navx;
 
+    private double angleSetpoint = 0;
+
     /* Constants for PID control */
     private final int MAX_SPEED = 5200; // Native units per 100ms
     private final int SLOTIDX = 0;
@@ -50,10 +52,10 @@ public class Drivetrain extends Subsystem implements PIDOutput {
 
     /* Turning PID constants */
     private PIDController turnController;
-    private final double kP_turn = 0.003;
+    private final double kP_turn = 6*.001;
     private final double kI_turn = 0.0;
-    private final double kD_turn = 0.0;
-    private final double kF_turn = 0.0;
+    private final double kD_turn = 1*.001;
+    private final double kF_turn = 0;
     private final double kToleranceDegrees = 2.0f;
     private final byte NAVX_RATE = (byte)200; // Hz
 
@@ -77,7 +79,7 @@ public class Drivetrain extends Subsystem implements PIDOutput {
 
         /* The NavX is a 9-axis inertial/magnetic sensor and motion processor, plugged into the RoboRio's MXP port */
         try {
-            navx = new AHRS(SPI.Port.kMXP, NAVX_RATE);
+            navx = new AHRS(SPI.Port.kMXP);
         } catch (RuntimeException ex) {
             DriverStation.reportError("Error instantiating navX-MXP:  " + ex.getMessage(), true);
         }
@@ -87,7 +89,7 @@ public class Drivetrain extends Subsystem implements PIDOutput {
         limitCurrent();
         configureSensors();
 
-        turnController = new PIDController(kP_turn,kI_turn,kD_turn, kF_turn, navx, this,5);
+        turnController = new PIDController(kP_turn,kI_turn,kD_turn, kF_turn, navx, this);
         turnController.setInputRange(-180.0f, 180.0f);
         turnController.setOutputRange(-1, 1);
         turnController.setAbsoluteTolerance(kToleranceDegrees);
@@ -151,7 +153,8 @@ public class Drivetrain extends Subsystem implements PIDOutput {
 
     public void turnToAngle(double angle) {
         if(!turnController.isEnabled()) {
-            turnController.setSetpoint(boundAngle(navx.getYaw() + angle));
+            turnController.setSetpoint(angle);
+            angleSetpoint = angle;
             rotateToAngleRate = 0;
             turnController.enable();
         }
@@ -217,22 +220,9 @@ public class Drivetrain extends Subsystem implements PIDOutput {
 
 
     public void logDashboard() {
-
-        double leftOutput = leftTalon.getMotorOutputPercent();
-        double leftSpeed = leftTalon.getSelectedSensorVelocity(PIDIDX);
-        double rightSpeed = rightTalon.getSelectedSensorVelocity(PIDIDX);
-        double leftError = leftTalon.getClosedLoopError(PIDIDX);
-        double acceleration = navx.getRawAccelX();
-        double velocity = navx.getVelocityX();
-
-        SmartDashboard.putNumber("left output", leftOutput);
-        SmartDashboard.putNumber("left speed", leftSpeed);
-        SmartDashboard.putNumber("right speed", rightSpeed);
-        SmartDashboard.putNumber("left error", leftError);
-        SmartDashboard.putNumber("heading", getHeadingDegrees());
-        SmartDashboard.putNumber("acc", acceleration);
-        SmartDashboard.putNumber("vel", velocity);
-
+        SmartDashboard.putNumber("Current Angle", navx.getYaw());
+        SmartDashboard.putNumber("Angle Error",turnController.getError());
+        SmartDashboard.putNumber("Setpoint Angle", angleSetpoint);
     }
 
     private void limitCurrent() {
