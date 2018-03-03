@@ -57,7 +57,8 @@ public class Drivetrain extends Subsystem implements PIDOutput {
     private final double kD_turn = 1*.001;
     private final double kF_turn = 0;
     private final double kToleranceDegrees = 2.0f;
-    private final byte NAVX_RATE = (byte)200; // Hz
+
+    private final int MOTOR_OUTPUT_RANGE = 1;
 
     private double rotateToAngleRate;
 
@@ -77,7 +78,7 @@ public class Drivetrain extends Subsystem implements PIDOutput {
         rightVictor.setInverted(false);
         rightVictor.follow(rightTalon);
 
-        /* The NavX is a 9-axis inertial/magnetic sensor and motion processor, plugged into the RoboRio's MXP port */
+        /* NavX is a 9-axis inertial/magnetic sensor and motion processor, plugged into the RoboRio's MXP port */
         try {
             navx = new AHRS(SPI.Port.kMXP);
         } catch (RuntimeException ex) {
@@ -91,7 +92,7 @@ public class Drivetrain extends Subsystem implements PIDOutput {
 
         turnController = new PIDController(kP_turn,kI_turn,kD_turn, kF_turn, navx, this);
         turnController.setInputRange(-180.0f, 180.0f);
-        turnController.setOutputRange(-1, 1);
+        turnController.setOutputRange(-MOTOR_OUTPUT_RANGE, MOTOR_OUTPUT_RANGE);
         turnController.setAbsoluteTolerance(kToleranceDegrees);
         turnController.setContinuous(true);
         turnController.disable();
@@ -143,7 +144,6 @@ public class Drivetrain extends Subsystem implements PIDOutput {
             rightTalon.set(ControlMode.PercentOutput, rightPercent);
         }
 
-
     }
 
     /* Changes state of reversed controls */
@@ -151,6 +151,7 @@ public class Drivetrain extends Subsystem implements PIDOutput {
         reverse = !reverse;
     }
 
+    /* Turns to a specific angle relative to robot heading when first powered on */
     public void turnToAngle(double angle) {
         if(!turnController.isEnabled()) {
             turnController.setSetpoint(angle);
@@ -171,10 +172,12 @@ public class Drivetrain extends Subsystem implements PIDOutput {
         setRawOutput(magnitude + rotateToAngleRate, magnitude - rotateToAngleRate);
     }
 
+    /* Returns true if error is less than tolerance */
     public boolean turnOnTarget() {
         return turnController.onTarget();
     }
 
+    /* Stops running turning PID controller */
     public void disableTurnControl() {
         if(turnController.isEnabled())
             turnController.disable();
@@ -214,11 +217,6 @@ public class Drivetrain extends Subsystem implements PIDOutput {
         navx.zeroYaw();
     }
 
-    public AHRS getNavx() {
-        return navx;
-    }
-
-
     public void logDashboard() {
         SmartDashboard.putNumber("Current Angle", navx.getYaw());
         SmartDashboard.putNumber("Angle Error",turnController.getError());
@@ -246,17 +244,13 @@ public class Drivetrain extends Subsystem implements PIDOutput {
 
     }
 
-    @Override
-    public void initDefaultCommand() {
-        setDefaultCommand(new Drive());
-    }
-
+    /* Updates rotateToAngleRate from output given by turnController */
     @Override
     public void pidWrite(double output) {
         rotateToAngleRate = output;
     }
 
-    /* Bounds angle to a value between -180 to 180 degrees */
+    /* Bounds an angle to a value between -180 to 180 degrees */
     private double boundAngle(double angle) {
         if(angle > 180) {
             return (angle - 360);
@@ -265,6 +259,11 @@ public class Drivetrain extends Subsystem implements PIDOutput {
         } else {
             return angle;
         }
+    }
+
+    @Override
+    public void initDefaultCommand() {
+        setDefaultCommand(new Drive());
     }
 
 }
