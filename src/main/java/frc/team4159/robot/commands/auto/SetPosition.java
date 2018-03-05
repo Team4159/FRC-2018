@@ -7,8 +7,9 @@ import frc.team4159.robot.Robot;
 
 public class SetPosition extends InstantCommand {
 
-    public SetPosition(Robot.StartingConfiguration position) {
-        Robot.setAutoPosition(position);
+    public SetPosition(StartingConfiguration position) {
+        Robot robot = Robot.getInstance();
+        robot.setAutoPosition(position);
     }
 
 }

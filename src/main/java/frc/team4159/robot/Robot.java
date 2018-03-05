@@ -6,8 +6,8 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.team4159.robot.commands.auto.SetPosition;
-import frc.team4159.robot.commands.auto.TestMotionProfile;
+import frc.team4159.robot.commands.auto.*;
+import frc.team4159.robot.commands.drive.TestMotionProfile;
 import frc.team4159.robot.subsystems.Drivetrain;
 import frc.team4159.robot.subsystems.Superstructure;
 import openrio.powerup.MatchData;
@@ -20,7 +20,13 @@ import openrio.powerup.MatchData;
 
 public class Robot extends TimedRobot {
 
-	private Robot instance;
+    private static Robot instance;
+
+    public static Robot getInstance() {
+        if(instance == null)
+            instance = new Robot();
+        return instance;
+    }
 
     /* All the hardware */
 	public static Drivetrain drivetrain;
@@ -29,13 +35,14 @@ public class Robot extends TimedRobot {
 
 	/* Auto match data */
 	private MatchData.OwnedSide switchNear;
-	private static StartingConfiguration autoPosition;
+	private StartingConfiguration autoPosition;
 
-	/* Auto command choosers */
+	/* Auto choosers */
 	private Command actionCommand;
     private Command setPositionCommand;
     private SendableChooser<Command> positionChooser = new SendableChooser<>();
     private SendableChooser<Command> actionChooser = new SendableChooser<>();
+    private final double defaultAutoDelay = 0.0;
 
     /* This function is called when the robot is first started up */
 	@Override
@@ -48,12 +55,18 @@ public class Robot extends TimedRobot {
 		/* Adds options to Shuffleboard/Smartdashboard to choose from */
 
 		actionChooser.addDefault("Drive Straight (Default)", new TestMotionProfile());
+		actionChooser.addObject("One Cube",                  new Auto(AutoAction.ONE_CUBE));
+		actionChooser.addObject("Two Cube",                  new Auto(AutoAction.TWO_CUBE));
+		actionChooser.addObject("One Cube / One Vault",      new Auto(AutoAction.ONE_CUBE_ONE_VAULT));
+		actionChooser.addObject("Two Vault",                 new Auto(AutoAction.TWO_VAULT));
 		SmartDashboard.putData("!!! CHOOSE AUTO COMMAND !!!", actionChooser);
 
-		positionChooser.addDefault("Left", new SetPosition(StartingConfiguration.LEFT));
-		positionChooser.addObject("Middle", new SetPosition(StartingConfiguration.MIDDLE));
-		positionChooser.addObject("Right", new SetPosition(StartingConfiguration.RIGHT));
+		positionChooser.addDefault("Left (Default)",  new SetPosition(StartingConfiguration.LEFT));
+		positionChooser.addObject("Middle",           new SetPosition(StartingConfiguration.MIDDLE));
+		positionChooser.addObject("Right",            new SetPosition(StartingConfiguration.RIGHT));
 		SmartDashboard.putData("!!! CHOOSE STARTING CONFIGURATION !!!", positionChooser);
+
+		SmartDashboard.putNumber("Auto Delay", defaultAutoDelay);
 	}
 
     /**
@@ -119,23 +132,25 @@ public class Robot extends TimedRobot {
 	public void testPeriodic() {
 	}
 
-	public static void setAutoPosition(StartingConfiguration position) {
+
+	public void setAutoPosition(StartingConfiguration position) {
         autoPosition = position;
     }
 
-    public StartingConfiguration getAutoPosition() {
+    public StartingConfiguration getStartingConfiguration() {
 	    return autoPosition;
     }
+
+    public double getAutoDelay() {
+		return SmartDashboard.getNumber("Auto Delay", defaultAutoDelay);
+	}
 
     public MatchData.OwnedSide getSwitchNear() {
         return switchNear;
     }
 
-	public enum StartingConfiguration {
-        LEFT, MIDDLE, RIGHT
-    }
-
 	public static Drivetrain getDrivetrain() {
 		return drivetrain;
 	}
+
 }
