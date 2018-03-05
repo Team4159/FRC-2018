@@ -130,6 +130,17 @@ public class Drivetrain extends Subsystem implements PIDOutput {
         rightTalon.config_kI(SLOTIDX, kI_right, TIMEOUT_MS);
         rightTalon.config_kD(SLOTIDX, kD_right, TIMEOUT_MS);
 
+        //TODO: figure out the correct cruise velocity
+        leftTalon.configMotionAcceleration(0, TIMEOUT_MS);
+        leftTalon.configMotionCruiseVelocity(0, TIMEOUT_MS);
+
+        rightTalon.configMotionAcceleration(0, TIMEOUT_MS);
+        rightTalon.configMotionAcceleration(0, TIMEOUT_MS);
+
+        //zero sensor(not sure if we already did?)
+        leftTalon.setSelectedSensorPosition(0, 0, TIMEOUT_MS);
+        rightTalon.setSelectedSensorPosition(0, 0, TIMEOUT_MS);
+
         zeroNavX();
 
     }
@@ -199,6 +210,14 @@ public class Drivetrain extends Subsystem implements PIDOutput {
 
     /* Drives straight a certain amount of distance for auto */
     public void driveDistance(double distance) {
+        //TODO convert distance to number of rotations
+        double targetPos = distance * 10.0 * 4096;
+        rightTalon.set(ControlMode.MotionMagic, targetPos);
+        leftTalon.set(ControlMode.MotionMagic, targetPos);
+    }
+
+    public void driveStraightMotionMagic(double distance) {
+
     }
 
     public int getLeftEncoderPosition() {
