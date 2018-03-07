@@ -49,7 +49,7 @@ public class OI {
 	/* Boolean methods called from commands. Constants can be changed in Constants.java */
 
 	public boolean reverseControls() {
-        return (leftJoy.getRawButtonPressed(2));
+        return (leftJoy.getRawButtonPressed(REVERSE_CONTROLS));
     }
 
     public boolean left90Button() {
@@ -64,7 +64,7 @@ public class OI {
         return rightJoy.getRawButton(CW_180);
     }
 
-    public boolean ccw180Buton() {
+    public boolean ccw180Button() {
         return rightJoy.getRawButton(CCW_180);
     }
 
@@ -77,16 +77,21 @@ public class OI {
     public boolean climbDownButton() { return secondaryJoy.getRawButton(CLIMB_DOWN); }
     public boolean climbWinch() { return secondaryJoy.getRawButton(WINCH);}
 
-
+    //Intake
     public boolean intakeButton() {
         return secondaryJoy.getRawButton(INTAKE);
     }
+
     public boolean outtakeButton() {
         return secondaryJoy.getRawButton(OUTTAKE);
     }
 
     public boolean openClaw() {
         return secondaryJoy.getTrigger();
+    }
+
+    public boolean toggleLifterRawMode(){
+	    return secondaryJoy.getRawButtonReleased(TOGGLE_RAW_LIFTER);
     }
 
 }

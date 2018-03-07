@@ -37,8 +37,12 @@ public class CubeHolder extends Subsystem {
     private final double kD = 0.0;
 
     private double targetPosition; // In encoder units. 4096 per revolution.
-    private final int upperEncoderLimit = 2700; // Lifter is up
+    private final int upperEncoderLimit = 3500; // Lifter is up
     private final int lowerEncoderLimit = 0; // Lifter is down
+    private final int switchHeight = 0;
+    //TODO: this is a random number; determine switch height
+    private boolean rawMode = false; //Switches between raw input (true) and position controlled (false)
+    private int backlash = 0;//TODO: determine backlash (native units)
 
     private CubeHolder() {
 
@@ -70,10 +74,12 @@ public class CubeHolder extends Subsystem {
         liftTalon.config_kI(SLOTIDX, kI, TIMEOUT_MS);
         liftTalon.config_kD(SLOTIDX, kD, TIMEOUT_MS);
 
-        // Sets initial encoder value in  starting configuration (raised)
+        // Sets initial encoder value in AUTONOMOUS starting configuration (raised)
+        //May have to change depending on whether or not this class initiates in auto
         liftTalon.setSelectedSensorPosition(upperEncoderLimit, PIDIDX, TIMEOUT_MS);
-
     }
+
+    //FLYWHEELS
 
     /* Runs wheels inwards to intake the cube */
     public void intake() {
@@ -93,13 +99,17 @@ public class CubeHolder extends Subsystem {
     /* Opens the claw */
     public void open() {
         pistons.set(DoubleSolenoid.Value.kForward);
-        intake();
+        //intake(); //Why is this here?
     }
+
+    //CLAWS
 
     /* Closes the claw */
     public void close() {
         pistons.set(DoubleSolenoid.Value.kReverse);
     }
+
+    //LIFTER
 
     public void setRawLift(double value) {
         liftTalon.set(ControlMode.PercentOutput, value);
@@ -116,16 +126,34 @@ public class CubeHolder extends Subsystem {
         liftTalon.set(ControlMode.Position, targetPosition);
     }
 
+    public void toggleLifterRawMode(){
+        rawMode = !rawMode;
+        if(!rawMode)
+            liftTalon.setSelectedSensorPosition(lowerEncoderLimit+backlash, PIDIDX, TIMEOUT_MS);
+    }
+
+    public boolean getRawMode(){
+        return rawMode;
+    }
+
     /* Updates target position to a value from -MAX_SPEED to +MAX_SPEED according to the joystick value */
     public void updatePosition(double value) {
         value *= MAX_SPEED;
         targetPosition += value;
     }
 
-    //TODO: Add reset zero function w/ button and switch to raw input function
+    //H: made these separate functions to keep constants at top of class, feel free to change?
+    public void setToSwitch(){
+        targetPosition = switchHeight;
+    }
+    public void setToBottom(){
+        targetPosition = lowerEncoderLimit;
+    }
 
     public void logDashboard() {
         SmartDashboard.putNumber("lift position", liftTalon.getSelectedSensorPosition(0));
+        SmartDashboard.putNumber("lift target", targetPosition);
+        SmartDashboard.putBoolean("Lift Mode", rawMode);
     }
 
     public void initDefaultCommand() {

@@ -20,7 +20,6 @@ public class LiftCube extends Command {
 
     @Override
     protected void execute() {
-
         /* Controls intake/outtake */
         if(Robot.oi.intakeButton() && Robot.oi.outtakeButton()) {
             cubeHolder.stopFlywheels();
@@ -35,19 +34,28 @@ public class LiftCube extends Command {
             cubeHolder.stopFlywheels();
         }
 
+
         if(Robot.oi.openClaw()) {
             cubeHolder.open();
         } else {
             cubeHolder.close();
         }
 
-        if(Math.abs(Robot.oi.getSecondaryY()) > .1)
-            cubeHolder.updatePosition(Robot.oi.getSecondaryY());
-        else{
-            cubeHolder.updatePosition(0);
+        if(cubeHolder.getRawMode()){
+            cubeHolder.setRawLift(Robot.oi.getSecondaryY());
+        }else{
+            if(Math.abs(Robot.oi.getSecondaryY()) > .1)
+                cubeHolder.updatePosition(Robot.oi.getSecondaryY());
+            else{
+                cubeHolder.updatePosition(0);
+            }
+            cubeHolder.move();
         }
 
-        cubeHolder.move();
+        if(Robot.oi.toggleLifterRawMode()){
+            cubeHolder.toggleLifterRawMode();
+        }
+
         cubeHolder.logDashboard();
     }
 

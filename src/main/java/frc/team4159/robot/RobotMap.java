@@ -31,13 +31,14 @@ public interface RobotMap {
 
     // Pneumatics Control Module CAN ID
     int PCM = 0;
+    
 
     /* PRACTICE BOT */
     /*
     // CAN Talon SRX
     int LEFT_TALON = 6;
     int RIGHT_TALON = 1;
-    int LIFT_TALON = 8;
+    int LIFT_TALON = 2;
     int CLIMB_TALON = 10;
 
     // CAN Victor SPX
@@ -54,6 +55,6 @@ public interface RobotMap {
 
     // Pneumatics Control Module CAN ID
     int PCM = 0;
-     */
+    */
 
 }
