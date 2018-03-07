@@ -32,9 +32,10 @@ public class Drivetrain extends Subsystem implements PIDOutput {
     private VictorSPX leftVictor, rightVictor;
     private AHRS navx;
 
+    private PIDController turnController;
     private double angleSetpoint = 0;
 
-    /* Constants for PID control */
+    /* Drivetrain encoder PID constants */
     private final int MAX_SPEED = 5200; // Native units per 100ms
     private final int SLOTIDX = 0;
     private final int PIDIDX = 0;
@@ -50,8 +51,7 @@ public class Drivetrain extends Subsystem implements PIDOutput {
     /* Stores state if controls should be reversed or not */
     private boolean reverse;
 
-    /* Turning PID constants */
-    private PIDController turnController;
+    /* NavX turning PID constants */
     private final double kP_turn = 6*.001;
     private final double kI_turn = 0.0;
     private final double kD_turn = 1*.001;
@@ -59,6 +59,7 @@ public class Drivetrain extends Subsystem implements PIDOutput {
     private final double kToleranceDegrees = 2.0f;
 
     private final int MOTOR_OUTPUT_RANGE = 1;
+    private final double NAVX_YAW_RANGE = 180.0f;
 
     private double rotateToAngleRate;
 
@@ -89,13 +90,6 @@ public class Drivetrain extends Subsystem implements PIDOutput {
 
         limitCurrent();
         configureSensors();
-
-        turnController = new PIDController(kP_turn,kI_turn,kD_turn, kF_turn, navx, this);
-        turnController.setInputRange(-180.0f, 180.0f);
-        turnController.setOutputRange(-MOTOR_OUTPUT_RANGE, MOTOR_OUTPUT_RANGE);
-        turnController.setAbsoluteTolerance(kToleranceDegrees);
-        turnController.setContinuous(true);
-        turnController.disable();
 
         LiveWindow.add(this);
     }
@@ -130,17 +124,23 @@ public class Drivetrain extends Subsystem implements PIDOutput {
         rightTalon.config_kI(SLOTIDX, kI_right, TIMEOUT_MS);
         rightTalon.config_kD(SLOTIDX, kD_right, TIMEOUT_MS);
 
-        //TODO: figure out the correct cruise velocity
+        // TODO: figure out the correct cruise velocity and acceleration
         leftTalon.configMotionAcceleration(0, TIMEOUT_MS);
         leftTalon.configMotionCruiseVelocity(0, TIMEOUT_MS);
 
         rightTalon.configMotionAcceleration(0, TIMEOUT_MS);
         rightTalon.configMotionAcceleration(0, TIMEOUT_MS);
 
-        //zero sensor(not sure if we already did?)
-        leftTalon.setSelectedSensorPosition(0, 0, TIMEOUT_MS);
-        rightTalon.setSelectedSensorPosition(0, 0, TIMEOUT_MS);
+        turnController = new PIDController(kP_turn, kI_turn, kD_turn, kF_turn, navx, this);
+        turnController.setInputRange(-NAVX_YAW_RANGE, NAVX_YAW_RANGE);
+        turnController.setOutputRange(-MOTOR_OUTPUT_RANGE, MOTOR_OUTPUT_RANGE);
+        turnController.setAbsoluteTolerance(kToleranceDegrees);
+        turnController.setContinuous(true);
+        turnController.disable();
 
+        // Zero sensors
+        leftTalon.setSelectedSensorPosition(0, PIDIDX, TIMEOUT_MS);
+        rightTalon.setSelectedSensorPosition(0, PIDIDX, TIMEOUT_MS);
         zeroNavX();
 
     }

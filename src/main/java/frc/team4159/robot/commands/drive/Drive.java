@@ -33,10 +33,10 @@ public class Drive extends Command{
         } else if(Robot.oi.right90Button()) {
             drivetrain.turnToAngle(90.0f);
 
-        } else if(Robot.oi.cw180Button()) {
+        } else if(Robot.oi.front0Button()) {
             drivetrain.turnToAngle(0.0f);
 
-        } else if(Robot.oi.ccw180Buton()) {
+        } else if(Robot.oi.back180Button()) {
             drivetrain.turnToAngle(180.0f);
 
         } else if(Robot.oi.driveStraightButton()) {

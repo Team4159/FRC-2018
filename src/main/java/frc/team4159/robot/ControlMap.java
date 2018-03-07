@@ -4,28 +4,29 @@ package frc.team4159.robot;
 
 public interface ControlMap {
 
-    /* Joystick ports */
+    /* JOYSTICK PORTS */
     int LEFT_STICK = 0;
     int RIGHT_STICK = 1;
     int SECONDARY_STICK = 2;
 
-    /* Button mappings */
-    //Drivetrain
+    /* JOYSTICK BUTTON MAPPINGS */
+
+    /* Drivetrain Buttons */
     int LEFT_90 = 4;
     int RIGHT_90 = 5;
-    int CW_180 = 3;
-    int CCW_180 = 2;
+    int FRONT_0 = 3;
+    int BACK_180 = 2;
 
     int REVERSE_CONTROLS = 2;
 
-    //Climber
+    /* Climber Buttons */
     int CLIMB_TOP = 10;
     int CLIMB_UP = 8;
     int CLIMB_DOWN = 9;
     int WINCH = 7;
 
-    //Intake
+    /* Intake Buttons */
     int INTAKE = 3;
     int OUTTAKE = 2;
-    int TOGGLE_RAW_LIFTER = 6; //Switched lifter to raw power input
+    int TOGGLE_RAW_LIFT = 6;
 }

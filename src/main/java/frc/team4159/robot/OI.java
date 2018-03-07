@@ -29,7 +29,7 @@ public class OI {
 
     /*
     * getLeftY() and getRightY() squares the joystick y-axis value and changes its sign
-     */
+    */
     public double getLeftY() {
         double leftY = leftJoy.getY();
         return -Math.copySign(Math.pow(leftY, 2), leftY);
@@ -43,11 +43,15 @@ public class OI {
 	}
 
     public double getSecondaryY() {
-        return secondaryJoy.getY();
+        double secondaryY = secondaryJoy.getY();
+        return Math.copySign(Math.pow(secondaryY, 2), secondaryY);
     }
 
-	/* Boolean methods called from commands. Constants can be changed in Constants.java */
+	/*
+	* Boolean methods called from commands. Constants can be changed in Constants.java
+	*/
 
+	/* DRIVETRAIN controls */
 	public boolean reverseControls() {
         return (leftJoy.getRawButtonPressed(REVERSE_CONTROLS));
     }
@@ -60,24 +64,38 @@ public class OI {
         return rightJoy.getRawButton(RIGHT_90);
     }
 
-    public boolean cw180Button() {
-        return rightJoy.getRawButton(CW_180);
+    public boolean front0Button() {
+        return rightJoy.getRawButton(FRONT_0);
     }
 
-    public boolean ccw180Button() {
-        return rightJoy.getRawButton(CCW_180);
+    public boolean back180Button() {
+        return rightJoy.getRawButton(BACK_180);
     }
 
     public boolean driveStraightButton() {
         return rightJoy.getTrigger();
     }
 
-    public boolean climbTopButton() { return secondaryJoy.getRawButton(CLIMB_TOP);}
-    public boolean climbUpButton() { return secondaryJoy.getRawButton(CLIMB_UP);}
-    public boolean climbDownButton() { return secondaryJoy.getRawButton(CLIMB_DOWN); }
-    public boolean climbWinch() { return secondaryJoy.getRawButton(WINCH);}
+    /* CLIMBER controls */
 
-    //Intake
+    public boolean climbTopButton() {
+        return secondaryJoy.getRawButton(CLIMB_TOP);
+    }
+
+    public boolean climbUpButton() {
+        return secondaryJoy.getRawButton(CLIMB_UP);
+    }
+
+    public boolean climbDownButton() {
+        return secondaryJoy.getRawButton(CLIMB_DOWN);
+    }
+
+    public boolean climbWinch() {
+        return secondaryJoy.getRawButton(WINCH);
+    }
+
+    /* INTAKE controls */
+
     public boolean intakeButton() {
         return secondaryJoy.getRawButton(INTAKE);
     }
@@ -91,7 +109,7 @@ public class OI {
     }
 
     public boolean toggleLifterRawMode(){
-	    return secondaryJoy.getRawButtonReleased(TOGGLE_RAW_LIFTER);
+	    return secondaryJoy.getRawButtonReleased(TOGGLE_RAW_LIFT);
     }
 
 }
