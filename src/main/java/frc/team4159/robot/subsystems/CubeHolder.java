@@ -41,7 +41,7 @@ public class CubeHolder extends Subsystem {
     private final int lowerEncoderLimit = 0; // Lifter is down
     private final int switchHeight = 0;
     //TODO: this is a random number; determine switch height
-    private boolean rawMode = false; //Switches between raw input (true) and position controlled (false)
+    private boolean rawMode = true; //Switches between raw input (true) and position controlled (false)
     private int backlash = 0;//TODO: determine backlash (native units)
 
     private CubeHolder() {
@@ -50,7 +50,7 @@ public class CubeHolder extends Subsystem {
         liftTalon = new TalonSRX(LIFT_TALON);
         pistons = new DoubleSolenoid(FORWARD_CHANNEL, REVERSE_CHANNEL);
 
-        targetPosition = upperEncoderLimit; // Initial target value in starting configuration (raised)
+        targetPosition = lowerEncoderLimit; // Initial target value in starting configuration (raised)
 
         configureSensors();
     }
@@ -76,7 +76,7 @@ public class CubeHolder extends Subsystem {
 
         // Sets initial encoder value in AUTONOMOUS starting configuration (raised)
         //May have to change depending on whether or not this class initiates in auto
-        liftTalon.setSelectedSensorPosition(upperEncoderLimit, PIDIDX, TIMEOUT_MS);
+        liftTalon.setSelectedSensorPosition(lowerEncoderLimit, PIDIDX, TIMEOUT_MS);
     }
 
     private void limitCurrent() {

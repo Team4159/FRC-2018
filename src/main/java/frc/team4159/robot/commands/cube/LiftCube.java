@@ -41,7 +41,7 @@ public class LiftCube extends Command {
             cubeHolder.close();
         }
 
-        if(cubeHolder.getRawMode()){
+        if(cubeHolder.getRawMode()==true){
             cubeHolder.setRawLift(Robot.oi.getSecondaryY());
         }else{
             if(Math.abs(Robot.oi.getSecondaryY()) > .1)

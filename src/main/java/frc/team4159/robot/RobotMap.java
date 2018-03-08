@@ -10,7 +10,7 @@ package frc.team4159.robot;
 public interface RobotMap {
 
     /* COMPETITION BOT */
-
+    /*
     // CAN Talon SRX
     int LEFT_TALON = 7;
     int RIGHT_TALON = 9;
@@ -31,10 +31,10 @@ public interface RobotMap {
 
     // Pneumatics Control Module CAN ID
     int PCM = 0;
-    
+    */
 
     /* PRACTICE BOT */
-    /*
+
     // CAN Talon SRX
     int LEFT_TALON = 6;
     int RIGHT_TALON = 1;
@@ -55,6 +55,6 @@ public interface RobotMap {
 
     // Pneumatics Control Module CAN ID
     int PCM = 0;
-    */
+
 
 }
