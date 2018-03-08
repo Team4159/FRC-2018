@@ -25,7 +25,7 @@ public class Climb extends Command {
 
         climber.winch(Robot.oi.climbWinch());
 
-        if (Robot.oi.climbUpButton()){
+        if (Robot.oi.climbTopButton()){
             climber.climbTop();
         }else if(Robot.oi.climbUpButton()){
             climber.climbUp();
