@@ -2,11 +2,12 @@ package frc.team4159.robot.subsystems;
 
 /*
 * All subsystems and other hardware other than the Drivetrain are initialized here.
- */
+*/
 
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
-import frc.team4159.robot.RobotMap;
+
+import static frc.team4159.robot.RobotMap.PCM;
 
 public class Superstructure {
 
@@ -29,7 +30,7 @@ public class Superstructure {
         cubeHolder = CubeHolder.getInstance();
 
         pdp = new PowerDistributionPanel();
-        compressor = new Compressor(RobotMap.PCM);
+        compressor = new Compressor(PCM);
         compressor.setClosedLoopControl(true);
     }
 
