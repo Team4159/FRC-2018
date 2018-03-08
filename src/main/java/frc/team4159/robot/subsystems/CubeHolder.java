@@ -79,6 +79,22 @@ public class CubeHolder extends Subsystem {
         liftTalon.setSelectedSensorPosition(upperEncoderLimit, PIDIDX, TIMEOUT_MS);
     }
 
+    private void limitCurrent() {
+
+        /* Sets and limits the peak and continuous current for both sides of motors to prevent brownouts */
+
+        final int PEAK_CURRENT = 15; // Amps
+        final int CONTINUOUS_CURRENT = 10; // Amps
+        final int PEAK_CURRENT_DURATION = 200; // ms
+        final int PEAK_CURRENT_TIMEOUT = 20; // ms
+
+        liftTalon.configPeakCurrentLimit(PEAK_CURRENT,TIMEOUT_MS);
+        liftTalon.configPeakCurrentDuration(PEAK_CURRENT_DURATION, PEAK_CURRENT_TIMEOUT);
+        liftTalon.configContinuousCurrentLimit(CONTINUOUS_CURRENT, TIMEOUT_MS);
+        liftTalon.enableCurrentLimit(true);
+
+    }
+
     //FLYWHEELS
 
     /* Runs wheels inwards to intake the cube */
