@@ -39,7 +39,7 @@ public interface RobotMap {
     int LEFT_TALON = 6;
     int RIGHT_TALON = 1;
     int LIFT_TALON = 2;
-    int CLIMB_TALON = 10;
+    int CLIMB_TALON = 5;
 
     // CAN Victor SPX
     int LEFT_DRIVE_VICTOR = 6;
