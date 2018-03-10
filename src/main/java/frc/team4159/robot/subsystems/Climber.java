@@ -31,7 +31,7 @@ public class Climber extends Subsystem {
     private double kD = 0;
     private final int SLOTIDX = 0;
     private final int PIDIDX = 0;
-    private double climberPosition = 0;
+    private double targetPosition = 0;
 
     private Climber() {
 
@@ -56,12 +56,12 @@ public class Climber extends Subsystem {
     }
 
     public void climberRun(){
-        climbTalon.set(ControlMode.Position, climberPosition);//36840
+        climbTalon.set(ControlMode.Position, targetPosition);//36840
     }
 
     public void updatePosition(double value) {
         value *= 100;
-        climberPosition += value;
+        targetPosition += value;
     }
 
     public void winch(boolean winching){
@@ -80,6 +80,7 @@ public class Climber extends Subsystem {
 //        target = SmartDashboard.getNumber("target", 0.0);
 
         SmartDashboard.putNumber("position", climbTalon.getSelectedSensorPosition(PIDIDX));
+        SmartDashboard.putNumber("targetPosition", targetPosition);
     }
 
     public void initDefaultCommand() {
