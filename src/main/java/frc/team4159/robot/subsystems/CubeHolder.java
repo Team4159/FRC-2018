@@ -41,7 +41,7 @@ public class CubeHolder extends Subsystem {
     private final int lowerEncoderLimit = 0; // Lifter is down
     private final int switchHeight = 0;
     //TODO: this is a random number; determine switch height
-    private boolean rawMode = true; //Switches between raw input (true) and position controlled (false)
+    private boolean rawMode = true; // Switches between raw input (true) and position controlled (false)
 
     private CubeHolder() {
 

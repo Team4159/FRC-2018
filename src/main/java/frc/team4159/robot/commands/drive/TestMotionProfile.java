@@ -33,7 +33,7 @@ public class TestMotionProfile extends Command {
 
         Waypoint[] points = new Waypoint[] {
                 new Waypoint(0, 0, 0),
-                new Waypoint(3, 0, 0) // goes forward 3 meters
+                new Waypoint(6, 0, 0) // goes forward 3 meters
         };
 
         Trajectory.Config config = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC,
@@ -47,8 +47,8 @@ public class TestMotionProfile extends Command {
 
         left.configureEncoder(Robot.drivetrain.getLeftEncoderPosition(), UNITS_PER_REV, WHEEL_DIAMETER);
         right.configureEncoder(Robot.drivetrain.getRightEncoderPosition(), UNITS_PER_REV, WHEEL_DIAMETER);
-        left.configurePIDVA(.08,0,0,kV,kA);
-        right.configurePIDVA(.08,0,0,kV,kA);
+        left.configurePIDVA(0,0,0, kV, kA);
+        right.configurePIDVA(0,0,0, kV, kA);
 
         System.out.println("test");
 

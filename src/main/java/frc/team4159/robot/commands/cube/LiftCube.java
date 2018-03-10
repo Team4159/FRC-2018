@@ -20,6 +20,7 @@ public class LiftCube extends Command {
 
     @Override
     protected void execute() {
+
         /* Controls intake/outtake */
         if(Robot.oi.intakeButton() && Robot.oi.outtakeButton()) {
             cubeHolder.stopFlywheels();
@@ -41,17 +42,20 @@ public class LiftCube extends Command {
             cubeHolder.close();
         }
 
+        /* If we're not using the secondary axis to climb, use it to control the cube lifter */
         if(!Robot.oi.climbEnable()) {
+
             if (cubeHolder.getRawMode()) {
                 cubeHolder.setRawLift(Robot.oi.getSecondaryY());
+
             } else {
+
                 if (Robot.oi.setSwitchHeight())
                     cubeHolder.setToSwitch();
+
                 else if (Math.abs(Robot.oi.getSecondaryY()) > .1)
                     cubeHolder.updatePosition(Robot.oi.getSecondaryY());
-                else {
-                    cubeHolder.updatePosition(0);
-                }
+
                 cubeHolder.move();
             }
         }
@@ -59,6 +63,7 @@ public class LiftCube extends Command {
         if(Robot.oi.toggleLifterRawMode()){
             cubeHolder.toggleLifterRawMode();
         }
+
         if(Robot.oi.resetLiftEncoder()){
             cubeHolder.resetLiftEncoder();
         }

@@ -54,7 +54,7 @@ public class Robot extends TimedRobot {
 
 		/* Adds options to Shuffleboard/Smartdashboard to choose from */
 
-		actionChooser.addDefault("Drive Straight (Default)", new TestMotionProfile());
+		actionChooser.addDefault("Drive Straight (Default)", new Auto(AutoAction.BASELINE));
 		actionChooser.addObject("One Cube",                  new Auto(AutoAction.ONE_CUBE));
 		actionChooser.addObject("Two Cube",                  new Auto(AutoAction.TWO_CUBE));
 		actionChooser.addObject("One Cube / One Vault",      new Auto(AutoAction.ONE_CUBE_ONE_VAULT));
