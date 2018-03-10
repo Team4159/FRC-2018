@@ -66,7 +66,7 @@ public class Climber extends Subsystem {
 
     public void winch(boolean winching){
         if(winching)
-            climbVictor.set(1.0);
+            climbVictor.set(-1.0);
         else
             climbVictor.set(0.0);
     }
