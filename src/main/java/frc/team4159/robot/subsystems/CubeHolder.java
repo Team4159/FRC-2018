@@ -113,17 +113,12 @@ public class CubeHolder extends Subsystem {
     /* Opens the claw */
     public void open() {
         pistons.set(DoubleSolenoid.Value.kForward);
-        //intake(); //Why is this here?
     }
-
-    //CLAWS
 
     /* Closes the claw */
     public void close() {
         pistons.set(DoubleSolenoid.Value.kReverse);
     }
-
-    //LIFTER
 
     public void setRawLift(double value) {
         liftTalon.set(ControlMode.PercentOutput, value);
@@ -138,6 +133,10 @@ public class CubeHolder extends Subsystem {
             targetPosition = upperEncoderLimit;
 
         liftTalon.set(ControlMode.Position, targetPosition);
+    }
+
+    public int getLiftPosition() {
+        return liftTalon.getSelectedSensorPosition(PIDIDX);
     }
 
     public boolean getRawMode(){

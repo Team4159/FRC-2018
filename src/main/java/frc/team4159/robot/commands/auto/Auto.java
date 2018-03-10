@@ -21,21 +21,26 @@ public class Auto extends CommandGroup {
             case BASELINE:
                 addSequential(new AutoBaseline());
                 break;
+
             case ONE_CUBE:
 //                addSequential(new AutoOneCube());
                 break;
+
             case TWO_CUBE:
 //                addSequential(new AutoTwoCube());
                 break;
+
             case TWO_VAULT:
 //                addSequential(new AutoTwoVault());
                 break;
+
             case ONE_CUBE_ONE_VAULT:
 //                addSequential(new AutoHalfHalf());
                 break;
+
             default:
+                addSequential(new AutoBaseline());
                 break;
         }
-
     }
 }
