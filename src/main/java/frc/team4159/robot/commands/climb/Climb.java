@@ -25,15 +25,13 @@ public class Climb extends Command {
 
         climber.winch(Robot.oi.climbWinch());
 
-        if (Robot.oi.climbTopButton()){
-            climber.climbTop();
-        }else if(Robot.oi.climbUpButton()){
-            climber.climbUp();
-        }else if(Robot.oi.climbDownButton()) {
-            climber.climbDown();
-        }else
-            climber.holdPosition();
-
+        if(Robot.oi.climbEnable()){
+            if(Math.abs(Robot.oi.getSecondaryY()) > .1)
+                climber.updatePosition(Robot.oi.getSecondaryY());
+            else{
+                climber.updatePosition(0.0);
+            }
+        }
         climber.climberRun();
 
         climber.logSmartDashboard();

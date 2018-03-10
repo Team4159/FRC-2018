@@ -20,10 +20,8 @@ public interface ControlMap {
     int REVERSE_CONTROLS = 2;
 
     /* Climber Buttons */
-    int CLIMB_TOP = 6;
-    int CLIMB_UP = 8;
-    int CLIMB_DOWN = 9;
-    int WINCH = 7;
+    int CLIMB_ENABLE = 7;
+    int WINCH = 6;
 
     /* Intake Buttons */
     int INTAKE = 3;

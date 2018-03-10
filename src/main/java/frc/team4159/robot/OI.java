@@ -78,16 +78,8 @@ public class OI {
 
     /* CLIMBER controls */
 
-    public boolean climbTopButton() {
-        return secondaryJoy.getRawButton(CLIMB_TOP);
-    }
-
-    public boolean climbUpButton() {
-        return secondaryJoy.getRawButton(CLIMB_UP);
-    }
-
-    public boolean climbDownButton() {
-        return secondaryJoy.getRawButton(CLIMB_DOWN);
+    public boolean climbEnable() {
+        return secondaryJoy.getRawButton(CLIMB_ENABLE);
     }
 
     public boolean climbWinch() {

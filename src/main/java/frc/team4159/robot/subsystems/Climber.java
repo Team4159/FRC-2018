@@ -26,12 +26,11 @@ public class Climber extends Subsystem {
     private VictorSP climbVictor; // winch
 
     private double kF = 0;
-    private double kP = .2;
+    private double kP = .4;
     private double kI = 0;
     private double kD = 0;
     private final int SLOTIDX = 0;
     private final int PIDIDX = 0;
-    private double target = 0;
     private double climberPosition = 0;
 
     private Climber() {
@@ -53,7 +52,6 @@ public class Climber extends Subsystem {
         SmartDashboard.putNumber("kI_climb", kI);
         SmartDashboard.putNumber("kD_climb", kD);
         SmartDashboard.putNumber("kF_climb", kF);
-        SmartDashboard.putNumber("target", target);
 
     }
 
@@ -61,23 +59,9 @@ public class Climber extends Subsystem {
         climbTalon.set(ControlMode.Position, climberPosition);//36840
     }
 
-    public void climbUp() {
-        System.out.println(climberPosition);
-        climberPosition += 100.0;
-        System.out.println(climberPosition + "after");
-    }
-
-    public void climbDown() {
-        System.out.println(climberPosition);
-        climberPosition -= 100.0;
-        System.out.println(climberPosition + "after");
-    }
-
-    public void climbTop(){
-        climberPosition = target;
-    }
-
-    public void holdPosition() {
+    public void updatePosition(double value) {
+        value *= 100;
+        climberPosition += value;
     }
 
     public void winch(boolean winching){
@@ -96,8 +80,6 @@ public class Climber extends Subsystem {
 //        target = SmartDashboard.getNumber("target", 0.0);
 
         SmartDashboard.putNumber("position", climbTalon.getSelectedSensorPosition(PIDIDX));
-        SmartDashboard.putNumber("target", target);
-
     }
 
     public void initDefaultCommand() {
