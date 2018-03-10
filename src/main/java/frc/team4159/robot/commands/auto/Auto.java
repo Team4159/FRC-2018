@@ -36,5 +36,6 @@ public class Auto extends CommandGroup {
             default:
                 break;
         }
+
     }
 }

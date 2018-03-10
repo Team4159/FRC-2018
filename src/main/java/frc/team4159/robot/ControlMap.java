@@ -20,7 +20,7 @@ public interface ControlMap {
     int REVERSE_CONTROLS = 2;
 
     /* Climber Buttons */
-    int CLIMB_TOP = 10;
+    int CLIMB_TOP = 6;
     int CLIMB_UP = 8;
     int CLIMB_DOWN = 9;
     int WINCH = 7;
@@ -28,5 +28,7 @@ public interface ControlMap {
     /* Intake Buttons */
     int INTAKE = 3;
     int OUTTAKE = 2;
-    int TOGGLE_RAW_LIFT = 6;
+    int TOGGLE_RAW_LIFT = 10;
+    int RESET_LIFT_ENCODER = 11;
+    int SWITCH = 4;
 }

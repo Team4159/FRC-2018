@@ -37,12 +37,11 @@ public class CubeHolder extends Subsystem {
     private final double kD = 0.0;
 
     private double targetPosition; // In encoder units. 4096 per revolution.
-    private final int upperEncoderLimit = 3500; // Lifter is up
+    private final int upperEncoderLimit = 3500-200; // Lifter is up
     private final int lowerEncoderLimit = 0; // Lifter is down
     private final int switchHeight = 0;
     //TODO: this is a random number; determine switch height
     private boolean rawMode = true; //Switches between raw input (true) and position controlled (false)
-    private int backlash = 0;//TODO: determine backlash (native units)
 
     private CubeHolder() {
 
@@ -75,7 +74,6 @@ public class CubeHolder extends Subsystem {
         liftTalon.config_kD(SLOTIDX, kD, TIMEOUT_MS);
 
         // Sets initial encoder value in AUTONOMOUS starting configuration (raised)
-        //May have to change depending on whether or not this class initiates in auto
         liftTalon.setSelectedSensorPosition(lowerEncoderLimit, PIDIDX, TIMEOUT_MS);
     }
 
@@ -83,8 +81,8 @@ public class CubeHolder extends Subsystem {
 
         /* Sets and limits the peak and continuous current for both sides of motors to prevent brownouts */
 
-        final int PEAK_CURRENT = 15; // Amps
-        final int CONTINUOUS_CURRENT = 10; // Amps
+        final int PEAK_CURRENT = 10; // Amps
+        final int CONTINUOUS_CURRENT = 7; // Amps
         final int PEAK_CURRENT_DURATION = 200; // ms
         final int PEAK_CURRENT_TIMEOUT = 20; // ms
 
@@ -142,14 +140,17 @@ public class CubeHolder extends Subsystem {
         liftTalon.set(ControlMode.Position, targetPosition);
     }
 
-    public void toggleLifterRawMode(){
-        rawMode = !rawMode;
-        if(!rawMode)
-            liftTalon.setSelectedSensorPosition(lowerEncoderLimit+backlash, PIDIDX, TIMEOUT_MS);
-    }
-
     public boolean getRawMode(){
         return rawMode;
+    }
+
+    public void toggleLifterRawMode(){
+        rawMode = !rawMode;
+
+    }
+
+    public void resetLiftEncoder(){
+        liftTalon.setSelectedSensorPosition(lowerEncoderLimit, PIDIDX, TIMEOUT_MS);
     }
 
     /* Updates target position to a value from -MAX_SPEED to +MAX_SPEED according to the joystick value */

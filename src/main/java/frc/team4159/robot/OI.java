@@ -108,8 +108,16 @@ public class OI {
         return secondaryJoy.getTrigger();
     }
 
+    public boolean setSwitchHeight(){
+        return secondaryJoy.getRawButton(SWITCH);
+    }
+
     public boolean toggleLifterRawMode(){
 	    return secondaryJoy.getRawButtonReleased(TOGGLE_RAW_LIFT);
+    }
+
+    public boolean resetLiftEncoder(){
+        return secondaryJoy.getRawButtonReleased(RESET_LIFT_ENCODER);
     }
 
 }

@@ -41,10 +41,12 @@ public class LiftCube extends Command {
             cubeHolder.close();
         }
 
-        if(cubeHolder.getRawMode()==true){
+        if(cubeHolder.getRawMode()){
             cubeHolder.setRawLift(Robot.oi.getSecondaryY());
         }else{
-            if(Math.abs(Robot.oi.getSecondaryY()) > .1)
+            if(Robot.oi.setSwitchHeight())
+                cubeHolder.setToSwitch();
+            else if(Math.abs(Robot.oi.getSecondaryY()) > .1)
                 cubeHolder.updatePosition(Robot.oi.getSecondaryY());
             else{
                 cubeHolder.updatePosition(0);
@@ -54,6 +56,9 @@ public class LiftCube extends Command {
 
         if(Robot.oi.toggleLifterRawMode()){
             cubeHolder.toggleLifterRawMode();
+        }
+        if(Robot.oi.resetLiftEncoder()){
+            cubeHolder.resetLiftEncoder();
         }
 
         cubeHolder.logDashboard();

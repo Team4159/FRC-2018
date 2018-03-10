@@ -26,7 +26,7 @@ public class Climber extends Subsystem {
     private VictorSP climbVictor; // winch
 
     private double kF = 0;
-    private double kP = .1;
+    private double kP = .2;
     private double kI = 0;
     private double kD = 0;
     private final int SLOTIDX = 0;
@@ -89,14 +89,14 @@ public class Climber extends Subsystem {
 
     public void logSmartDashboard() {
 
-        kP = SmartDashboard.getNumber("kP_climb", 0.0);
-        kI = SmartDashboard.getNumber("kI_climb", 0.0);
-        kD = SmartDashboard.getNumber("kD_climb", 0.0);
-        kF = SmartDashboard.getNumber("kF_climb", 0.0);
-        target = SmartDashboard.getNumber("target", 0.0);
+//        kP = SmartDashboard.getNumber("kP_climb", 0.0);
+//        kI = SmartDashboard.getNumber("kI_climb", 0.0);
+//        kD = SmartDashboard.getNumber("kD_climb", 0.0);
+////      kF = SmartDashboard.getNumber("kF_climb", 0.0);
+//        target = SmartDashboard.getNumber("target", 0.0);
 
         SmartDashboard.putNumber("position", climbTalon.getSelectedSensorPosition(PIDIDX));
-        System.out.println(target);
+        SmartDashboard.putNumber("target", target);
 
     }
 
