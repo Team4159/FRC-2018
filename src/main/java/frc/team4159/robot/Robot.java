@@ -34,8 +34,7 @@ public class Robot extends TimedRobot {
 	public static OI oi;
 
 	/* Auto match data */
-	private MatchData.OwnedSide switchNear;
-	private StartingConfiguration autoPosition;
+	private StartingConfiguration autoPosition = StartingConfiguration.LEFT;
 
 	/* Auto choosers */
 	private Command actionCommand;
@@ -57,13 +56,11 @@ public class Robot extends TimedRobot {
 		actionChooser.addDefault("Drive Straight (Default)", new Auto(AutoAction.BASELINE));
 		actionChooser.addObject("One Cube",                  new Auto(AutoAction.ONE_CUBE));
 		actionChooser.addObject("Two Cube",                  new Auto(AutoAction.TWO_CUBE));
-		actionChooser.addObject("One Cube / One Vault",      new Auto(AutoAction.ONE_CUBE_ONE_VAULT));
-		actionChooser.addObject("Two Vault",                 new Auto(AutoAction.TWO_VAULT));
 		SmartDashboard.putData("!!! CHOOSE AUTO COMMAND !!!", actionChooser);
 
-		positionChooser.addDefault("Left (Default)",  new SetPosition(StartingConfiguration.LEFT));
-		positionChooser.addObject("Middle",           new SetPosition(StartingConfiguration.MIDDLE));
-		positionChooser.addObject("Right",            new SetPosition(StartingConfiguration.RIGHT));
+		positionChooser.addDefault("Left (Default)", new SetPosition(StartingConfiguration.LEFT));
+		positionChooser.addObject("Middle",          new SetPosition(StartingConfiguration.MIDDLE));
+		positionChooser.addObject("Right",           new SetPosition(StartingConfiguration.RIGHT));
 		SmartDashboard.putData("!!! CHOOSE STARTING CONFIGURATION !!!", positionChooser);
 
 		SmartDashboard.putNumber("Auto Delay", defaultAutoDelay);
@@ -86,9 +83,6 @@ public class Robot extends TimedRobot {
 	/* Runs once at the start of autonomous */
 	@Override
 	public void autonomousInit() {
-
-	    /* Gets match data of the closest switch from FMS */
-		switchNear = MatchData.getOwnedSide(MatchData.GameFeature.SWITCH_NEAR);
 
 		/* Gets user determined auto settings */
 		setPositionCommand = positionChooser.getSelected();
@@ -144,10 +138,6 @@ public class Robot extends TimedRobot {
     public double getAutoDelay() {
 		return SmartDashboard.getNumber("Auto Delay", defaultAutoDelay);
 	}
-
-    public MatchData.OwnedSide getSwitchNear() {
-        return switchNear;
-    }
 
 	public static Drivetrain getDrivetrain() {
 		return drivetrain;

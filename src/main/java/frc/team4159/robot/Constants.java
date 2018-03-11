@@ -23,7 +23,7 @@ public interface Constants {
     // Distance between wheels of two sides
     double WHEELBASE_WIDTH = .6566535; // 25.8525 inches to meters.
 
-    // The diameter of our robot wheels
-    double WHEEL_DIAMETER = 0.1016; // 4 inches to meters
+    // 4 inches to feet
+    double WHEEL_DIAMETER = 4.0/12.0;
 
 }

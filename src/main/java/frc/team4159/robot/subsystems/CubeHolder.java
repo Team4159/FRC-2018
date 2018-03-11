@@ -37,9 +37,9 @@ public class CubeHolder extends Subsystem {
     private final double kD = 0.0;
 
     private double targetPosition; // In encoder units. 4096 per revolution.
-    private final int upperEncoderLimit = 3500-200; // Lifter is up
+    private final int upperEncoderLimit = 3300; // Lifter is up
     private final int lowerEncoderLimit = 0; // Lifter is down
-    private final int switchHeight = 0;
+    private final int switchHeight = 3200;
     //TODO: this is a random number; determine switch height
     private boolean rawMode = true; // Switches between raw input (true) and position controlled (false)
 
@@ -52,6 +52,10 @@ public class CubeHolder extends Subsystem {
         targetPosition = lowerEncoderLimit; // Initial target value in starting configuration (raised)
 
         configureSensors();
+    }
+
+    public void setLiftEncoderValue(int value) {
+        liftTalon.setSelectedSensorPosition(value, PIDIDX, TIMEOUT_MS);
     }
 
     private void configureSensors() {
@@ -97,12 +101,12 @@ public class CubeHolder extends Subsystem {
 
     /* Runs wheels inwards to intake the cube */
     public void intake() {
-        intakeVictor.set(1);
+        intakeVictor.set(-1);
     }
 
     /* Runs wheels outwards to outtake the cube */
     public void outtake() {
-        intakeVictor.set(-1);
+        intakeVictor.set(1);
     }
 
     /* Stops running the wheels */
@@ -150,6 +154,10 @@ public class CubeHolder extends Subsystem {
 
     public void resetLiftEncoder(){
         liftTalon.setSelectedSensorPosition(lowerEncoderLimit, PIDIDX, TIMEOUT_MS);
+    }
+
+    public void setTargetPosition(double value) {
+        targetPosition = value;
     }
 
     /* Updates target position to a value from -MAX_SPEED to +MAX_SPEED according to the joystick value */

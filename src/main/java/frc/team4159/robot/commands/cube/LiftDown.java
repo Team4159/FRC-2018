@@ -1,39 +1,18 @@
 package frc.team4159.robot.commands.cube;
 
-import edu.wpi.first.wpilibj.command.Command;
-import frc.team4159.robot.subsystems.CubeHolder;
+import edu.wpi.first.wpilibj.command.InstantCommand;
 import frc.team4159.robot.subsystems.Superstructure;
 
-public class LiftDown extends Command {
 
-    private CubeHolder cubeHolder = Superstructure.getInstance().getCubeHolder();
+public class LiftDown extends InstantCommand {
 
     public LiftDown() {
-       requires(Superstructure.cubeHolder);
-    }
-
-    @Override
-    protected void initialize() {
-        cubeHolder.updatePosition(0);
-    }
-
-
-    @Override
-    protected void execute() {
-        cubeHolder.move();
+        Superstructure.getInstance().getCubeHolder().updatePosition(0);
     }
 
     @Override
     protected boolean isFinished() {
-        return cubeHolder.getLiftPosition() > -200 && cubeHolder.getLiftPosition() < 200;
+        return true;
     }
 
-    @Override
-    protected void end() {
-    }
-
-    @Override
-    protected void interrupted() {
-        end();
-    }
 }

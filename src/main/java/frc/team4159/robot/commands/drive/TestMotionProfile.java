@@ -9,6 +9,8 @@ import jaci.pathfinder.Waypoint;
 import jaci.pathfinder.followers.EncoderFollower;
 import jaci.pathfinder.modifiers.TankModifier;
 
+import java.io.File;
+
 public class TestMotionProfile extends Command {
 
     private final double MAX_VELOCITY = 1.7; // meters per second
@@ -17,6 +19,7 @@ public class TestMotionProfile extends Command {
     private final double DELTA_TIME = 0.05; // rate at which control loop on roborio runs (sec)
     private final double kV = 1 / MAX_VELOCITY;
     private final double kA = 0;
+    private final double kP_TURN = 0.3;
 
     private EncoderFollower left;
     private EncoderFollower right;
@@ -33,7 +36,7 @@ public class TestMotionProfile extends Command {
 
         Waypoint[] points = new Waypoint[] {
                 new Waypoint(0, 0, 0),
-                new Waypoint(6, 0, 0) // goes forward 3 meters
+                new Waypoint(3.75, 1, 90)
         };
 
         Trajectory.Config config = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC,
@@ -50,7 +53,10 @@ public class TestMotionProfile extends Command {
         left.configurePIDVA(0,0,0, kV, kA);
         right.configurePIDVA(0,0,0, kV, kA);
 
-        System.out.println("test");
+//        File file1 = new File("realLeftBaseline.csv");
+//        Pathfinder.writeToCSV(file1, modifier.getLeftTrajectory());
+//        File file2 = new File("realRightBaseline.csv");
+//        Pathfinder.writeToCSV(file2, modifier.getRightTrajectory());
 
     }
 
@@ -60,15 +66,13 @@ public class TestMotionProfile extends Command {
         double l = left.calculate(Robot.drivetrain.getLeftEncoderPosition());
         double r = right.calculate(Robot.drivetrain.getRightEncoderPosition());
 
-//        System.out.println(l + "," + r );
-//
-//        double gyro_heading = Robot.drivetrain.getHeadingDegrees();
-//        double desired_heading = Pathfinder.r2d(left.getHeading());
-//
-//        double angleDifference = Pathfinder.boundHalfDegrees(desired_heading - gyro_heading);
-//        double turn = 0.8 * (-1.0/80.0) * angleDifference;
+        double gyro_heading = Robot.drivetrain.getHeadingDegrees();
+        double desired_heading = Pathfinder.r2d(left.getHeading());
 
-        Robot.drivetrain.setRawOutput(l, r);
+        double angleDifference = Pathfinder.boundHalfDegrees(desired_heading - gyro_heading);
+        double turn = kP_TURN * (-1.0/80.0) * angleDifference;
+
+        Robot.drivetrain.setRawOutput(l + turn, r - turn);
         Robot.drivetrain.logDashboard();
 
     }

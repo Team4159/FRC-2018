@@ -24,8 +24,8 @@ public interface ControlMap {
     int WINCH = 6;
 
     /* Intake Buttons */
-    int INTAKE = 3;
-    int OUTTAKE = 2;
+    int INTAKE = 2;
+    int OUTTAKE = 3;
     int TOGGLE_RAW_LIFT = 10;
     int RESET_LIFT_ENCODER = 11;
     int SWITCH = 4;

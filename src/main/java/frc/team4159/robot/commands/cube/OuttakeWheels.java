@@ -25,7 +25,6 @@ public class OuttakeWheels extends TimedCommand {
 
     @Override
     protected void end() {
-        cubeHolder.stopFlywheels();
     }
 
     @Override
