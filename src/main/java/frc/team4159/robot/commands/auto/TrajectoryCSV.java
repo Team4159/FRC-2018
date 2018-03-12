@@ -12,5 +12,9 @@ public interface TrajectoryCSV {
     String MID_TO_LEFT_R = "/traj/midToLeft_right_detailed.csv";
     String MID_TO_RIGHT_L = "/traj/midToRight_left_detailed.csv";
     String MID_TO_RIGHT_R = "/traj/midToRight_right_detailed.csv";
+    String RIGHT_TO_RIGHT_L = "/traj/rightToRight_left_detailed.csv";
+    String RIGHT_TO_RIGHT_R = "/traj/rightToRight_right_detailed.csv";
+    String RIGHT_TO_LEFT_L = "";
+    String RIGHT_TO_LEFT_R = "";
 
 }

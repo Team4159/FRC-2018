@@ -52,7 +52,8 @@ public class LiftCube extends Command {
 
                 if (Robot.oi.setSwitchHeight())
                     cubeHolder.setToSwitch();
-
+                else if(Robot.oi.setLiftTargetZero())
+                    cubeHolder.setTargetPosition(0);
                 else if (Math.abs(Robot.oi.getSecondaryY()) > .1)
                     cubeHolder.updatePosition(Robot.oi.getSecondaryY());
 

@@ -54,7 +54,7 @@ public class Drivetrain extends Subsystem implements PIDOutput {
     /* NavX turning PID constants */
     private final double kP_turn = 6*.001;
     private final double kI_turn = 0.0;
-    private final double kD_turn = 1*.001;
+    private final double kD_turn = 5*.001;
     private final double kF_turn = 0;
     private final double kToleranceDegrees = 2.0f;
 

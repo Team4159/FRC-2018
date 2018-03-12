@@ -30,7 +30,7 @@ public class Auto extends CommandGroup {
         /* Run auto delay */
         addSequential(new WaitCommand(delay));
 
-        /* Goes through all action cases */
+        /* Goes through all auto action cases */
         switch (action) {
 
             case BASELINE:
@@ -61,17 +61,25 @@ public class Auto extends CommandGroup {
                             System.out.println("RIGHT SWITCH");
                             addSequential(new RunCSVProfile(LEFT_TO_RIGHT_L, LEFT_TO_RIGHT_R));
 
-                        } else if (switchNear == MatchData.OwnedSide.UNKNOWN){
-                            System.out.println("doesn't work");
+                        } else {
+                            System.out.println("Don't know which side");
+                            addSequential(new RunCSVProfile(BASELINE_L, BASELINE_R));
                         }
                         break;
 
                     case MIDDLE:
                         System.out.println("MIDDLE STARTING CONFIGURATION");
+                        //if(switchNear == MatchData.)
                         break;
 
                     case RIGHT:
                         System.out.println("RIGHT STARTING CONFIGURATION");
+
+                        if(switchNear == MatchData.OwnedSide.RIGHT) {
+                            addSequential(new RunCSVProfile(RIGHT_TO_RIGHT_L, RIGHT_TO_RIGHT_R));
+                        } else {
+                            addSequential(new RunCSVProfile(BASELINE_L, BASELINE_R));
+                        }
                         break;
                 }
 

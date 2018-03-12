@@ -12,7 +12,7 @@ public class LiftUp extends InstantCommand {
         CubeHolder cubeHolder = Superstructure.getInstance().getCubeHolder();
 
         cubeHolder.setLiftEncoderValue(3300);
-        cubeHolder.setTargetPosition(2700);
+        cubeHolder.setTargetPosition(2500);
     }
 
     @Override

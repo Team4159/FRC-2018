@@ -13,10 +13,10 @@ import static frc.team4159.robot.Constants.WHEEL_DIAMETER;
 
 public class RunCSVProfile extends Command {
 
-    private final double MAX_VELOCITY = 5; // feet per second
+    private final double MAX_VELOCITY = 4; // meters per second
     private final double kV = 1 / MAX_VELOCITY;
     private final double kA = 0;
-    private final double kP_TURN = 0;
+    private final double kP_TURN = 0.1;
 
     private EncoderFollower left;
     private EncoderFollower right;
@@ -45,10 +45,10 @@ public class RunCSVProfile extends Command {
         right = new EncoderFollower(right_trajectory);
 
         left.configureEncoder(Robot.drivetrain.getLeftEncoderPosition(), UNITS_PER_REV, WHEEL_DIAMETER);
-        left.configurePIDVA(0.05, 0.0, 0.0, kV, kA);
+        left.configurePIDVA(0.002, 0.0, 0.0, kV, kA); //0.065
 
         right.configureEncoder(Robot.drivetrain.getRightEncoderPosition(), UNITS_PER_REV, WHEEL_DIAMETER);
-        right.configurePIDVA(0.05, 0.0, 0.0, kV, kA);
+        right.configurePIDVA(0.002, 0.0, 0.0, kV, kA); //0.018
     }
 
     @Override

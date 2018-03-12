@@ -104,6 +104,8 @@ public class OI {
         return secondaryJoy.getRawButton(SWITCH);
     }
 
+    public boolean setLiftTargetZero(){ return secondaryJoy.getRawButton(GROUND); }
+
     public boolean toggleLifterRawMode(){
 	    return secondaryJoy.getRawButtonReleased(TOGGLE_RAW_LIFT);
     }

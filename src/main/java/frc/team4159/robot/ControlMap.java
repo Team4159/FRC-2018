@@ -29,4 +29,5 @@ public interface ControlMap {
     int TOGGLE_RAW_LIFT = 10;
     int RESET_LIFT_ENCODER = 11;
     int SWITCH = 4;
+    int GROUND = 5;
 }

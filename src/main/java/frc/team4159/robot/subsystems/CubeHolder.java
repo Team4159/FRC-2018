@@ -30,7 +30,7 @@ public class CubeHolder extends Subsystem {
     private DoubleSolenoid pistons;
 
     private final int PIDIDX = 0;
-    private final double MAX_SPEED = 50.0; // encoder units per cycle TODO: Test and change as necessary
+    private final double MAX_SPEED = 100.0; // encoder units per cycle TODO: Test and change as necessary
     private final double kF = 0.0;
     private final double kP = 1.5;
     private final double kI = 0.0;
@@ -39,7 +39,7 @@ public class CubeHolder extends Subsystem {
     private double targetPosition; // In encoder units. 4096 per revolution.
     private final int upperEncoderLimit = 3300; // Lifter is up
     private final int lowerEncoderLimit = 0; // Lifter is down
-    private final int switchHeight = 3200;
+    private final int switchHeight = 2700;
     //TODO: this is a random number; determine switch height
     private boolean rawMode = true; // Switches between raw input (true) and position controlled (false)
 
@@ -154,6 +154,7 @@ public class CubeHolder extends Subsystem {
 
     public void resetLiftEncoder(){
         liftTalon.setSelectedSensorPosition(lowerEncoderLimit, PIDIDX, TIMEOUT_MS);
+        targetPosition = 0;
     }
 
     public void setTargetPosition(double value) {

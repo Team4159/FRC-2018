@@ -56,12 +56,12 @@ public class Robot extends TimedRobot {
 		actionChooser.addDefault("Drive Straight (Default)", new Auto(AutoAction.BASELINE));
 		actionChooser.addObject("One Cube",                  new Auto(AutoAction.ONE_CUBE));
 		actionChooser.addObject("Two Cube",                  new Auto(AutoAction.TWO_CUBE));
-		SmartDashboard.putData("!!! CHOOSE AUTO COMMAND !!!", actionChooser);
+		SmartDashboard.putData("CHOOSE AUTO ACTION!", actionChooser);
 
 		positionChooser.addDefault("Left (Default)", new SetPosition(StartingConfiguration.LEFT));
 		positionChooser.addObject("Middle",          new SetPosition(StartingConfiguration.MIDDLE));
 		positionChooser.addObject("Right",           new SetPosition(StartingConfiguration.RIGHT));
-		SmartDashboard.putData("!!! CHOOSE STARTING CONFIGURATION !!!", positionChooser);
+		SmartDashboard.putData("CHOOSE STARTING POSITION!", positionChooser);
 
 		SmartDashboard.putNumber("Auto Delay", defaultAutoDelay);
 	}
@@ -86,17 +86,24 @@ public class Robot extends TimedRobot {
 
 		/* Gets user determined auto settings */
 		setPositionCommand = positionChooser.getSelected();
-		actionCommand = actionChooser.getSelected();
 
 		/* First, starts the command to get user determined starting configuration */
         if (setPositionCommand != null) {
             setPositionCommand.start();
         }
 
+        actionCommand = actionChooser.getSelected();
         /* Then, starts the command to run an action based on starting configuration and match data */
         if (actionCommand != null) {
             actionCommand.start();
         }
+
+
+
+	}
+
+	public void startAutoAction() {
+
 
 	}
 

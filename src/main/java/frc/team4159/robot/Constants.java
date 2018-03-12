@@ -6,8 +6,6 @@ package frc.team4159.robot;
 
 public interface Constants {
 
-    // TODO: Test the effects of lowering the pid timeout
-
     // Timeout value in ms. If nonzero, function will wait for config success and report an error if it times out. If zero, no blocking or checking is performed.
     int TIMEOUT_MS = 5;
 
@@ -24,6 +22,6 @@ public interface Constants {
     double WHEELBASE_WIDTH = .6566535; // 25.8525 inches to meters.
 
     // 4 inches to feet
-    double WHEEL_DIAMETER = 4.0/12.0;
+    double WHEEL_DIAMETER = 4/12;
 
 }

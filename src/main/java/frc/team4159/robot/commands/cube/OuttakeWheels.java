@@ -7,7 +7,7 @@ import frc.team4159.robot.subsystems.Superstructure;
 
 public class OuttakeWheels extends TimedCommand {
 
-    CubeHolder cubeHolder = Superstructure.getInstance().getCubeHolder();
+    private CubeHolder cubeHolder = Superstructure.getInstance().getCubeHolder();
 
     public OuttakeWheels(double duration) {
         super(duration);
