@@ -26,7 +26,7 @@ public class Auto extends CommandGroup {
         StartingConfiguration position = robot.getStartingConfiguration();
         MatchData.OwnedSide switchNear = MatchData.getOwnedSide(MatchData.GameFeature.SWITCH_NEAR);
 
-        System.out.println(switchNear + " sdfdsfs");
+        System.out.println(switchNear + " IS NEAR SWITCH");
 
         /* Run auto delay */
         addSequential(new WaitCommand(delay));
@@ -35,13 +35,13 @@ public class Auto extends CommandGroup {
         switch (action) {
 
             case BASELINE:
-                System.out.println("BASELINE");
+                System.out.println("BASELINE ACTION");
                 addSequential(new RunCSVProfile(BASELINE_L, BASELINE_R));
                 break;
 
             case ONE_CUBE:
 
-                System.out.println("ONE CUBE");
+                System.out.println("ONE CUBE ACTION");
 
                 /* Always runs the lifter */
                 addParallel(new RunLift());
@@ -52,39 +52,42 @@ public class Auto extends CommandGroup {
                 switch(position) {
 
                     case LEFT:
-                        System.out.println("LEFT STARTING CONFIGURATION");
+                        System.out.println("LEFT STARTING POSITION");
 
                         if(switchNear == MatchData.OwnedSide.LEFT) {
-                            System.out.println("LEFT SWITCH");
                             addSequential(new RunCSVProfile(LEFT_TO_LEFT_L, LEFT_TO_LEFT_R));
-                        }
-                        else if(switchNear == MatchData.OwnedSide.RIGHT) {
-                            System.out.println("RIGHT SWITCH");
-                            addSequential(new RunCSVProfile(LEFT_TO_RIGHT_L, LEFT_TO_RIGHT_R));
-                            addSequential(new TurnToAngle(-90));
+
+                        } else if (switchNear == MatchData.OwnedSide.RIGHT) {
+//                            System.out.println("RIGHT SWITCH");
+//                            addSequential(new RunCSVProfile(LEFT_TO_RIGHT_L, LEFT_TO_RIGHT_R));
+//                            addSequential(new TurnToAngle(-90));
+                            addSequential(new RunCSVProfile(BASELINE_L, BASELINE_R));
 
                         } else {
                             System.out.println("Don't know which side");
                             addSequential(new RunCSVProfile(BASELINE_L, BASELINE_R));
                         }
+
                         break;
 
                     case MIDDLE:
-                        System.out.println("MIDDLE STARTING CONFIGURATION");
+                        System.out.println("MIDDLE STARTING POSITION");
+
                             if(switchNear == MatchData.OwnedSide.LEFT) {
                                 addSequential(new RunCSVProfile(MID_TO_LEFT_L, MID_TO_LEFT_R));
 
                             } else if (switchNear == MatchData.OwnedSide.RIGHT) {
                                 addSequential(new RunCSVProfile(MID_TO_RIGHT_L, MID_TO_RIGHT_R));
-
                             }
+
                         break;
 
                     case RIGHT:
-                        System.out.println("RIGHT STARTING CONFIGURATION");
+                        System.out.println("RIGHT STARTING POSITION");
 
                         if(switchNear == MatchData.OwnedSide.RIGHT) {
                             addSequential(new RunCSVProfile(RIGHT_TO_RIGHT_L, RIGHT_TO_RIGHT_R));
+
                         } else {
                             addSequential(new RunCSVProfile(BASELINE_L, BASELINE_R));
                         }

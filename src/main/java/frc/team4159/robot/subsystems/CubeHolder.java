@@ -176,14 +176,15 @@ public class CubeHolder extends Subsystem {
     }
 
     public void logDashboard() {
-//        SmartDashboard.putNumber("lift position", liftTalon.getSelectedSensorPosition(0));
-//        SmartDashboard.putNumber("lift target", targetPosition);
-//        SmartDashboard.putBoolean("Lift Mode", rawMode);
+
+        SmartDashboard.putNumber("lift position", liftTalon.getSelectedSensorPosition(0));
+        SmartDashboard.putNumber("lift target", targetPosition);
         if(rawMode) {
             SmartDashboard.putString("Lift mode", "RAW");
         } else {
             SmartDashboard.putString("Lift mode", "PID");
         }
+
     }
 
     public void initDefaultCommand() {

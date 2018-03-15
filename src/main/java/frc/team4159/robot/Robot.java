@@ -1,5 +1,6 @@
 package frc.team4159.robot;
 
+import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -7,10 +8,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team4159.robot.commands.auto.*;
-import frc.team4159.robot.commands.drive.TestMotionProfile;
 import frc.team4159.robot.subsystems.Drivetrain;
 import frc.team4159.robot.subsystems.Superstructure;
-import openrio.powerup.MatchData;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -65,6 +64,9 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putData("CHOOSE STARTING POSITION!", positionChooser);
 
 		SmartDashboard.putNumber("Auto Delay", defaultAutoDelay);
+
+		CameraServer.getInstance().startAutomaticCapture();
+
 	}
 
     /**
