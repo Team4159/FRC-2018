@@ -30,9 +30,9 @@ public class CubeHolder extends Subsystem {
     private DoubleSolenoid pistons;
 
     private final int PIDIDX = 0;
-    private final double MAX_SPEED = 100.0; // encoder units per cycle TODO: Test and change as necessary
+    private final double MAX_SPEED = 200.0; // encoder units per cycle TODO: Test and change as necessary
     private final double kF = 0.0;
-    private final double kP = 1.5;
+    private final double kP = 0.5;
     private final double kI = 0.0;
     private final double kD = 0.0;
 
@@ -176,9 +176,14 @@ public class CubeHolder extends Subsystem {
     }
 
     public void logDashboard() {
-        SmartDashboard.putNumber("lift position", liftTalon.getSelectedSensorPosition(0));
-        SmartDashboard.putNumber("lift target", targetPosition);
-        SmartDashboard.putBoolean("Lift Mode", rawMode);
+//        SmartDashboard.putNumber("lift position", liftTalon.getSelectedSensorPosition(0));
+//        SmartDashboard.putNumber("lift target", targetPosition);
+//        SmartDashboard.putBoolean("Lift Mode", rawMode);
+        if(rawMode) {
+            SmartDashboard.putString("Lift mode", "RAW");
+        } else {
+            SmartDashboard.putString("Lift mode", "PID");
+        }
     }
 
     public void initDefaultCommand() {

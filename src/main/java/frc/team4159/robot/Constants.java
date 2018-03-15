@@ -22,6 +22,6 @@ public interface Constants {
     double WHEELBASE_WIDTH = .6566535; // 25.8525 inches to meters.
 
     // 4 inches to feet
-    double WHEEL_DIAMETER = 4/12;
+    double WHEEL_DIAMETER = 4/12; // 0.1016
 
 }

@@ -2,6 +2,7 @@ package frc.team4159.robot.commands.drive;
 
 import java.io.File;
 
+import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.team4159.robot.Robot;
 import jaci.pathfinder.Pathfinder;
@@ -11,11 +12,12 @@ import jaci.pathfinder.followers.EncoderFollower;
 import static frc.team4159.robot.Constants.UNITS_PER_REV;
 import static frc.team4159.robot.Constants.WHEEL_DIAMETER;
 
-public class RunCSVProfile extends Command {
+public class RunCSVProfile extends Command implements Runnable {
 
-    private final double MAX_VELOCITY = 4; // meters per second
+    // 4.1148 max v generator
+    private final double MAX_VELOCITY = 4.25; // meters per second ?!?!?!?!?!?!
     private final double kV = 1 / MAX_VELOCITY;
-    private final double kA = 0;
+    private final double kA = 0; // TUNE
     private final double kP_TURN = 0.1;
 
     private EncoderFollower left;
@@ -23,6 +25,8 @@ public class RunCSVProfile extends Command {
 
     private String leftCSV;
     private String rightCSV;
+
+    private Notifier notifier = new Notifier(this);
 
     public RunCSVProfile(String leftCSV, String rightCSV) {
         requires(Robot.drivetrain);
@@ -45,14 +49,34 @@ public class RunCSVProfile extends Command {
         right = new EncoderFollower(right_trajectory);
 
         left.configureEncoder(Robot.drivetrain.getLeftEncoderPosition(), UNITS_PER_REV, WHEEL_DIAMETER);
-        left.configurePIDVA(0.002, 0.0, 0.0, kV, kA); //0.065
+        left.configurePIDVA(0.0, 0.0, 0.0, kV, kA);
 
         right.configureEncoder(Robot.drivetrain.getRightEncoderPosition(), UNITS_PER_REV, WHEEL_DIAMETER);
-        right.configurePIDVA(0.002, 0.0, 0.0, kV, kA); //0.018
+        right.configurePIDVA(0.0, 0.0, 0.0, kV, kA);
+
+        // In seconds
+        //notifier.startPeriodic(0.01);
+
     }
 
     @Override
     protected void execute() {
+        double l = left.calculate(Robot.drivetrain.getLeftEncoderPosition());
+        double r = right.calculate(Robot.drivetrain.getRightEncoderPosition());
+
+        double gyro_heading = Robot.drivetrain.getHeadingDegrees();
+        double desired_heading = Pathfinder.r2d(left.getHeading());
+
+        double angleDifference = Pathfinder.boundHalfDegrees(desired_heading - gyro_heading);
+        double kG = kP_TURN * (-1.0/80.0);
+        double turn = kG * angleDifference;
+
+        Robot.drivetrain.setRawOutput(l + turn, r - turn);
+        Robot.drivetrain.logDashboard();
+    }
+
+    /* Looped by Notifier */
+    public void run() {
 
         double l = left.calculate(Robot.drivetrain.getLeftEncoderPosition());
         double r = right.calculate(Robot.drivetrain.getRightEncoderPosition());

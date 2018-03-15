@@ -52,9 +52,9 @@ public class Drivetrain extends Subsystem implements PIDOutput {
     private boolean reverse;
 
     /* NavX turning PID constants */
-    private final double kP_turn = 6*.001;
-    private final double kI_turn = 0.0;
-    private final double kD_turn = 5*.001;
+    private final double kP_turn = 5 * 0.01;
+    private final double kI_turn = 0;
+    private final double kD_turn = 0.05;
     private final double kF_turn = 0;
     private final double kToleranceDegrees = 2.0f;
 
@@ -246,8 +246,8 @@ public class Drivetrain extends Subsystem implements PIDOutput {
 
         /* Sets and limits the peak and continuous current for both sides of motors to prevent brownouts */
 
-        final int PEAK_CURRENT = 30; // Amps
-        final int CONTINUOUS_CURRENT = 25; // Amps
+        final int PEAK_CURRENT = 20; // Amps
+        final int CONTINUOUS_CURRENT = 15; // Amps
         final int PEAK_CURRENT_DURATION = 200; // ms
         final int PEAK_CURRENT_TIMEOUT = 20; // ms
 

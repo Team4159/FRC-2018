@@ -34,7 +34,8 @@ public class Robot extends TimedRobot {
 	public static OI oi;
 
 	/* Auto match data */
-	private StartingConfiguration autoPosition = StartingConfiguration.LEFT;
+	/* Change this everytime before a match. For some reason I have not yet examined, it's hard coded. Shhhhhh */
+	private StartingConfiguration autoPosition = StartingConfiguration.MIDDLE;
 
 	/* Auto choosers */
 	private Command actionCommand;

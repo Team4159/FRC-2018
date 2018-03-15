@@ -8,6 +8,7 @@ import frc.team4159.robot.commands.cube.OuttakeWheels;
 import frc.team4159.robot.commands.cube.RunLift;
 import frc.team4159.robot.commands.drive.RunCSVProfile;
 
+import frc.team4159.robot.commands.drive.TurnToAngle;
 import openrio.powerup.MatchData;
 
 import static frc.team4159.robot.commands.auto.TrajectoryCSV.*;
@@ -60,6 +61,7 @@ public class Auto extends CommandGroup {
                         else if(switchNear == MatchData.OwnedSide.RIGHT) {
                             System.out.println("RIGHT SWITCH");
                             addSequential(new RunCSVProfile(LEFT_TO_RIGHT_L, LEFT_TO_RIGHT_R));
+                            addSequential(new TurnToAngle(-90));
 
                         } else {
                             System.out.println("Don't know which side");
@@ -69,7 +71,13 @@ public class Auto extends CommandGroup {
 
                     case MIDDLE:
                         System.out.println("MIDDLE STARTING CONFIGURATION");
-                        //if(switchNear == MatchData.)
+                            if(switchNear == MatchData.OwnedSide.LEFT) {
+                                addSequential(new RunCSVProfile(MID_TO_LEFT_L, MID_TO_LEFT_R));
+
+                            } else if (switchNear == MatchData.OwnedSide.RIGHT) {
+                                addSequential(new RunCSVProfile(MID_TO_RIGHT_L, MID_TO_RIGHT_R));
+
+                            }
                         break;
 
                     case RIGHT:
