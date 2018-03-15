@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.team4159.robot.Constants;
 import frc.team4159.robot.commands.drive.Drive;
 
 import static frc.team4159.robot.Constants.*;
@@ -201,10 +202,11 @@ public class Drivetrain extends Subsystem implements PIDOutput {
     }
 
     /* Sets left and right motors to a target velocity */
-    public void setVelocity(double leftPercent, double rightPercent) {
-        double leftTarget = leftPercent * MAX_SPEED;
-        double rightTarget = rightPercent * MAX_SPEED;
-        leftTalon.set(ControlMode.Velocity, leftTarget);
+    public void setVelocity(double leftTarget, double rightTarget) { //Input inches in seconds
+        //TODO: double check conversions
+        double leftNativeVelocity = leftTarget*UNITS_PER_REV/(1000*WHEEL_CIRCUMFERENCE); //1000 milliseconds in a second
+        double rightNativeVelocity = leftTarget*UNITS_PER_REV/(1000*WHEEL_CIRCUMFERENCE); //1000 milliseconds in a second
+        leftTalon.set(ControlMode.Velocity, leftTarget); //Encoder units/ms
         rightTalon.set(ControlMode.Velocity, rightTarget);
     }
 

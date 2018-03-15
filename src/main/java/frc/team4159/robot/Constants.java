@@ -21,7 +21,10 @@ public interface Constants {
     // Distance between wheels of two sides
     double WHEELBASE_WIDTH = .6566535; // 25.8525 inches to meters.
 
+    double WHEELBASE_WIDTH_INCHES = 25.8525;
+
     // 4 inches to feet
     double WHEEL_DIAMETER = 4/12; // 0.1016
+    double WHEEL_CIRCUMFERENCE = 2*Math.PI*WHEEL_DIAMETER;
 
 }
