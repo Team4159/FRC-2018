@@ -21,6 +21,7 @@ public class Superstructure {
 
     public static Climber climber;
     public static CubeHolder cubeHolder;
+    public static LED led;
 
     private PowerDistributionPanel pdp;
     private Compressor compressor;
@@ -28,6 +29,7 @@ public class Superstructure {
     private Superstructure() {
         climber = Climber.getInstance();
         cubeHolder = CubeHolder.getInstance();
+        led = LED.getInstance();
 
         pdp = new PowerDistributionPanel();
         compressor = new Compressor(PCM);
@@ -40,6 +42,10 @@ public class Superstructure {
 
     public CubeHolder getCubeHolder() {
         return cubeHolder;
+    }
+
+    public LED getLED() {
+        return led;
     }
 
     public double getPDPCurrent(int channel) {

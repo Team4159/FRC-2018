@@ -1,6 +1,10 @@
 package frc.team4159.robot;
 
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.CameraServer;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -8,6 +12,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team4159.robot.commands.auto.*;
+import frc.team4159.robot.commands.led.BlinkLED;
+import frc.team4159.robot.commands.led.TurnOffLED;
+import frc.team4159.robot.commands.led.TurnOnLED;
 import frc.team4159.robot.subsystems.Drivetrain;
 import frc.team4159.robot.subsystems.Superstructure;
 
@@ -43,6 +50,8 @@ public class Robot extends TimedRobot {
     private SendableChooser<Command> actionChooser = new SendableChooser<>();
     private final double defaultAutoDelay = 0.0;
 
+    private NetworkTableEntry ledModeEntry;
+
     /* This function is called when the robot is first started up */
 	@Override
 	public void robotInit() {
@@ -67,6 +76,10 @@ public class Robot extends TimedRobot {
 
 		CameraServer.getInstance().startAutomaticCapture();
 
+		NetworkTableInstance inst = NetworkTableInstance.getDefault();
+		NetworkTable table = inst.getTable("datatable");
+		ledModeEntry = table.getEntry("LED Mode");
+
 	}
 
     /**
@@ -74,7 +87,7 @@ public class Robot extends TimedRobot {
      */
 	@Override
 	public void disabledInit() {
-	    // TODO: Reset subsystem info e.g. sensors (maybe)
+		ledModeEntry.setString("DISABLED");
 	}
 
 	/* Called periodically when robot is disabled */
@@ -101,12 +114,14 @@ public class Robot extends TimedRobot {
             actionCommand.start();
         }
 
+        if(DriverStation.getInstance().getAlliance() == DriverStation.Alliance.Red) {
+			ledModeEntry.setString("RED");
 
+		} else {
+			ledModeEntry.setString("BLUE");
+		}
 
-	}
-
-	public void startAutoAction() {
-
+        new TurnOnLED();
 
 	}
 
@@ -123,11 +138,22 @@ public class Robot extends TimedRobot {
 		if (actionCommand != null) {
             actionCommand.cancel();
 		}
+
+		new TurnOffLED();
 	}
+
+	private boolean blinkMode = false;
 
     /* Periodically called during operator control. */
 	@Override
 	public void teleopPeriodic() {
+
+		if(DriverStation.getInstance().getMatchTime() <= 30 && !blinkMode) {
+			ledModeEntry.setString("END GAME");
+			new BlinkLED();
+			blinkMode = true;
+		}
+
 		Scheduler.getInstance().run();
 	}
 
