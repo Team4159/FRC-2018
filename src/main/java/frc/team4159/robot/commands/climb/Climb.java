@@ -23,21 +23,25 @@ public class Climb extends Command {
     @Override
     protected void execute() {
 
-        climber.winch(Robot.oi.climbWinch());
-
         if(Robot.oi.climbEnable()){
-            if(Math.abs(Robot.oi.getSecondaryY()) > .1)
+            if(Math.abs(Robot.oi.getSecondaryY()) > .1) {
                 climber.updatePosition(Robot.oi.getSecondaryY());
-            else{
-                climber.updatePosition(0.0);
             }
         }
 
-        if(Robot.oi.fastDownButton()) {
-            climber.down();
+        if(Robot.oi.climbWinch()) {
+            climber.winch();
         }
 
-        climber.climberRun();
+        if(Robot.oi.fastDownButton1()) {
+            climber.fast1();
+        }
+
+        if(Robot.oi.fastDownButton2()) {
+            climber.fast2();
+        }
+
+        climber.move();
 
         climber.logSmartDashboard();
     }

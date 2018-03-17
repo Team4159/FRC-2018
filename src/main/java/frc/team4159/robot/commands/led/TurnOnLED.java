@@ -7,6 +7,7 @@ import frc.team4159.robot.subsystems.Superstructure;
 public class TurnOnLED extends InstantCommand {
 
     public TurnOnLED() {
+        requires(Superstructure.led);
         Superstructure.getInstance().getLED().enableLEDRings();
     }
 

@@ -7,6 +7,7 @@ import frc.team4159.robot.subsystems.Superstructure;
 public class TurnOffLED extends InstantCommand {
 
     public TurnOffLED() {
+        requires(Superstructure.led);
         Superstructure.getInstance().getLED().disableLEDRings();
     }
 
