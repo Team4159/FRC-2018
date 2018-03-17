@@ -31,6 +31,8 @@ public class Climb extends Command {
 
         if(Robot.oi.climbWinch()) {
             climber.winch();
+        } else {
+            climber.stopWinch();
         }
 
         if(Robot.oi.fastDownButton1()) {
