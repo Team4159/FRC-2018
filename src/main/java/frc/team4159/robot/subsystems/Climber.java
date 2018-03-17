@@ -33,6 +33,15 @@ public class Climber extends Subsystem {
     private final int PIDIDX = 0;
     private double targetPosition = 0;
 
+    private final double fastDownDistance = 7000;
+    private final double hookDeliveryIncrement = 200;
+
+    private boolean climbTalonRawMode;
+
+    //Flags
+    private boolean hasStartedClimb;
+    private boolean hasGoneDown;
+
     private Climber() {
 
         climbTalon = new TalonSRX(CLIMB_TALON);
@@ -40,6 +49,10 @@ public class Climber extends Subsystem {
 
         climbTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, TIMEOUT_MS);
         configureSensors();
+
+        hasStartedClimb = false;
+        hasGoneDown = false;
+        climbTalonRawMode = false;
     }
 
     private void configureSensors(){
@@ -57,28 +70,50 @@ public class Climber extends Subsystem {
     }
 
     public void move(){
-        climbTalon.set(ControlMode.Position, targetPosition); //36840
+        if(!climbTalonRawMode)
+            climbTalon.set(ControlMode.Position, targetPosition); //36840
+        else
+            climbTalon.set(ControlMode.PercentOutput, 0);
+    }
+
+    public void setStartedClimb(boolean value){
+        hasStartedClimb = value;
+    }
+    public void setGoneDown(boolean value){
+        hasGoneDown = value;
+    }
+
+    public boolean getClimbStarted(){
+        return hasStartedClimb;
+    }
+    public boolean getGoneDown(){
+        return hasGoneDown;
     }
 
     public void updatePosition(double value) {
-        value *= 200;
+        value *= hookDeliveryIncrement;
         targetPosition += value;
     }
 
-    public void fast1() {
-        targetPosition += 1500;
+    public void stopIncrement(){
+        targetPosition = climbTalon.getSelectedSensorPosition(PIDIDX);
     }
 
-    public void fast2() {
-        targetPosition -= 1500;
+    public void fastDown() {
+        targetPosition -= fastDownDistance;
     }
 
     public void winch() {
-        climbVictor.set(-1);
+        if(hasGoneDown&&climbTalon.getSelectedSensorPosition(PIDIDX)<3000)
+            climbVictor.set(-1);
     }
 
     public void stopWinch() {
         climbVictor.set(0);
+    }
+
+    public void toggleClimbTalonMode(){
+        climbTalonRawMode = !climbTalonRawMode;
     }
 
     public void logSmartDashboard() {
@@ -89,8 +124,11 @@ public class Climber extends Subsystem {
 ////      kF = SmartDashboard.getNumber("kF_climb", 0.0);
 //        target = SmartDashboard.getNumber("target", 0.0);
 
-//        SmartDashboard.putNumber("position", climbTalon.getSelectedSensorPosition(PIDIDX));
-//        SmartDashboard.putNumber("targetPosition", targetPosition);
+        SmartDashboard.putNumber("position", climbTalon.getSelectedSensorPosition(PIDIDX));
+        SmartDashboard.putNumber("targetPosition", targetPosition);
+        SmartDashboard.putBoolean("hasStartedClimb", hasStartedClimb);
+        SmartDashboard.putBoolean("hasGoneDown", hasGoneDown);
+        SmartDashboard.putBoolean("talonRawMode", climbTalonRawMode);
     }
 
     public void initDefaultCommand() {

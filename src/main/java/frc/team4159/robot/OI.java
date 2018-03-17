@@ -110,19 +110,19 @@ public class OI {
     public boolean setLiftTargetZero(){ return secondaryJoy.getRawButtonPressed(GROUND); }
 
     public boolean toggleLifterRawMode(){
-	    return secondaryJoy.getRawButtonPressed(TOGGLE_RAW_LIFT);
+	    return secondaryJoy.getRawButtonReleased(TOGGLE_RAW_LIFT);
     }
 
     public boolean resetLiftEncoder(){
         return secondaryJoy.getRawButtonPressed(RESET_LIFT_ENCODER);
     }
 
-    public boolean fastDownButton1() {
-        return secondaryJoy.getRawButtonPressed(8);
+    public boolean fastDownButton() {
+        return secondaryJoy.getRawButtonReleased(8);
     }
 
-    public boolean fastDownButton2() {
-        return secondaryJoy.getRawButtonPressed(9);
+    public boolean toggleClimbTalonMode() {
+        return secondaryJoy.getRawButtonReleased(9);
     }
 
 }
