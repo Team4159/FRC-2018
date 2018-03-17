@@ -8,6 +8,7 @@ import frc.team4159.robot.commands.cube.OuttakeWheels;
 import frc.team4159.robot.commands.cube.RunLift;
 import frc.team4159.robot.commands.drive.RunCSVProfile;
 
+import frc.team4159.robot.commands.led.SolidLED;
 import openrio.powerup.MatchData;
 
 import static frc.team4159.robot.commands.auto.TrajectoryCSV.*;
@@ -27,7 +28,7 @@ public class Auto extends CommandGroup {
 
         System.out.println(switchNear + " IS NEAR SWITCH");
 
-        /* Run auto delay */
+        addParallel(new SolidLED());
         addSequential(new WaitCommand(delay));
 
         /* Goes through all auto action cases */

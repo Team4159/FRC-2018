@@ -56,7 +56,7 @@ public class Climber extends Subsystem {
 
     }
 
-    public void climberRun(){
+    public void move(){
         climbTalon.set(ControlMode.Position, targetPosition); //36840
     }
 
@@ -65,15 +65,16 @@ public class Climber extends Subsystem {
         targetPosition += value;
     }
 
-    public void down() {
-        targetPosition += 1000;
+    public void fast1() {
+        targetPosition += 1500;
     }
 
-    public void winch(boolean winching){
-        if(winching)
-            climbVictor.set(-1.0);
-        else
-            climbVictor.set(0.0);
+    public void fast2() {
+        targetPosition -= 1500;
+    }
+
+    public void winch() {
+        climbVictor.set(-1);
     }
 
     public void logSmartDashboard() {
@@ -84,8 +85,8 @@ public class Climber extends Subsystem {
 ////      kF = SmartDashboard.getNumber("kF_climb", 0.0);
 //        target = SmartDashboard.getNumber("target", 0.0);
 
-        SmartDashboard.putNumber("position", climbTalon.getSelectedSensorPosition(PIDIDX));
-        SmartDashboard.putNumber("targetPosition", targetPosition);
+//        SmartDashboard.putNumber("position", climbTalon.getSelectedSensorPosition(PIDIDX));
+//        SmartDashboard.putNumber("targetPosition", targetPosition);
     }
 
     public void initDefaultCommand() {

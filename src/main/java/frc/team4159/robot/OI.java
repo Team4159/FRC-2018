@@ -22,7 +22,6 @@ public class OI {
 
     /* Logitech Attack 3 joysticks, plugged in via USB to the driver station laptop */
     private Joystick leftJoy, rightJoy, secondaryJoy;
-    private JoystickButton fastDownButton;
 
     private OI() {
         leftJoy = new Joystick(LEFT_STICK);
@@ -105,21 +104,25 @@ public class OI {
     }
 
     public boolean setSwitchHeight(){
-        return secondaryJoy.getRawButton(SWITCH);
+        return secondaryJoy.getRawButtonPressed(SWITCH);
     }
 
-    public boolean setLiftTargetZero(){ return secondaryJoy.getRawButton(GROUND); }
+    public boolean setLiftTargetZero(){ return secondaryJoy.getRawButtonPressed(GROUND); }
 
     public boolean toggleLifterRawMode(){
-	    return secondaryJoy.getRawButtonReleased(TOGGLE_RAW_LIFT);
+	    return secondaryJoy.getRawButtonPressed(TOGGLE_RAW_LIFT);
     }
 
     public boolean resetLiftEncoder(){
-        return secondaryJoy.getRawButtonReleased(RESET_LIFT_ENCODER);
+        return secondaryJoy.getRawButtonPressed(RESET_LIFT_ENCODER);
     }
 
-    public boolean fastDownButton() {
+    public boolean fastDownButton1() {
         return secondaryJoy.getRawButtonPressed(8);
+    }
+
+    public boolean fastDownButton2() {
+        return secondaryJoy.getRawButtonPressed(9);
     }
 
 }

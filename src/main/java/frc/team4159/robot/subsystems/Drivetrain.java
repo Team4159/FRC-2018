@@ -237,9 +237,9 @@ public class Drivetrain extends Subsystem implements PIDOutput {
     }
 
     public void logDashboard() {
-        SmartDashboard.putNumber("Current Angle", navx.getYaw());
-        SmartDashboard.putNumber("Angle Error",turnController.getError());
-        SmartDashboard.putNumber("Setpoint Angle", angleSetpoint);
+//        SmartDashboard.putNumber("Current Angle", navx.getYaw());
+//        SmartDashboard.putNumber("Angle Error",turnController.getError());
+//        SmartDashboard.putNumber("Setpoint Angle", angleSetpoint);
     }
 
     private void limitCurrent() {

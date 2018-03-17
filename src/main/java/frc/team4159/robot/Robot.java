@@ -104,8 +104,6 @@ public class Robot extends TimedRobot {
 			ledModeEntry.setString("BLUE");
 		}
 
-        new TurnOnLED();
-
 	}
 
     /* Periodically called during autonomous */
@@ -123,7 +121,6 @@ public class Robot extends TimedRobot {
             actionCommand.cancel();
 		}
 
-		new TurnOffLED();
 	}
 
 	private boolean blinkMode = false;
