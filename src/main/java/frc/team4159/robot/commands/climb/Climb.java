@@ -32,6 +32,11 @@ public class Climb extends Command {
                 climber.updatePosition(0.0);
             }
         }
+
+        if(Robot.oi.fastDownButton()) {
+            climber.down();
+        }
+
         climber.climberRun();
 
         climber.logSmartDashboard();

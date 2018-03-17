@@ -16,11 +16,9 @@ public class LED extends Subsystem {
     private Solenoid smallRing;
     private Solenoid bigRing;
 
-    private boolean blinkMode = false;
-
     private LED() {
         smallRing = new Solenoid(0);
-        bigRing = new Solenoid(1);
+        bigRing = new Solenoid(4);
     }
 
     public void enableLEDRings() {

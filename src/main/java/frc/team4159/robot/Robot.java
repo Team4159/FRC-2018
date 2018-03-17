@@ -150,7 +150,8 @@ public class Robot extends TimedRobot {
 
 		if(DriverStation.getInstance().getMatchTime() <= 30 && !blinkMode) {
 			ledModeEntry.setString("END GAME");
-			new BlinkLED();
+			Command blinkCommand = new BlinkLED();
+			blinkCommand.start();
 			blinkMode = true;
 		}
 

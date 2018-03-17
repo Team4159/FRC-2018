@@ -26,7 +26,7 @@ public class Climber extends Subsystem {
     private VictorSP climbVictor; // winch
 
     private double kF = 0;
-    private double kP = .4;
+    private double kP = 0.4;
     private double kI = 0;
     private double kD = 0;
     private final int SLOTIDX = 0;
@@ -41,6 +41,7 @@ public class Climber extends Subsystem {
         climbTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, TIMEOUT_MS);
         configureSensors();
     }
+
     private void configureSensors(){
         climbTalon.config_kF(SLOTIDX, kF, TIMEOUT_MS);
         climbTalon.config_kP(SLOTIDX, kP, TIMEOUT_MS);
@@ -56,12 +57,16 @@ public class Climber extends Subsystem {
     }
 
     public void climberRun(){
-        climbTalon.set(ControlMode.Position, targetPosition);//36840
+        climbTalon.set(ControlMode.Position, targetPosition); //36840
     }
 
     public void updatePosition(double value) {
-        value *= 100;
+        value *= 200;
         targetPosition += value;
+    }
+
+    public void down() {
+        targetPosition += 1000;
     }
 
     public void winch(boolean winching){

@@ -8,7 +8,6 @@ import frc.team4159.robot.commands.cube.OuttakeWheels;
 import frc.team4159.robot.commands.cube.RunLift;
 import frc.team4159.robot.commands.drive.RunCSVProfile;
 
-import frc.team4159.robot.commands.drive.TurnToAngle;
 import openrio.powerup.MatchData;
 
 import static frc.team4159.robot.commands.auto.TrajectoryCSV.*;
@@ -58,9 +57,6 @@ public class Auto extends CommandGroup {
                             addSequential(new RunCSVProfile(LEFT_TO_LEFT_L, LEFT_TO_LEFT_R));
 
                         } else if (switchNear == MatchData.OwnedSide.RIGHT) {
-//                            System.out.println("RIGHT SWITCH");
-//                            addSequential(new RunCSVProfile(LEFT_TO_RIGHT_L, LEFT_TO_RIGHT_R));
-//                            addSequential(new TurnToAngle(-90));
                             addSequential(new RunCSVProfile(BASELINE_L, BASELINE_R));
 
                         } else {
@@ -73,12 +69,15 @@ public class Auto extends CommandGroup {
                     case MIDDLE:
                         System.out.println("MIDDLE STARTING POSITION");
 
-                            if(switchNear == MatchData.OwnedSide.LEFT) {
-                                addSequential(new RunCSVProfile(MID_TO_LEFT_L, MID_TO_LEFT_R));
+                        if(switchNear == MatchData.OwnedSide.LEFT) {
+                            addSequential(new RunCSVProfile(MID_TO_LEFT_L, MID_TO_LEFT_R));
 
-                            } else if (switchNear == MatchData.OwnedSide.RIGHT) {
-                                addSequential(new RunCSVProfile(MID_TO_RIGHT_L, MID_TO_RIGHT_R));
-                            }
+                        } else if (switchNear == MatchData.OwnedSide.RIGHT) {
+                            addSequential(new RunCSVProfile(MID_TO_RIGHT_L, MID_TO_RIGHT_R));
+
+                        } else {
+                            addSequential(new RunCSVProfile(BASELINE_L, BASELINE_R));
+                        }
 
                         break;
 
@@ -92,6 +91,7 @@ public class Auto extends CommandGroup {
                             addSequential(new RunCSVProfile(BASELINE_L, BASELINE_R));
                         }
                         break;
+
                 }
 
                 /* After reaching destination, outtake the cube! :) */

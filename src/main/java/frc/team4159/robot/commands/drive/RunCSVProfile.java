@@ -78,18 +78,18 @@ public class RunCSVProfile extends Command implements Runnable {
     /* Looped by Notifier */
     public void run() {
 
-        double l = left.calculate(Robot.drivetrain.getLeftEncoderPosition());
-        double r = right.calculate(Robot.drivetrain.getRightEncoderPosition());
-
-        double gyro_heading = Robot.drivetrain.getHeadingDegrees();
-        double desired_heading = Pathfinder.r2d(left.getHeading());
-
-        double angleDifference = Pathfinder.boundHalfDegrees(desired_heading - gyro_heading);
-        double kG = kP_TURN * (-1.0/80.0);
-        double turn = kG * angleDifference;
-
-        Robot.drivetrain.setRawOutput(l + turn, r - turn);
-        Robot.drivetrain.logDashboard();
+//        double l = left.calculate(Robot.drivetrain.getLeftEncoderPosition());
+//        double r = right.calculate(Robot.drivetrain.getRightEncoderPosition());
+//
+//        double gyro_heading = Robot.drivetrain.getHeadingDegrees();
+//        double desired_heading = Pathfinder.r2d(left.getHeading());
+//
+//        double angleDifference = Pathfinder.boundHalfDegrees(desired_heading - gyro_heading);
+//        double kG = kP_TURN * (-1.0/80.0);
+//        double turn = kG * angleDifference;
+//
+//        Robot.drivetrain.setRawOutput(l + turn, r - turn);
+//        Robot.drivetrain.logDashboard();
 
     }
 
