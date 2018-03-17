@@ -22,7 +22,7 @@ public class Auto extends CommandGroup {
 
         Robot robot = Robot.getInstance();
         double delay = robot.getAutoDelay();
-        StartingConfiguration position = robot.getStartingConfiguration();
+        String startingPosition = robot.getStartingPosition();
         MatchData.OwnedSide switchNear = MatchData.getOwnedSide(MatchData.GameFeature.SWITCH_NEAR);
 
         System.out.println(switchNear + " IS NEAR SWITCH");
@@ -48,13 +48,14 @@ public class Auto extends CommandGroup {
                 /* Updates the lifter to switch height position */
                 addSequential(new LiftUp());
 
-                switch(position) {
+                switch(startingPosition) {
 
-                    case LEFT:
+                    case "LEFT":
                         System.out.println("LEFT STARTING POSITION");
 
                         if(switchNear == MatchData.OwnedSide.LEFT) {
                             addSequential(new RunCSVProfile(LEFT_TO_LEFT_L, LEFT_TO_LEFT_R));
+                            addSequential(new OuttakeWheels(1));
 
                         } else if (switchNear == MatchData.OwnedSide.RIGHT) {
                             addSequential(new RunCSVProfile(BASELINE_L, BASELINE_R));
@@ -66,14 +67,16 @@ public class Auto extends CommandGroup {
 
                         break;
 
-                    case MIDDLE:
+                    case "MIDDLE":
                         System.out.println("MIDDLE STARTING POSITION");
 
                         if(switchNear == MatchData.OwnedSide.LEFT) {
                             addSequential(new RunCSVProfile(MID_TO_LEFT_L, MID_TO_LEFT_R));
+                            addSequential(new OuttakeWheels(1));
 
                         } else if (switchNear == MatchData.OwnedSide.RIGHT) {
                             addSequential(new RunCSVProfile(MID_TO_RIGHT_L, MID_TO_RIGHT_R));
+                            addSequential(new OuttakeWheels(1));
 
                         } else {
                             addSequential(new RunCSVProfile(BASELINE_L, BASELINE_R));
@@ -81,11 +84,12 @@ public class Auto extends CommandGroup {
 
                         break;
 
-                    case RIGHT:
+                    case "RIGHT":
                         System.out.println("RIGHT STARTING POSITION");
 
                         if(switchNear == MatchData.OwnedSide.RIGHT) {
                             addSequential(new RunCSVProfile(RIGHT_TO_RIGHT_L, RIGHT_TO_RIGHT_R));
+                            addSequential(new OuttakeWheels(1));
 
                         } else {
                             addSequential(new RunCSVProfile(BASELINE_L, BASELINE_R));
@@ -93,9 +97,6 @@ public class Auto extends CommandGroup {
                         break;
 
                 }
-
-                /* After reaching destination, outtake the cube! :) */
-                addSequential(new OuttakeWheels(1));
 
                 break;
 
