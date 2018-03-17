@@ -23,10 +23,26 @@ public class Climb extends Command {
     @Override
     protected void execute() {
 
+        /*These should have gone in the subsystem itself, but later*/
+
+        /* If climb hasn't already started and the joystick is pointed towards positive,
+           the set the hasStartetdClimb flag to true.*/
+        if(!climber.getClimbStarted()&&Robot.oi.getSecondaryY()>.5){
+            climber.setStartedClimb(true);
+        }
+
+        /* If the climber has already started going up and the joystick is pointed towards negative,
+           then set the hasGoneDownFlag to false*/
+        if(climber.getClimbStarted()&&Robot.oi.getSecondaryY()<-.5){
+           climber.setGoneDown(true);
+        }
+
         if(Robot.oi.climbEnable()){
-            if(Math.abs(Robot.oi.getSecondaryY()) > .1) {
+            if(Math.abs(Robot.oi.getSecondaryY()) > .1)
                 climber.updatePosition(Robot.oi.getSecondaryY());
-            }
+            else
+                climber.stopIncrement();
+
         }
 
         if(Robot.oi.climbWinch()) {
@@ -35,12 +51,12 @@ public class Climb extends Command {
             climber.stopWinch();
         }
 
-        if(Robot.oi.fastDownButton1()) {
-            climber.fast1();
+        if(Robot.oi.fastDownButton()) {
+            climber.fastDown();
         }
 
-        if(Robot.oi.fastDownButton2()) {
-            climber.fast2();
+        if(Robot.oi.toggleClimbTalonMode()){
+            climber.toggleClimbTalonMode();
         }
 
         climber.move();
