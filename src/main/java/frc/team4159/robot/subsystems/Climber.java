@@ -77,6 +77,10 @@ public class Climber extends Subsystem {
         climbVictor.set(-1);
     }
 
+    public void stopWinch() {
+        climbVictor.set(0);
+    }
+
     public void logSmartDashboard() {
 
 //        kP = SmartDashboard.getNumber("kP_climb", 0.0);
