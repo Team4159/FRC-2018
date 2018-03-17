@@ -1,6 +1,5 @@
 package frc.team4159.robot.commands.climb;
 
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.team4159.robot.Robot;
 import frc.team4159.robot.subsystems.Climber;
@@ -42,7 +41,6 @@ public class Climb extends Command {
                 climber.updatePosition(Robot.oi.getSecondaryY());
             else
                 climber.stopIncrement();
-
         }
 
         if(Robot.oi.climbWinch()) {
@@ -59,7 +57,10 @@ public class Climb extends Command {
             climber.toggleClimbTalonMode();
         }
 
-        climber.move();
+        if(!climber.getCalimTalonMode())
+            climber.movePID();
+        else
+            climber.moveRaw(Robot.oi.getSecondaryY());
 
         climber.logSmartDashboard();
     }

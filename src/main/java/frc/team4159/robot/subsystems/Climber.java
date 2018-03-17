@@ -69,11 +69,14 @@ public class Climber extends Subsystem {
 
     }
 
-    public void move(){
-        if(!climbTalonRawMode)
+    public void movePID() {
+       // if (!climbTalonRawMode) //redundant
             climbTalon.set(ControlMode.Position, targetPosition); //36840
-        else
-            climbTalon.set(ControlMode.PercentOutput, 0);
+    }
+
+    public void moveRaw(double percentInput){
+        climbTalon.set(ControlMode.PercentOutput, percentInput);
+        targetPosition = climbTalon.getSelectedSensorPosition(PIDIDX);
     }
 
     public void setStartedClimb(boolean value){
@@ -91,8 +94,10 @@ public class Climber extends Subsystem {
     }
 
     public void updatePosition(double value) {
-        value *= hookDeliveryIncrement;
-        targetPosition += value;
+        if(climbTalon.getSelectedSensorPosition(PIDIDX)<36500){
+            value *= hookDeliveryIncrement;
+            targetPosition += value;
+        }
     }
 
     public void stopIncrement(){
@@ -114,6 +119,10 @@ public class Climber extends Subsystem {
 
     public void toggleClimbTalonMode(){
         climbTalonRawMode = !climbTalonRawMode;
+    }
+
+    public boolean getCalimTalonMode(){
+        return climbTalonRawMode;
     }
 
     public void logSmartDashboard() {
