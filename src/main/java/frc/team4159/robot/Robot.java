@@ -39,16 +39,11 @@ public class Robot extends TimedRobot {
 	private static Superstructure superstructure;
 	public static OI oi;
 
-	/* Auto match data */
-	/* Change this everytime before a match. For some reason I have not yet examined, it's hard coded. Shhhhhh */
-	private StartingConfiguration autoPosition = StartingConfiguration.MIDDLE;
-
 	/* Auto choosers */
 	private Command actionCommand;
-    private Command setPositionCommand;
-    private SendableChooser<Command> positionChooser = new SendableChooser<>();
     private SendableChooser<Command> actionChooser = new SendableChooser<>();
     private final double defaultAutoDelay = 0.0;
+    private final String defaultStartingPosition = "LEFT";
 
     private NetworkTableEntry ledModeEntry;
 
@@ -61,18 +56,13 @@ public class Robot extends TimedRobot {
 		oi = OI.getInstance();
 
 		/* Adds options to Shuffleboard/Smartdashboard to choose from */
-
-		actionChooser.addDefault("Drive Straight (Default)", new Auto(AutoAction.BASELINE));
-		actionChooser.addObject("One Cube",                  new Auto(AutoAction.ONE_CUBE));
-		actionChooser.addObject("Two Cube",                  new Auto(AutoAction.TWO_CUBE));
+        actionChooser.addDefault("One Cube (Default)", new Auto(AutoAction.ONE_CUBE));
+		actionChooser.addObject("Drive Straight",      new Auto(AutoAction.BASELINE));
+		actionChooser.addObject("Two Cube",            new Auto(AutoAction.TWO_CUBE));
 		SmartDashboard.putData("CHOOSE AUTO ACTION!", actionChooser);
 
-		positionChooser.addDefault("Left (Default)", new SetPosition(StartingConfiguration.LEFT));
-		positionChooser.addObject("Middle",          new SetPosition(StartingConfiguration.MIDDLE));
-		positionChooser.addObject("Right",           new SetPosition(StartingConfiguration.RIGHT));
-		SmartDashboard.putData("CHOOSE STARTING POSITION!", positionChooser);
-
 		SmartDashboard.putNumber("Auto Delay", defaultAutoDelay);
+		SmartDashboard.putString("Starting Position", defaultStartingPosition);
 
 		CameraServer.getInstance().startAutomaticCapture();
 
@@ -100,15 +90,8 @@ public class Robot extends TimedRobot {
 	@Override
 	public void autonomousInit() {
 
-		/* Gets user determined auto settings */
-		setPositionCommand = positionChooser.getSelected();
-
-		/* First, starts the command to get user determined starting configuration */
-        if (setPositionCommand != null) {
-            setPositionCommand.start();
-        }
-
         actionCommand = actionChooser.getSelected();
+
         /* Then, starts the command to run an action based on starting configuration and match data */
         if (actionCommand != null) {
             actionCommand.start();
@@ -134,6 +117,7 @@ public class Robot extends TimedRobot {
 	/* Runs once at the start of teleop */
 	@Override
 	public void teleopInit() {
+
 		/* Makes sure autonomous action stops running when teleop starts running */
 		if (actionCommand != null) {
             actionCommand.cancel();
@@ -163,13 +147,8 @@ public class Robot extends TimedRobot {
 	public void testPeriodic() {
 	}
 
-
-	public void setAutoPosition(StartingConfiguration position) {
-        autoPosition = position;
-    }
-
-    public StartingConfiguration getStartingConfiguration() {
-	    return autoPosition;
+	public String getStartingPosition() {
+	    return SmartDashboard.getString("Starting Position", defaultStartingPosition);
     }
 
     public double getAutoDelay() {
