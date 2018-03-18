@@ -22,9 +22,15 @@ public class Auto extends CommandGroup {
     public Auto(AutoAction action) {
 
         Robot robot = Robot.getInstance();
+
         double delay = robot.getAutoDelay();
         String startingPosition = robot.getStartingPosition();
+
         MatchData.OwnedSide switchNear = MatchData.getOwnedSide(MatchData.GameFeature.SWITCH_NEAR);
+        while(switchNear == MatchData.OwnedSide.UNKNOWN) {
+            addSequential(new WaitCommand(0.1));
+            switchNear = MatchData.getOwnedSide(MatchData.GameFeature.SWITCH_NEAR);
+        }
 
         System.out.println(switchNear + " IS NEAR SWITCH");
 
@@ -72,11 +78,14 @@ public class Auto extends CommandGroup {
                         System.out.println("MIDDLE STARTING POSITION");
 
                         if(switchNear == MatchData.OwnedSide.LEFT) {
-                            addSequential(new RunCSVProfile(MID_TO_LEFT_L, MID_TO_LEFT_R));
-                            addSequential(new OuttakeWheels(1));
+                            addSequential(new RunCSVProfile(BASELINE_L, BASELINE_R));
+
+//                            addSequential(new RunCSVProfile(MID_TO_LEFT_L, MID_TO_LEFT_R));
+//                            addSequential(new OuttakeWheels(1));
 
                         } else if (switchNear == MatchData.OwnedSide.RIGHT) {
-                            addSequential(new RunCSVProfile(MID_TO_RIGHT_L, MID_TO_RIGHT_R));
+//                            addSequential(new RunCSVProfile(MID_TO_RIGHT_L, MID_TO_RIGHT_R));
+                            addSequential(new RunCSVProfile(BASELINE_L, BASELINE_R));
                             addSequential(new OuttakeWheels(1));
 
                         } else {

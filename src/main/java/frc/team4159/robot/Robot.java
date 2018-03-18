@@ -13,8 +13,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team4159.robot.commands.auto.*;
 import frc.team4159.robot.commands.led.BlinkLED;
-import frc.team4159.robot.commands.led.TurnOffLED;
-import frc.team4159.robot.commands.led.TurnOnLED;
 import frc.team4159.robot.subsystems.Drivetrain;
 import frc.team4159.robot.subsystems.Superstructure;
 
@@ -44,6 +42,9 @@ public class Robot extends TimedRobot {
     private SendableChooser<Command> actionChooser = new SendableChooser<>();
     private final double defaultAutoDelay = 0.0;
     private final String defaultStartingPosition = "LEFT";
+
+    private double autoDelay = 0.0;
+    private String startingPosition = "LEFT";
 
     private NetworkTableEntry ledModeEntry;
 
@@ -109,7 +110,11 @@ public class Robot extends TimedRobot {
     /* Periodically called during autonomous */
 	@Override
 	public void autonomousPeriodic() {
-		Scheduler.getInstance().run();
+
+        startingPosition = SmartDashboard.getString("Starting Position", defaultStartingPosition);
+        autoDelay = SmartDashboard.getNumber("Starting Position", defaultAutoDelay);
+
+        Scheduler.getInstance().run();
 	}
 
 	/* Runs once at the start of teleop */
@@ -145,11 +150,11 @@ public class Robot extends TimedRobot {
 	}
 
 	public String getStartingPosition() {
-	    return SmartDashboard.getString("Starting Position", defaultStartingPosition);
+	    return startingPosition;
     }
 
     public double getAutoDelay() {
-		return SmartDashboard.getNumber("Auto Delay", defaultAutoDelay);
+		return autoDelay;
 	}
 
 	public static Drivetrain getDrivetrain() {
