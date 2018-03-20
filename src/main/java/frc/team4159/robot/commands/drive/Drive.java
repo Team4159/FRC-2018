@@ -1,5 +1,6 @@
 package frc.team4159.robot.commands.drive;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import frc.team4159.robot.Robot;
 
 import edu.wpi.first.wpilibj.command.Command;
@@ -23,23 +24,23 @@ public class Drive extends Command{
     @Override
     protected void execute() {
 
-        if(Robot.oi.reverseControls()) {
+        if(Robot.oi.reverseControls() && !DriverStation.getInstance().isDisabled()) {
             drivetrain.reverseControls();
         }
 
-        if(Robot.oi.left90Button()) {
-            drivetrain.turnToAngle(-90.0f);
+//        if(Robot.oi.left90Button()) {
+//            drivetrain.turnToAngle(-90.0f);
+//
+//        } else if(Robot.oi.right90Button()) {
+//            drivetrain.turnToAngle(90.0f);
+//
+//        } else if(Robot.oi.front0Button()) {
+//            drivetrain.turnToAngle(0.0f);
+//
+//        } else if(Robot.oi.back180Button()) {
+//            drivetrain.turnToAngle(180.0f);
 
-        } else if(Robot.oi.right90Button()) {
-            drivetrain.turnToAngle(90.0f);
-
-        } else if(Robot.oi.front0Button()) {
-            drivetrain.turnToAngle(0.0f);
-
-        } else if(Robot.oi.back180Button()) {
-            drivetrain.turnToAngle(180.0f);
-
-        } else if(Robot.oi.driveStraightButton()) {
+        if(Robot.oi.driveStraightButton()) {
             double magnitude = (Robot.oi.getLeftY() + Robot.oi.getRightY()) /2;
             drivetrain.driveStraight(magnitude);
 

@@ -60,6 +60,9 @@ public class Robot extends TimedRobot {
 		drivetrain = Drivetrain.getInstance();
 		superstructure = Superstructure.getInstance();
 
+		/* Initialize operator control bindings */
+		oi = OI.getInstance();
+
 		/* Auto command */
 		autoChooser = new SendableChooser<Command>();
         autoChooser.addDefault("Auto!", new Auto());
@@ -129,9 +132,6 @@ public class Robot extends TimedRobot {
 	@Override
 	public void teleopInit() {
 
-	    /* Initialize operator control bindings */
-        oi = OI.getInstance();
-
         /* Makes sure autonomous action stops running when teleop starts running */
 		if (autoCommand != null) {
             autoCommand.cancel();
@@ -139,7 +139,7 @@ public class Robot extends TimedRobot {
 
 	}
 
-	private boolean blinkMode = false;
+	//private boolean blinkMode = false;
 
     /* Periodically called during operator control. */
 	@Override
