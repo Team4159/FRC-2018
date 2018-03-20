@@ -3,7 +3,6 @@ package frc.team4159.robot.commands.cube;
 import edu.wpi.first.wpilibj.command.TimedCommand;
 import frc.team4159.robot.subsystems.Superstructure;
 
-
 public class RunLift extends TimedCommand {
 
     public RunLift() {

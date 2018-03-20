@@ -12,7 +12,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team4159.robot.commands.auto.*;
-import frc.team4159.robot.commands.led.BlinkLED;
 import frc.team4159.robot.subsystems.Drivetrain;
 import frc.team4159.robot.subsystems.Superstructure;
 
@@ -32,19 +31,24 @@ public class Robot extends TimedRobot {
         return instance;
     }
 
-    /* All the hardware */
+    /* Declare subsystems */
 	public static Drivetrain drivetrain;
 	private static Superstructure superstructure;
+
 	public static OI oi;
 
 	/* Auto choosers */
-	private Command actionCommand;
-    private SendableChooser<Command> actionChooser = new SendableChooser<>();
+	private Command autoCommand;
+	private SendableChooser<Command> autoChooser;
     private final double defaultAutoDelay = 0.0;
     private final String defaultStartingPosition = "LEFT";
+    private final String defaultLeftAction = "BASE";
+    private final String defaultRightAction = "BASE";
 
-    private double autoDelay = 0.0;
-    private String startingPosition = "LEFT";
+    private double autoDelay = defaultAutoDelay;
+    private String startingPosition = defaultStartingPosition;
+    private String leftAction = defaultLeftAction;
+    private String rightAction = defaultRightAction;
 
     private NetworkTableEntry ledModeEntry;
 
@@ -52,21 +56,24 @@ public class Robot extends TimedRobot {
 	@Override
 	public void robotInit() {
 
+	    /* Initialize subsystems */
 		drivetrain = Drivetrain.getInstance();
 		superstructure = Superstructure.getInstance();
-		oi = OI.getInstance();
 
-		/* Adds options to Shuffleboard/Smartdashboard to choose from */
-        actionChooser.addDefault("One Cube (Default)", new Auto(AutoAction.ONE_CUBE));
-		actionChooser.addObject("Drive Straight",      new Auto(AutoAction.BASELINE));
-		actionChooser.addObject("Two Cube",            new Auto(AutoAction.TWO_CUBE));
-		SmartDashboard.putData("CHOOSE AUTO ACTION!", actionChooser);
+		/* Auto command */
+		autoChooser = new SendableChooser<Command>();
+        autoChooser.addDefault("Auto!", new Auto());
 
-		SmartDashboard.putNumber("Auto Delay", defaultAutoDelay);
+        /* Auto options */
 		SmartDashboard.putString("Starting Position", defaultStartingPosition);
+        SmartDashboard.putString("Left Action", defaultLeftAction);
+        SmartDashboard.putString("Right Action", defaultRightAction);
+        SmartDashboard.putNumber("Auto Delay", defaultAutoDelay);
 
-		CameraServer.getInstance().startAutomaticCapture();
+        /* Stream webcamera on default port */
+        CameraServer.getInstance().startAutomaticCapture();
 
+        /* Start networktables for rPi to read */
 		NetworkTableInstance inst = NetworkTableInstance.getDefault();
 		NetworkTable table = inst.getTable("datatable");
 		ledModeEntry = table.getEntry("LED Mode");
@@ -91,16 +98,15 @@ public class Robot extends TimedRobot {
 	@Override
 	public void autonomousInit() {
 
-        actionCommand = actionChooser.getSelected();
-
-        /* Then, starts the command to run an action based on starting configuration and match data */
-        if (actionCommand != null) {
-            actionCommand.start();
+        /* Starts auto command */
+        autoCommand = autoChooser.getSelected();
+        if (autoCommand != null) {
+            autoCommand.start();
         }
 
+        /* Put alliance color to NetworkTables to be used by rPi to control LED strips */
         if(DriverStation.getInstance().getAlliance() == DriverStation.Alliance.Red) {
 			ledModeEntry.setString("RED");
-
 		} else {
 			ledModeEntry.setString("BLUE");
 		}
@@ -113,6 +119,8 @@ public class Robot extends TimedRobot {
 
         startingPosition = SmartDashboard.getString("Starting Position", defaultStartingPosition);
         autoDelay = SmartDashboard.getNumber("Starting Position", defaultAutoDelay);
+        leftAction = SmartDashboard.getString("Left Action", defaultLeftAction);
+        rightAction = SmartDashboard.getString("Right Action", defaultRightAction);
 
         Scheduler.getInstance().run();
 	}
@@ -121,9 +129,12 @@ public class Robot extends TimedRobot {
 	@Override
 	public void teleopInit() {
 
-		/* Makes sure autonomous action stops running when teleop starts running */
-		if (actionCommand != null) {
-            actionCommand.cancel();
+	    /* Initialize operator control bindings */
+        oi = OI.getInstance();
+
+        /* Makes sure autonomous action stops running when teleop starts running */
+		if (autoCommand != null) {
+            autoCommand.cancel();
 		}
 
 	}
@@ -134,12 +145,12 @@ public class Robot extends TimedRobot {
 	@Override
 	public void teleopPeriodic() {
 
-		if(DriverStation.getInstance().getMatchTime() <= 30 && !blinkMode) {
-			ledModeEntry.setString("END GAME");
-			Command blinkCommand = new BlinkLED();
-			blinkCommand.start();
-			blinkMode = true;
-		}
+//		if(DriverStation.getInstance().getMatchTime() <= 30 && !blinkMode) {
+//			ledModeEntry.setString("END GAME");
+//			Command blinkCommand = new BlinkLED();
+//			blinkCommand.start();
+//			blinkMode = true;
+//		}
 
 		Scheduler.getInstance().run();
 	}
@@ -151,6 +162,14 @@ public class Robot extends TimedRobot {
 
 	public String getStartingPosition() {
 	    return startingPosition;
+    }
+
+    public String getLeftAction() {
+	    return leftAction;
+    }
+
+    public String getRightAction() {
+	    return rightAction;
     }
 
     public double getAutoDelay() {
