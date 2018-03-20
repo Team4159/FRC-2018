@@ -1,23 +1,33 @@
 package frc.team4159.robot;
-/* Joystick button mappings*/
+
+/* Constants for joystick ports and button mappings to be implemented by OI.java */
 
 public interface ControlMap {
 
-    /* Joystick ports */
+    /* JOYSTICK PORTS */
+    int LEFT_STICK = 0;
+    int RIGHT_STICK = 1;
+    int SECONDARY_STICK = 2;
 
-    public static final int LEFT_STICK = 0;
-    public static final int RIGHT_STICK = 1;
-    public static final int SECONDARY_STICK = 2;
+    /* JOYSTICK BUTTON MAPPINGS */
 
-    /* Button mappings */
-    public static final int LEFT_90 = 2;
-    public static final int RIGHT_90 = 2;
-    public static final int TURN_180 = 2;
-    public static final int ALIGN_TO_SWITCH = 2;
-    public static final int ALIGN_TO_EXCHANGE = 2;
-    public static final int CLIMB_UP = 2;
-    public static final int CLIMB_DOWN = 2;
-    public static final int INTAKE = 2;
-    public static final int OUTTAKE = 2;
+    /* Drivetrain Buttons */
+    int LEFT_90 = 4;
+    int RIGHT_90 = 5;
+    int FRONT_0 = 3;
+    int BACK_180 = 2;
 
+    int REVERSE_CONTROLS = 2;
+
+    /* Climber Buttons */
+    int CLIMB_ENABLE = 7;
+    int WINCH = 6;
+
+    /* Intake Buttons */
+    int INTAKE = 2;
+    int OUTTAKE = 3;
+    int TOGGLE_RAW_LIFT = 10;
+    int RESET_LIFT_ENCODER = 11;
+    int SWITCH = 4;
+    int GROUND = 5;
 }

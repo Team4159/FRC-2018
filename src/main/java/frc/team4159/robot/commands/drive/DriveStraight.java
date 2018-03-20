@@ -1,17 +1,12 @@
-package frc.team4159.robot.commands.test;
+package frc.team4159.robot.commands.drive;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.team4159.robot.Robot;
-import frc.team4159.robot.OI;
-import frc.team4159.robot.subsystems.Superstructure;
 
 
-public class TestPrototype extends Command {
-
-    public TestPrototype() {
-        // Use requires() here to declare subsystem dependencies
-        // eg. requires(chassis);
-        requires(Superstructure.prototype);
+public class DriveStraight extends Command {
+    public DriveStraight(double distance) {
+        requires(Robot.drivetrain);
     }
 
 
@@ -31,7 +26,7 @@ public class TestPrototype extends Command {
      */
     @Override
     protected void execute() {
-        Superstructure.prototype.operatePiston(OI.testButton());
+
     }
 
 

@@ -7,19 +7,58 @@ package frc.team4159.robot;
  * floating around.
  */
 
-public class RobotMap {
+public interface RobotMap {
+
+    /* COMPETITION BOT */
 
     // CAN Talon SRX
-    public static final int LEFT_TALON = 4;
-    public static final int RIGHT_TALON = 3;
+    int LEFT_TALON = 7;
+    int RIGHT_TALON = 9;
+    int LIFT_TALON = 8;
+    int CLIMB_TALON = 10;
 
     // CAN Victor SPX
-    public static final int LEFT_VICTOR = 3;
-    public static final int RIGHT_VICTOR = 4;
-    public static final int CLIMB_VICTOR = 10;
+    int LEFT_DRIVE_VICTOR = 1;
+    int RIGHT_DRIVE_VICTOR = 3;
 
-    // Double Solenoids
-    public static final int SOLENOID_A = 0;
-    public static final int SOLENOID_B = 1;
+    // Victor SP PWM ports
+    int INTAKE_VICTOR = 0;
+    int CLIMB_VICTOR = 1;
+
+    // Double Solenoid PCM IDs
+    int FORWARD_CHANNEL = 6;
+    int REVERSE_CHANNEL = 7;
+
+    // Pneumatics Control Module CAN ID
+    int PCM = 0;
+
+
+    /* PRACTICE BOT */
+
+    /*
+
+    // CAN Talon SRX
+    int LEFT_TALON = 6;
+    int RIGHT_TALON = 1;
+    int LIFT_TALON = 2;
+    int CLIMB_TALON = 5;
+
+    // CAN Victor SPX
+    int LEFT_DRIVE_VICTOR = 6;
+    int RIGHT_DRIVE_VICTOR = 2;
+
+    // Victor SP PWM ports
+    int INTAKE_VICTOR = 0;
+    int CLIMB_VICTOR = 1;
+
+    // Double Solenoid PCM IDs
+    int FORWARD_CHANNEL = 6;
+    int REVERSE_CHANNEL = 7;
+
+    // Pneumatics Control Module CAN ID
+    int PCM = 0;
+
+    */
+
 
 }

@@ -1,16 +1,20 @@
 package frc.team4159.robot;
 
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.CameraServer;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-import frc.team4159.robot.commands.auto.DriveStraight;
-import frc.team4159.robot.commands.drive.TankDrive;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.team4159.robot.commands.auto.*;
+import frc.team4159.robot.commands.led.BlinkLED;
 import frc.team4159.robot.subsystems.Drivetrain;
 import frc.team4159.robot.subsystems.Superstructure;
-import openrio.powerup.MatchData;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -20,18 +24,31 @@ import openrio.powerup.MatchData;
 
 public class Robot extends TimedRobot {
 
+    private static Robot instance;
+
+    public static Robot getInstance() {
+        if(instance == null)
+            instance = new Robot();
+        return instance;
+    }
+
+    /* All the hardware */
 	public static Drivetrain drivetrain;
-	public static Superstructure superstructure;
+	private static Superstructure superstructure;
 	public static OI oi;
 
-	private MatchData.OwnedSide switchNear;
-	private MatchData.OwnedSide scale;
-	private MatchData.OwnedSide switchFar;
+	/* Auto choosers */
+	private Command actionCommand;
+    private SendableChooser<Command> actionChooser = new SendableChooser<>();
+    private final double defaultAutoDelay = 0.0;
+    private final String defaultStartingPosition = "LEFT";
 
-	private Command autoCommand;
-	private SendableChooser<Command> autoChooser = new SendableChooser<>();
+    private double autoDelay = 0.0;
+    private String startingPosition = "LEFT";
 
-	/* This function is run when the robot is first started up */
+    private NetworkTableEntry ledModeEntry;
+
+    /* This function is called when the robot is first started up */
 	@Override
 	public void robotInit() {
 
@@ -39,77 +56,109 @@ public class Robot extends TimedRobot {
 		superstructure = Superstructure.getInstance();
 		oi = OI.getInstance();
 
-		autoChooser.addDefault("Drive Straight", new DriveStraight(5));
-//		autoChooser.addObject("Left Switch", new MyAutoCommand());
-//		autoChooser.addObject("Middle Switch", new MyAutoCommand());
-//		autoChooser.addObject("Right Switch", new MyAutoCommand());
-		SmartDashboard.putData("!!! CHOOSE AUTO MODE !!!", autoChooser);
+		/* Adds options to Shuffleboard/Smartdashboard to choose from */
+        actionChooser.addDefault("One Cube (Default)", new Auto(AutoAction.ONE_CUBE));
+		actionChooser.addObject("Drive Straight",      new Auto(AutoAction.BASELINE));
+		actionChooser.addObject("Two Cube",            new Auto(AutoAction.TWO_CUBE));
+		SmartDashboard.putData("CHOOSE AUTO ACTION!", actionChooser);
+
+		SmartDashboard.putNumber("Auto Delay", defaultAutoDelay);
+		SmartDashboard.putString("Starting Position", defaultStartingPosition);
+
+		CameraServer.getInstance().startAutomaticCapture();
+
+		NetworkTableInstance inst = NetworkTableInstance.getDefault();
+		NetworkTable table = inst.getTable("datatable");
+		ledModeEntry = table.getEntry("LED Mode");
+
 	}
 
-	/**
-	 * This function is called once each time the robot enters Disabled mode.
-	 * You can use it to reset any subsystem information you want to clear when
-	 * the robot is disabled.
-	 */
+    /**
+     * Called once each time robot enters Disabled mode. Use to reset subsystem info you want cleared when robot is disabled.
+     */
 	@Override
 	public void disabledInit() {
+		ledModeEntry.setString("DISABLED");
 	}
 
+	/* Called periodically when robot is disabled */
 	@Override
 	public void disabledPeriodic() {
 		Scheduler.getInstance().run();
 	}
 
+	/* Runs once at the start of autonomous */
 	@Override
 	public void autonomousInit() {
 
-		switchNear = MatchData.getOwnedSide(MatchData.GameFeature.SWITCH_NEAR);
-		scale = MatchData.getOwnedSide(MatchData.GameFeature.SCALE);
-		switchFar = MatchData.getOwnedSide(MatchData.GameFeature.SWITCH_FAR);
+        actionCommand = actionChooser.getSelected();
 
-		autoCommand = autoChooser.getSelected();
+        /* Then, starts the command to run an action based on starting configuration and match data */
+        if (actionCommand != null) {
+            actionCommand.start();
+        }
 
-		/*
-		 * String autoSelected = SmartDashboard.getString("Auto Selector",
-		 * "Default"); switch(autoSelected) { case "My Auto": autonomousCommand
-		 * = new MyAutoCommand(); break; case "Default Auto": default:
-		 * autonomousCommand = new ExampleCommand(); break; }
-		 */
+        if(DriverStation.getInstance().getAlliance() == DriverStation.Alliance.Red) {
+			ledModeEntry.setString("RED");
 
-		// schedule the autonomous command (example)
-		if (autoCommand != null) {
-			autoCommand.start();
+		} else {
+			ledModeEntry.setString("BLUE");
 		}
+
 	}
 
-	/**
-	 * This function is called periodically during autonomous.
-	 */
+    /* Periodically called during autonomous */
 	@Override
 	public void autonomousPeriodic() {
-		Scheduler.getInstance().run();
+
+        startingPosition = SmartDashboard.getString("Starting Position", defaultStartingPosition);
+        autoDelay = SmartDashboard.getNumber("Starting Position", defaultAutoDelay);
+
+        Scheduler.getInstance().run();
 	}
 
+	/* Runs once at the start of teleop */
 	@Override
 	public void teleopInit() {
-		/* Makes sure autonomous stops running when telop starts running */
-		if (autoCommand != null) {
-            autoCommand.cancel();
+
+		/* Makes sure autonomous action stops running when teleop starts running */
+		if (actionCommand != null) {
+            actionCommand.cancel();
 		}
+
 	}
 
-	/**
-	 * This function is called periodically during operator control.
-	 */
+	private boolean blinkMode = false;
+
+    /* Periodically called during operator control. */
 	@Override
 	public void teleopPeriodic() {
+
+		if(DriverStation.getInstance().getMatchTime() <= 30 && !blinkMode) {
+			ledModeEntry.setString("END GAME");
+			Command blinkCommand = new BlinkLED();
+			blinkCommand.start();
+			blinkMode = true;
+		}
+
 		Scheduler.getInstance().run();
 	}
 
-	/**
-	 * This function is called periodically during test mode.
-	 */
+	/* This function is called periodically during test mode. */
 	@Override
 	public void testPeriodic() {
 	}
+
+	public String getStartingPosition() {
+	    return startingPosition;
+    }
+
+    public double getAutoDelay() {
+		return autoDelay;
+	}
+
+	public static Drivetrain getDrivetrain() {
+		return drivetrain;
+	}
+
 }
