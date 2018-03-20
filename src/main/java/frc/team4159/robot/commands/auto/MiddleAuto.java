@@ -55,7 +55,8 @@ class MiddleAuto extends CommandGroup {
                     case "TWO":
                         addSequential(new RunCSVProfile(MID_TO_RIGHT_L, MID_TO_RIGHT_R));
                         addSequential(new OuttakeWheels(1));
-                        //turn, down lifter, open lifter, intake wheels, drive forward, close lifter, drive back, lift, turn, outtake                        break;
+                        //turn, down lifter, open lifter, intake wheels, drive forward, close lifter, drive back, lift, turn, outtake
+                        break;
                     case "BASE":
                         addSequential(new RunCSVProfile(BASELINE_L, BASELINE_R));
                         addSequential(new OuttakeWheels(1));
