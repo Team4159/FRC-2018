@@ -31,11 +31,9 @@ public class Robot extends TimedRobot {
         return instance;
     }
 
-    /* Declare subsystems */
-	public static Drivetrain drivetrain;
-	private static Superstructure superstructure;
-
-	public static OI oi;
+    public static Drivetrain drivetrain;
+    public static Superstructure superstructure;
+    public static OI oi;
 
 	/* Auto choosers */
 	private Command autoCommand;
@@ -52,31 +50,45 @@ public class Robot extends TimedRobot {
 
     private NetworkTableEntry ledModeEntry;
 
-    /* This function is called when the robot is first started up */
+    /**
+     *  Called when the robot is first powered on
+     */
 	@Override
 	public void robotInit() {
 
-	    /* Initialize subsystems */
+	    /*
+         *  Initialize subsystems
+         */
 		drivetrain = Drivetrain.getInstance();
 		superstructure = Superstructure.getInstance();
 
-		/* Initialize operator control bindings */
+		/*
+         *  Initialize operator control bindings
+         */
 		oi = OI.getInstance();
 
-		/* Auto command */
-		autoChooser = new SendableChooser<Command>();
+		/*
+		 * Put auto command into SmartDashboard
+		 */
+		autoChooser = new SendableChooser<>();
         autoChooser.addDefault("Auto!", new Auto());
 
-        /* Auto options */
+        /*
+         *  Put auto options into SmartDashboard
+         */
 		SmartDashboard.putString("Starting Position", defaultStartingPosition);
         SmartDashboard.putString("Left Action", defaultLeftAction);
         SmartDashboard.putString("Right Action", defaultRightAction);
         SmartDashboard.putNumber("Auto Delay", defaultAutoDelay);
 
-        /* Stream webcamera on default port */
+        /*
+         * Stream webcamera on default port
+         */
         CameraServer.getInstance().startAutomaticCapture();
 
-        /* Start networktables for rPi to read */
+        /*
+         * Start networktables for rPi to read
+         */
 		NetworkTableInstance inst = NetworkTableInstance.getDefault();
 		NetworkTable table = inst.getTable("datatable");
 		ledModeEntry = table.getEntry("LED Mode");
@@ -84,7 +96,7 @@ public class Robot extends TimedRobot {
 	}
 
     /**
-     * Called once each time robot enters Disabled mode. Use to reset subsystem info you want cleared when robot is disabled.
+     * Called once every time robot enters disabled mode
      */
 	@Override
 	public void disabledInit() {
@@ -97,7 +109,9 @@ public class Robot extends TimedRobot {
 		Scheduler.getInstance().run();
 	}
 
-	/* Runs once at the start of autonomous */
+	/**
+     *  Runs once at the start of autonomous
+     */
 	@Override
 	public void autonomousInit() {
 
@@ -116,7 +130,9 @@ public class Robot extends TimedRobot {
 
 	}
 
-    /* Periodically called during autonomous */
+    /**
+     *  Periodically called during autonomous
+     */
 	@Override
 	public void autonomousPeriodic() {
 
@@ -128,7 +144,9 @@ public class Robot extends TimedRobot {
         Scheduler.getInstance().run();
 	}
 
-	/* Runs once at the start of teleop */
+	/**
+     *  Runs once at the start of teleop
+     */
 	@Override
 	public void teleopInit() {
 
@@ -141,7 +159,9 @@ public class Robot extends TimedRobot {
 
 	//private boolean blinkMode = false;
 
-    /* Periodically called during operator control. */
+    /**
+	 *  Periodically called during teleoperatated control.
+	 */
 	@Override
 	public void teleopPeriodic() {
 
@@ -155,27 +175,44 @@ public class Robot extends TimedRobot {
 		Scheduler.getInstance().run();
 	}
 
-	/* This function is called periodically during test mode. */
+	/**
+	 *  Periodically called during test mode.
+	 */
 	@Override
 	public void testPeriodic() {
 	}
 
+	/**
+	 * @return auto starting position "LEFT", "MIDDLE", or "RIGHT"
+	 */
 	public String getStartingPosition() {
 	    return startingPosition;
     }
 
+	/**
+	 * @return auto action if left is near switch. "BASE", "ONE", or "TWO"
+	 */
     public String getLeftAction() {
 	    return leftAction;
     }
 
-    public String getRightAction() {
+	/**
+	 * @return auto action if right is near switch. "BASE", "ONE", or "TWO"
+	 */
+	public String getRightAction() {
 	    return rightAction;
     }
 
-    public double getAutoDelay() {
+	/**
+	 * @return autonomous delay in seconds
+	 */
+	public double getAutoDelay() {
 		return autoDelay;
 	}
 
+	/**
+	 * @return drivetrain
+	 */
 	public static Drivetrain getDrivetrain() {
 		return drivetrain;
 	}
