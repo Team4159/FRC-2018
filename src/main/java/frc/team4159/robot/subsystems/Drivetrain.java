@@ -11,7 +11,6 @@ import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team4159.robot.commands.drive.Drive;
 
 import static frc.team4159.robot.Constants.*;
@@ -94,6 +93,9 @@ public class Drivetrain extends Subsystem implements PIDOutput {
         LiveWindow.add(this);
     }
 
+    /**
+     * Apply mag encoder and navX sensor settings
+     */
     private void configureSensors() {
 
         /* Configure SRX Mag encoder sensors on both sides, connected to the talon via the SRX data cable */
@@ -127,9 +129,8 @@ public class Drivetrain extends Subsystem implements PIDOutput {
         // TODO: figure out the correct cruise velocity and acceleration
         leftTalon.configMotionAcceleration(0, TIMEOUT_MS);
         leftTalon.configMotionCruiseVelocity(0, TIMEOUT_MS);
-
         rightTalon.configMotionAcceleration(0, TIMEOUT_MS);
-        rightTalon.configMotionAcceleration(0, TIMEOUT_MS);
+        rightTalon.configMotionCruiseVelocity(0, TIMEOUT_MS);
 
         turnController = new PIDController(kP_turn, kI_turn, kD_turn, kF_turn, navx, this);
         turnController.setInputRange(-NAVX_YAW_RANGE, NAVX_YAW_RANGE);
@@ -145,6 +146,10 @@ public class Drivetrain extends Subsystem implements PIDOutput {
 
     }
 
+    /**
+     * @param leftPercent between -1 to 1
+     * @param rightPercent between -1 to 1
+     */
     public void setRawOutput(double leftPercent, double rightPercent){
 
         if(reverse) {
@@ -157,12 +162,17 @@ public class Drivetrain extends Subsystem implements PIDOutput {
 
     }
 
-    /* Changes state of reversed controls */
+    /**
+     *  Change state of reversed controls
+     */
     public void reverseControls() {
         reverse = !reverse;
     }
 
-    /* Turns to a specific angle relative to robot heading when first powered on */
+    /**
+     * Turn to field oriented angle
+     * @param angle robot heading relative to when robot first powered on
+     */
     public void turnToAngle(double angle) {
         if(!turnController.isEnabled()) {
             turnController.setSetpoint(angle);
@@ -173,7 +183,10 @@ public class Drivetrain extends Subsystem implements PIDOutput {
         setRawOutput(-rotateToAngleRate, rotateToAngleRate);
     }
 
-    /* Drives straight on current heading given a speed */
+    /**
+     *  Drive straight in current heading
+     *  @param magnitude speed percentage between -1 to 1
+     */
     public void driveStraight(double magnitude) {
         if(!turnController.isEnabled()) {
             turnController.setSetpoint(navx.getYaw());
@@ -183,24 +196,34 @@ public class Drivetrain extends Subsystem implements PIDOutput {
         setRawOutput(magnitude + rotateToAngleRate, magnitude - rotateToAngleRate);
     }
 
-    /* Returns true if error is less than tolerance */
+    /**
+     *  @return true if turning PID error is less than tolerance
+     */
     public boolean turnOnTarget() {
         return turnController.onTarget();
     }
 
-    /* Stops running turning PID controller */
+    /**
+     * Stop running turning PID controller
+     */
     public void disableTurnControl() {
         if(turnController.isEnabled())
             turnController.disable();
     }
 
-    /* Stops running drive motors */
+    /**
+     *  Stop running drivetrain motors
+     */
     public void stop() {
         leftTalon.set(ControlMode.PercentOutput, 0);
         rightTalon.set(ControlMode.PercentOutput, 0);
     }
 
-    /* Sets left and right motors to a target velocity */
+    /**
+     *  Set left and right motors to a target velocity
+     *  @param leftPercent Between -1 to 1
+     *  @param rightPercent Between -1 to 1
+     */
     public void setVelocity(double leftPercent, double rightPercent) {
         double leftTarget = leftPercent * MAX_SPEED;
         double rightTarget = rightPercent * MAX_SPEED;
@@ -208,42 +231,61 @@ public class Drivetrain extends Subsystem implements PIDOutput {
         rightTalon.set(ControlMode.Velocity, rightTarget);
     }
 
-    /* Drives straight a certain amount of distance */
+    /**
+     * Drive a certain amount of distance using Talon's Motion Magic control mode
+     * @param leftDistance distance for left side to travel in feet
+     * @param rightDistance distance for right side to travel in feet
+     */
     public void driveDistance(double leftDistance, double rightDistance) {
 
-        /* Convert feet to encoder units */
         double leftTarget = (UNITS_PER_REV * leftDistance) / WHEEL_CIRCUMFERANCE;
         double rightTarget = (UNITS_PER_REV * rightDistance) / WHEEL_CIRCUMFERANCE;
 
-        rightTalon.set(ControlMode.MotionMagic, leftTarget);
-        leftTalon.set(ControlMode.MotionMagic, rightTarget);
+        leftTalon.set(ControlMode.MotionMagic, leftTarget);
+        rightTalon.set(ControlMode.MotionMagic, rightTarget);
     }
 
+    /**
+     *  @return left encoder position
+     */
     public int getLeftEncoderPosition() {
         return leftTalon.getSelectedSensorPosition(PIDIDX);
     }
 
+    /**
+     *  @return right encoder position
+     */
     public int getRightEncoderPosition() {
         return rightTalon.getSelectedSensorPosition(PIDIDX);
     }
 
+    /**
+     * @return navX's yaw value
+     */
     public double getHeadingDegrees() {
         return navx.getYaw();
     }
 
+    /**
+     *  Zero navX's yaw value
+     */
     public void zeroNavX() {
         navx.zeroYaw();
     }
 
+    /**
+     * Log drivetrain variables to SmartDashboard
+     */
     public void logDashboard() {
 //        SmartDashboard.putNumber("Current Angle", navx.getYaw());
 //        SmartDashboard.putNumber("Angle Error",turnController.getError());
 //        SmartDashboard.putNumber("Setpoint Angle", angleSetpoint);
     }
 
+    /**
+     *  Set and limit peak and continuous current on both sides of drivetrain to prevent brownouts
+     */
     private void limitCurrent() {
-
-        /* Sets and limits the peak and continuous current for both sides of motors to prevent brownouts */
 
         final int PEAK_CURRENT = 20; // Amps
         final int CONTINUOUS_CURRENT = 15; // Amps
@@ -262,13 +304,19 @@ public class Drivetrain extends Subsystem implements PIDOutput {
 
     }
 
-    /* Updates rotateToAngleRate from output given by turnController */
+    /**
+     *  Update rotateToAngleRate
+     *  @param output from PIDController
+     */
     @Override
     public void pidWrite(double output) {
         rotateToAngleRate = output;
     }
 
-    /* Bounds an angle to a value between -180 to 180 degrees */
+    /**
+     *  Bound an angle to a value between -180 to 180 degrees
+     *  @param angle not between -180 and 180 to bound
+     */
     private double boundAngle(double angle) {
         if(angle > 180) {
             return (angle - 360);
@@ -279,6 +327,9 @@ public class Drivetrain extends Subsystem implements PIDOutput {
         }
     }
 
+    /**
+     * Initialize default command
+     */
     @Override
     public void initDefaultCommand() {
         setDefaultCommand(new Drive());
