@@ -15,7 +15,9 @@ class MiddleAuto extends CommandGroup {
 
         Robot robot = Robot.getInstance();
 
-        /* Get game data from FMS. If UNKNOWN, wait for 0.1 seconds and try again */
+        /*
+         * Get game data from FMS. If UNKNOWN, wait for 0.1 seconds and try again
+         */
         MatchData.OwnedSide switchNear = MatchData.getOwnedSide(MatchData.GameFeature.SWITCH_NEAR);
         while(switchNear == MatchData.OwnedSide.UNKNOWN) {
             addSequential(new WaitCommand(0.1));
@@ -62,6 +64,7 @@ class MiddleAuto extends CommandGroup {
                         addSequential(new OuttakeWheels(1));
                         break;
                     default:
+                        addSequential(new RunCSVProfile(BASELINE_L, BASELINE_R));
                         break;
                 }
                 break;

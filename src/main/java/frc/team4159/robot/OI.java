@@ -1,7 +1,6 @@
 package frc.team4159.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.buttons.JoystickButton;
 
 import static frc.team4159.robot.ControlMap.*;
 
@@ -59,6 +58,8 @@ public class OI {
         return (leftJoy.getRawButtonPressed(REVERSE_CONTROLS));
     }
 
+    /*
+
     public boolean left90Button() {
         return rightJoy.getRawButton(LEFT_90);
     }
@@ -74,6 +75,8 @@ public class OI {
     public boolean back180Button() {
         return rightJoy.getRawButton(BACK_180);
     }
+
+    */
 
     public boolean driveStraightButton() {
         return rightJoy.getTrigger();

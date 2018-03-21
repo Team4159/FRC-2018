@@ -26,8 +26,6 @@ class RightAuto extends CommandGroup {
                 break;
             case RIGHT:
                 break;
-            case UNKNOWN:
-                break;
             default:
                 break;
         }

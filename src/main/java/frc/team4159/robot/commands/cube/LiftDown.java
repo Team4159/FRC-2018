@@ -10,9 +10,4 @@ public class LiftDown extends InstantCommand {
         Superstructure.getInstance().getCubeHolder().updatePosition(0);
     }
 
-    @Override
-    protected boolean isFinished() {
-        return true;
-    }
-
 }
