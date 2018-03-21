@@ -1,9 +1,9 @@
 package frc.team4159.robot.commands.drive;
 
 import edu.wpi.first.wpilibj.DriverStation;
-import frc.team4159.robot.Robot;
-
 import edu.wpi.first.wpilibj.command.Command;
+
+import frc.team4159.robot.Robot;
 import frc.team4159.robot.subsystems.Drivetrain;
 
 public class Drive extends Command{
@@ -17,7 +17,6 @@ public class Drive extends Command{
     // Called just before this Command runs the first time
     @Override
     protected void initialize() {
-
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -41,7 +40,8 @@ public class Drive extends Command{
 //            drivetrain.turnToAngle(180.0f);
 
         if(Robot.oi.driveStraightButton()) {
-            double magnitude = (Robot.oi.getLeftY() + Robot.oi.getRightY()) /2;
+            // Take average of both joysticks
+            double magnitude = (Robot.oi.getLeftY() + Robot.oi.getRightY()) / 2;
             drivetrain.driveStraight(magnitude);
 
         } else {

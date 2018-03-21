@@ -24,4 +24,6 @@ public interface Constants {
     // 4 inches to feet
     double WHEEL_DIAMETER = 4/12; // 0.1016
 
+    double WHEEL_CIRCUMFERANCE = WHEEL_DIAMETER * Math.PI;
+
 }
