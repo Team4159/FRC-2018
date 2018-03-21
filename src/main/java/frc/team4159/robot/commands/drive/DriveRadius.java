@@ -12,8 +12,8 @@ public class DriveRadius extends TimedCommand {
     private TurnDirection mTurnDirection;
     private double mWheelbase = Constants.WHEELBASE_WIDTH_INCHES;
 
-    public DriveRadius(double seconds, double radius, double baseSpeed, TurnDirection turnDirection) {
-        super(seconds); //Runs this command for a certain duration
+    public DriveRadius(double radians, double radius, double baseSpeed, TurnDirection turnDirection) {
+        super((radians*radius/baseSpeed)); //Runs this command for a certain duration
         mTurnRadius = radius;
         mBaseSpeed = baseSpeed;
         mTurnDirection = turnDirection;

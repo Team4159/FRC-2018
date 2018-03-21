@@ -59,7 +59,7 @@ public class Auto extends CommandGroup {
                             System.out.println("RIGHT SWITCH");
                             addSequential(new RunCSVProfile(LEFT_TO_RIGHT_L, LEFT_TO_RIGHT_R));
                             addSequential(new DriveStraight(18.5)); //Inches. TODO: Someone erased this
-                            addSequential(new DriveRadius(Math.PI*16.824/24.0, 16.824,24.0, TurnDirection.CLOCKWISE)); //Random baseSpeed in inches/second
+                            addSequential(new DriveRadius(2*Math.PI, 16.824,24.0, TurnDirection.CLOCKWISE)); //Random baseSpeed in inches/second
                             //addSequential(new RunCSVProfile(BASELINE_L, BASELINE_R));
                         } else {
                             System.out.println("Don't know which side");
