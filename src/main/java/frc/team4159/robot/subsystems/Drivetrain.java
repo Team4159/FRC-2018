@@ -106,7 +106,7 @@ public class Drivetrain extends Subsystem implements PIDOutput {
         leftTalon.configPeakOutputReverse(-PEAK_OUT_PERCENT, TIMEOUT_MS);
 
         rightTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, PIDIDX, TIMEOUT_MS);
-        rightTalon.setSensorPhase(true); // Reverses encoder output to match with motor output
+        rightTalon.setSensorPhase(true); // Reverses encoder direction to match with motor direction
         rightTalon.configNominalOutputForward(NOMINAL_OUT_PERCENT, TIMEOUT_MS);
         rightTalon.configNominalOutputReverse(NOMINAL_OUT_PERCENT, TIMEOUT_MS);
         rightTalon.configPeakOutputForward(PEAK_OUT_PERCENT, TIMEOUT_MS);
@@ -208,16 +208,15 @@ public class Drivetrain extends Subsystem implements PIDOutput {
         rightTalon.set(ControlMode.Velocity, rightTarget);
     }
 
-    /* Drives straight a certain amount of distance for auto */
-    public void driveDistance(double distance) {
-        //TODO convert distance to number of rotations
-        double targetPos = distance * 10.0 * 4096;
-        rightTalon.set(ControlMode.MotionMagic, targetPos);
-        leftTalon.set(ControlMode.MotionMagic, targetPos);
-    }
+    /* Drives straight a certain amount of distance */
+    public void driveDistance(double leftDistance, double rightDistance) {
 
-    public void driveStraightMotionMagic(double distance) {
+        /* Convert feet to encoder units */
+        double leftTarget = (UNITS_PER_REV * leftDistance) / WHEEL_CIRCUMFERANCE;
+        double rightTarget = (UNITS_PER_REV * rightDistance) / WHEEL_CIRCUMFERANCE;
 
+        rightTalon.set(ControlMode.MotionMagic, leftTarget);
+        leftTalon.set(ControlMode.MotionMagic, rightTarget);
     }
 
     public int getLeftEncoderPosition() {
