@@ -8,20 +8,19 @@ import frc.team4159.robot.subsystems.Superstructure;
 
 public class LiftCube extends Command {
 
-    private CubeHolder cubeHolder = Superstructure.getInstance().getCubeHolder();
+    private CubeHolder cubeHolder;
 
     public LiftCube() {
         requires(Superstructure.cubeHolder);
-    }
-
-    @Override
-    protected void initialize() {
+        cubeHolder = Superstructure.getInstance().getCubeHolder();
     }
 
     @Override
     protected void execute() {
 
-        /* Controls intake/outtake */
+        /*
+         * Intake and outtake wheel logic
+         */
         if(Robot.oi.intakeButton() && Robot.oi.outtakeButton()) {
             cubeHolder.stopFlywheels();
 
@@ -36,20 +35,24 @@ public class LiftCube extends Command {
         }
 
 
+        /*
+         * Open claw if trigger is pressed. Closed by default.
+         */
         if(Robot.oi.openClaw()) {
             cubeHolder.open();
         } else {
             cubeHolder.close();
         }
 
-        /* If we're not using the secondary axis to climb, use it to control the cube lifter */
+        /*
+         * Use secondary y-axis to control lifter if not used to control climbing
+         */
         if(!Robot.oi.climbEnable()) {
 
             if (cubeHolder.getRawMode()) {
                 cubeHolder.setRawLift(Robot.oi.getSecondaryY());
 
             } else {
-
                 if (Robot.oi.setSwitchHeight())
                     cubeHolder.setToSwitch();
                 else if(Robot.oi.setLiftTargetZero())

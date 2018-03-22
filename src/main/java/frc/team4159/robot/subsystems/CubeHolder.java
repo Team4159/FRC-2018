@@ -52,6 +52,7 @@ public class CubeHolder extends Subsystem {
         targetPosition = lowerEncoderLimit; // Initial target value in starting configuration (raised)
 
         configureSensors();
+        limitCurrent();
     }
 
     public void setLiftEncoderValue(int value) {
@@ -97,8 +98,6 @@ public class CubeHolder extends Subsystem {
 
     }
 
-    //FLYWHEELS
-
     /* Runs wheels inwards to intake the cube */
     public void intake() {
         intakeVictor.set(-1);
@@ -128,6 +127,9 @@ public class CubeHolder extends Subsystem {
         liftTalon.set(ControlMode.PercentOutput, value);
     }
 
+    /**
+     * Set lift talon to desired target
+     */
     public void move() {
 
         // Limits to avoid hitting into hardstop
@@ -139,29 +141,39 @@ public class CubeHolder extends Subsystem {
         liftTalon.set(ControlMode.Position, targetPosition);
     }
 
-    public int getLiftPosition() {
-        return liftTalon.getSelectedSensorPosition(PIDIDX);
-    }
-
+    /**
+     * @return true or false whether raw mode is enabled
+     */
     public boolean getRawMode(){
         return rawMode;
     }
 
+    /**
+     * Set raw mode to true or false
+     */
     public void toggleLifterRawMode(){
         rawMode = !rawMode;
-
     }
 
+    /**
+     * Reset lift encoder to 0 and sets target position to 0
+     */
     public void resetLiftEncoder(){
         liftTalon.setSelectedSensorPosition(lowerEncoderLimit, PIDIDX, TIMEOUT_MS);
         targetPosition = 0;
     }
 
-    public void setTargetPosition(double value) {
-        targetPosition = value;
+    /**
+     * @param target setpoint in native encoder units (1 rev = 4096 units)
+     */
+    public void setTargetPosition(double target) {
+        targetPosition = target;
     }
 
-    /* Updates target position to a value from -MAX_SPEED to +MAX_SPEED according to the joystick value */
+    /**
+     *  Update target position to a value from -MAX_SPEED to +MAX_SPEED according to value
+     *  @param value from joystick -1 to 1
+     */
     public void updatePosition(double value) {
         value *= MAX_SPEED;
         targetPosition += value;
@@ -175,6 +187,9 @@ public class CubeHolder extends Subsystem {
         targetPosition = lowerEncoderLimit;
     }
 
+    /**
+     * Log values to SmartDashboard
+     */
     public void logDashboard() {
 
 //        SmartDashboard.putNumber("lift position", liftTalon.getSelectedSensorPosition(0));
@@ -187,6 +202,10 @@ public class CubeHolder extends Subsystem {
 
     }
 
+    /**
+     * Set default comamnd
+     */
+    @Override
     public void initDefaultCommand() {
         setDefaultCommand(new LiftCube());
     }
