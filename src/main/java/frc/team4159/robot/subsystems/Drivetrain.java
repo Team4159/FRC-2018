@@ -246,6 +246,13 @@ public class Drivetrain extends Subsystem implements PIDOutput {
     }
 
     /**
+     * @return true if motion magic trajectory is complete, meaning the velocity is 0
+     */
+    public boolean motionMagicFinished() {
+        return leftTalon.getActiveTrajectoryVelocity() == 0 && rightTalon.getActiveTrajectoryVelocity() == 0;
+    }
+
+    /**
      *  @return left encoder position
      */
     public int getLeftEncoderPosition() {
