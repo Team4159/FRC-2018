@@ -47,6 +47,9 @@ public class Drivetrain extends Subsystem implements PIDOutput {
     private final double kI_right = 0.0;
     private final double kD_right = 0.0;
 
+    private final int CRUISE_VELOCITY = 3860; // 10 ft/sec to encoder units/100ms
+    private final int CRUISE_ACCEL = 2000; // TODO: Measure. This is a logically guessed value
+
     /* Stores state if controls should be reversed or not */
     private boolean reverse;
 
@@ -127,10 +130,10 @@ public class Drivetrain extends Subsystem implements PIDOutput {
         rightTalon.config_kD(SLOTIDX, kD_right, TIMEOUT_MS);
 
         // TODO: figure out the correct cruise velocity and acceleration
-        leftTalon.configMotionAcceleration(0, TIMEOUT_MS);
-        leftTalon.configMotionCruiseVelocity(0, TIMEOUT_MS);
-        rightTalon.configMotionAcceleration(0, TIMEOUT_MS);
-        rightTalon.configMotionCruiseVelocity(0, TIMEOUT_MS);
+        leftTalon.configMotionAcceleration(CRUISE_ACCEL, TIMEOUT_MS);
+        leftTalon.configMotionCruiseVelocity(CRUISE_VELOCITY, TIMEOUT_MS);
+        rightTalon.configMotionAcceleration(CRUISE_ACCEL, TIMEOUT_MS);
+        rightTalon.configMotionCruiseVelocity(CRUISE_VELOCITY, TIMEOUT_MS);
 
         turnController = new PIDController(kP_turn, kI_turn, kD_turn, kF_turn, navx, this);
         turnController.setInputRange(-NAVX_YAW_RANGE, NAVX_YAW_RANGE);
