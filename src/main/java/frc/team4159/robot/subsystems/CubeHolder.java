@@ -4,6 +4,8 @@ package frc.team4159.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import edu.wpi.first.wpilibj.Counter;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -28,6 +30,7 @@ public class CubeHolder extends Subsystem {
     private TalonSRX liftTalon;
     private VictorSP intakeVictor;
     private DoubleSolenoid pistons;
+    private DigitalInput limitSwitch;
 
     private final int PIDIDX = 0;
     private final double MAX_SPEED = 200.0; // encoder units per cycle
@@ -48,6 +51,7 @@ public class CubeHolder extends Subsystem {
         intakeVictor = new VictorSP(INTAKE_VICTOR);
         liftTalon = new TalonSRX(LIFT_TALON);
         pistons = new DoubleSolenoid(FORWARD_CHANNEL, REVERSE_CHANNEL);
+        limitSwitch = new DigitalInput(0);
 
         targetPosition = lowerEncoderLimit; // Initial target value in starting configuration (raised)
 
@@ -132,6 +136,11 @@ public class CubeHolder extends Subsystem {
      */
     public void move() {
 
+        // If limit switch is pressed, reset encoder and target pos to 0
+        if(limitSwitch.get()) {
+            resetLiftEncoder();
+        }
+
         // Limits to avoid hitting into hardstop
         if(targetPosition < lowerEncoderLimit)
             targetPosition = lowerEncoderLimit;
@@ -158,7 +167,7 @@ public class CubeHolder extends Subsystem {
     /**
      * Reset lift encoder to 0 and sets target position to 0
      */
-    public void resetLiftEncoder(){
+    public void resetLiftEncoder() {
         liftTalon.setSelectedSensorPosition(lowerEncoderLimit, PIDIDX, TIMEOUT_MS);
         targetPosition = 0;
     }
