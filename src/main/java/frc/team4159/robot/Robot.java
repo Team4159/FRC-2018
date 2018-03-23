@@ -182,35 +182,35 @@ public class Robot extends TimedRobot {
     }
 
     /**
-     * @return auto starting position "LEFT", "MIDDLE", or "RIGHT"
+     * @return Auto starting position "LEFT", "MIDDLE", or "RIGHT"
      */
     public String getStartingPosition() {
         return startingPosition;
     }
 
     /**
-     * @return auto action if left is near switch. "BASE", "ONE", or "TWO"
+     * @return Auto action if left is near switch. "BASE", "ONE", or "TWO"
      */
     public String getLeftAction() {
         return leftAction;
     }
 
     /**
-     * @return auto action if right is near switch. "BASE", "ONE", or "TWO"
+     * @return Auto action if right is near switch. "BASE", "ONE", or "TWO"
      */
     public String getRightAction() {
         return rightAction;
     }
 
     /**
-     * @return autonomous delay in seconds
+     * @return Autonomous delay in seconds
      */
     public double getAutoDelay() {
         return autoDelay;
     }
 
     /**
-     * @return drivetrain
+     * @return Drivetrain
      */
     public static Drivetrain getDrivetrain() {
         return drivetrain;

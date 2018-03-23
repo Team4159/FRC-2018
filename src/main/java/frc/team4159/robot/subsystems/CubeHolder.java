@@ -86,8 +86,8 @@ public class CubeHolder extends Subsystem {
 
         /* Sets and limits the peak and continuous current for both sides of motors to prevent brownouts */
 
-        final int PEAK_CURRENT = 10; // Amps
-        final int CONTINUOUS_CURRENT = 7; // Amps
+        final int PEAK_CURRENT = 7; // Amps
+        final int CONTINUOUS_CURRENT = 5; // Amps
         final int PEAK_CURRENT_DURATION = 200; // ms
         final int PEAK_CURRENT_TIMEOUT = 20; // ms
 

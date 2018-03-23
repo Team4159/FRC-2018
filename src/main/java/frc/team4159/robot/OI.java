@@ -156,12 +156,18 @@ public class OI {
         return secondaryJoy.getRawButton(CLIMB_ENABLE);
     }
 
+    /**
+     * @return True if winch button held
+     */
     public boolean climbWinch() {
         return secondaryJoy.getRawButton(WINCH);
     }
 
+    /**
+     * @return True if set toggle raw climb button pressed
+     */
     public boolean toggleRawClimb() {
-        return secondaryJoy.getRawButton(TOGGLE_RAW_CLIMB);
+        return secondaryJoy.getRawButtonPressed(TOGGLE_RAW_CLIMB);
     }
 
 
