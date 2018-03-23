@@ -5,9 +5,9 @@ import edu.wpi.first.wpilibj.Joystick;
 import static frc.team4159.robot.ControlMap.*;
 
 /*
-* The OI (Operator Interface) class binds the controls on the physical operator interface to the commands and command
-* groups that allow control of the robot.
-*/
+ * The OI (Operator Interface) class binds the controls on the physical operator interface to the commands and command
+ * groups that allow control of the robot.
+ */
 
 public class OI {
 
@@ -19,41 +19,48 @@ public class OI {
         return instance;
     }
 
-    /* Logitech Attack 3 joysticks, plugged in via USB to the driver station laptop */
+    /**
+     *  Logitech Attack 3 joysticks, plugged in via USB to the driver station laptop
+     */
     private Joystick leftJoy, rightJoy, secondaryJoy;
 
     private OI() {
         leftJoy = new Joystick(LEFT_STICK);
         rightJoy = new Joystick(RIGHT_STICK);
         secondaryJoy = new Joystick(SECONDARY_STICK);
-
     }
 
     /*
-    * getLeftY() and getRightY() squares the joystick y-axis value and changes its sign
-    */
+     * DRIVETRAIN CONTROLS
+     */
+
+    /**
+     * @return Left y-axis joystick value squared and inverted sign
+     */
     public double getLeftY() {
         double leftY = leftJoy.getY();
         return -Math.copySign(Math.pow(leftY, 2), leftY);
-
     }
 
+    /**
+     * @return Right y-axis joystick value squared and inverted sign
+     */
     public double getRightY() {
         double rightY = rightJoy.getY();
         return -Math.copySign(Math.pow(rightY, 2), rightY);
-
 	}
 
+    /**
+     * @return Secondary y-axis joystick value squared
+     */
     public double getSecondaryY() {
         double secondaryY = secondaryJoy.getY();
         return Math.copySign(Math.pow(secondaryY, 2), secondaryY);
     }
 
-	/*
-	* Boolean methods called from commands. Constants can be changed in Constants.java
-	*/
-
-	/* DRIVETRAIN controls */
+    /**
+     * @return True if reverse button pressed.
+     */
 	public boolean reverseControls() {
         return (leftJoy.getRawButtonPressed(REVERSE_CONTROLS));
     }
@@ -78,12 +85,73 @@ public class OI {
 
     */
 
+    /**
+     * @return True if right trigger held.
+     */
     public boolean driveStraightButton() {
         return rightJoy.getTrigger();
     }
 
-    /* CLIMBER controls */
+    /*
+     * INTAKE CONTROLS
+     */
 
+    /**
+     * @return True if intake button held
+     */
+    public boolean intakeButton() {
+        return secondaryJoy.getRawButton(INTAKE);
+    }
+
+    /**
+     * @return True if outtake button held
+     */
+    public boolean outtakeButton() {
+        return secondaryJoy.getRawButton(OUTTAKE);
+    }
+
+    /**
+     * @return True if secondary trigger held
+     */
+    public boolean openClaw() {
+        return secondaryJoy.getTrigger();
+    }
+
+    /**
+     * @return True if switch height state button pressed
+     */
+    public boolean setSwitchHeight(){
+        return secondaryJoy.getRawButtonPressed(SWITCH);
+    }
+
+    /**
+     * @return True if set lifter down button pressed
+     */
+    public boolean setLiftTargetZero() {
+        return secondaryJoy.getRawButtonPressed(GROUND);
+    }
+
+    /**
+     * @return True if lifter raw mode button pressed
+     */
+    public boolean toggleLifterRawMode() {
+	    return secondaryJoy.getRawButtonPressed(TOGGLE_RAW_LIFT);
+    }
+
+    /**
+     * @return True if reset lift encoder button pressed
+     */
+    public boolean resetLiftEncoder(){
+        return secondaryJoy.getRawButtonPressed(RESET_LIFT_ENCODER);
+    }
+
+    /*
+     * CLIMBER CONTROLS
+     */
+
+    /**
+     * @return True if set enable climb button held
+     */
     public boolean climbEnable() {
         return secondaryJoy.getRawButton(CLIMB_ENABLE);
     }
@@ -92,40 +160,9 @@ public class OI {
         return secondaryJoy.getRawButton(WINCH);
     }
 
-    /* INTAKE controls */
-
-    public boolean intakeButton() {
-        return secondaryJoy.getRawButton(INTAKE);
+    public boolean toggleRawClimb() {
+        return secondaryJoy.getRawButton(TOGGLE_RAW_CLIMB);
     }
 
-    public boolean outtakeButton() {
-        return secondaryJoy.getRawButton(OUTTAKE);
-    }
-
-    public boolean openClaw() {
-        return secondaryJoy.getTrigger();
-    }
-
-    public boolean setSwitchHeight(){
-        return secondaryJoy.getRawButtonPressed(SWITCH);
-    }
-
-    public boolean setLiftTargetZero(){ return secondaryJoy.getRawButtonPressed(GROUND); }
-
-    public boolean toggleLifterRawMode(){
-	    return secondaryJoy.getRawButtonReleased(TOGGLE_RAW_LIFT);
-    }
-
-    public boolean resetLiftEncoder(){
-        return secondaryJoy.getRawButtonPressed(RESET_LIFT_ENCODER);
-    }
-
-    public boolean fastDownButton() {
-        return secondaryJoy.getRawButtonReleased(8);
-    }
-
-    public boolean toggleClimbTalonMode() {
-        return secondaryJoy.getRawButtonReleased(9);
-    }
 
 }

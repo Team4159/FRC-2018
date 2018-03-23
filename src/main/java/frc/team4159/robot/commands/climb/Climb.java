@@ -1,67 +1,46 @@
 package frc.team4159.robot.commands.climb;
 
 import edu.wpi.first.wpilibj.command.Command;
+import frc.team4159.robot.OI;
 import frc.team4159.robot.Robot;
 import frc.team4159.robot.subsystems.Climber;
 import frc.team4159.robot.subsystems.Superstructure;
 
-/* The climber subsystem consists of a motor running a winch to move the one stage elevator up and down */
+/*
+ * The climber subsystem consists of a motor controlling a hook-delivering telescoping arm and another motor to winch
+ * the robot up.
+ */
 
 public class Climb extends Command {
 
-    private Climber climber = Superstructure.getInstance().getClimber();
+    private Climber climber;
+    private OI oi;
 
     public Climb() {
         requires(Superstructure.climber);
-    }
-
-    @Override
-    protected void initialize() {
+        climber = Superstructure.getInstance().getClimber();
+        oi = OI.getInstance();
     }
 
     @Override
     protected void execute() {
 
-        /*These should have gone in the subsystem itself, but later*/
-
-        /* If climb hasn't already started and the joystick is pointed towards positive,
-           the set the hasStartetdClimb flag to true.*/
-        if(!climber.getClimbStarted()&&Robot.oi.getSecondaryY()>.5){
-            climber.setStartedClimb(true);
+        /*
+         * Update setpoint if enable climber button is held and absolute value of y-axis is greater than 0.1
+         */
+        if(oi.climbEnable() && Math.abs(oi.getSecondaryY()) > 0.1) {
+            climber.updateSetpoint(oi.getSecondaryY());
         }
 
-        /* If the climber has already started going up and the joystick is pointed towards negative,
-           then set the hasGoneDownFlag to false*/
-        if(climber.getClimbStarted()&&Robot.oi.getSecondaryY()<-.5){
-           climber.setGoneDown(true);
-        }
-
-        if(Robot.oi.climbEnable()){
-            if(Math.abs(Robot.oi.getSecondaryY()) > .1)
-                climber.updatePosition(Robot.oi.getSecondaryY());
-            else
-                climber.stopIncrement();
-        }
-
-        if(Robot.oi.climbWinch()) {
+        if(oi.climbWinch()) {
             climber.winch();
-        } else {
-            climber.stopWinch();
         }
 
-        if(Robot.oi.fastDownButton()) {
-            climber.fastDown();
+        if(oi.toggleRawClimb()) {
+            climber.toggleRawClimb();
         }
 
-        if(Robot.oi.toggleClimbTalonMode()){
-            climber.toggleClimbTalonMode();
-        }
-
-        if(!climber.getCalimTalonMode())
-            climber.movePID();
-        else
-            climber.moveRaw(Robot.oi.getSecondaryY());
-
+        climber.update();
         climber.logSmartDashboard();
     }
 

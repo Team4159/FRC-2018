@@ -1,10 +1,8 @@
 package frc.team4159.robot.subsystems;
 
-
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-import edu.wpi.first.wpilibj.Counter;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.VictorSP;
@@ -33,7 +31,6 @@ public class CubeHolder extends Subsystem {
     private DigitalInput limitSwitch;
 
     private final int PIDIDX = 0;
-    private final double MAX_SPEED = 200.0; // encoder units per cycle
     private final double kF = 0.0;
     private final double kP = 0.5;
     private final double kI = 0.0;
@@ -42,8 +39,7 @@ public class CubeHolder extends Subsystem {
     private double targetPosition; // In encoder units. 4096 per revolution.
     private final int upperEncoderLimit = 3300; // Lifter is up
     private final int lowerEncoderLimit = 0; // Lifter is down
-    private final int switchHeight = 2700;
-    //TODO: this is a random number; determine switch height
+    private final int switchHeight = 2700;  //TODO: this is a random number; determine switch height
     private boolean rawMode = true; // Switches between raw input (true) and position controlled (false)
 
     private CubeHolder() {
@@ -51,7 +47,7 @@ public class CubeHolder extends Subsystem {
         intakeVictor = new VictorSP(INTAKE_VICTOR);
         liftTalon = new TalonSRX(LIFT_TALON);
         pistons = new DoubleSolenoid(FORWARD_CHANNEL, REVERSE_CHANNEL);
-        limitSwitch = new DigitalInput(0);
+        limitSwitch = new DigitalInput(LIMIT_SWITCH);
 
         targetPosition = lowerEncoderLimit; // Initial target value in starting configuration (raised)
 
@@ -151,9 +147,9 @@ public class CubeHolder extends Subsystem {
     }
 
     /**
-     * @return true or false whether raw mode is enabled
+     * @return True if raw control mode is enabled
      */
-    public boolean getRawMode(){
+    public boolean getRawMode() {
         return rawMode;
     }
 
@@ -173,7 +169,7 @@ public class CubeHolder extends Subsystem {
     }
 
     /**
-     * @param target setpoint in native encoder units (1 rev = 4096 units)
+     * @param target Setpoint in native encoder units (1 rev = 4096 units)
      */
     public void setTargetPosition(double target) {
         targetPosition = target;
@@ -181,18 +177,27 @@ public class CubeHolder extends Subsystem {
 
     /**
      *  Update target position to a value from -MAX_SPEED to +MAX_SPEED according to value
-     *  @param value from joystick -1 to 1
+     *  @param value Joystick y-axis value from -1 to 1
      */
     public void updatePosition(double value) {
+
+        double MAX_SPEED = 200.0;
+
         value *= MAX_SPEED;
         targetPosition += value;
     }
 
-    //H: made these separate functions to keep constants at top of class, feel free to change?
-    public void setToSwitch(){
+    /**
+     * Set cube lifter to switch height
+     */
+    public void setToSwitch() {
         targetPosition = switchHeight;
     }
-    public void setToBottom(){
+
+    /**
+     * Set cube lifter to ground height
+     */
+    public void setToBottom() {
         targetPosition = lowerEncoderLimit;
     }
 
@@ -212,7 +217,7 @@ public class CubeHolder extends Subsystem {
     }
 
     /**
-     * Set default comamnd
+     * Set default command
      */
     @Override
     public void initDefaultCommand() {

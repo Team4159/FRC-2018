@@ -5,7 +5,6 @@ import frc.team4159.robot.Robot;
 import frc.team4159.robot.subsystems.CubeHolder;
 import frc.team4159.robot.subsystems.Superstructure;
 
-
 public class LiftCube extends Command {
 
     private CubeHolder cubeHolder;
@@ -19,7 +18,7 @@ public class LiftCube extends Command {
     protected void execute() {
 
         /*
-         * Intake and outtake wheel logic
+         * Intake and outtake wheel control
          */
         if(Robot.oi.intakeButton() && Robot.oi.outtakeButton()) {
             cubeHolder.stopFlywheels();
@@ -53,11 +52,14 @@ public class LiftCube extends Command {
                 cubeHolder.setRawLift(Robot.oi.getSecondaryY());
 
             } else {
+
                 if (Robot.oi.setSwitchHeight())
                     cubeHolder.setToSwitch();
+
                 else if(Robot.oi.setLiftTargetZero())
-                    cubeHolder.setTargetPosition(0);
-                else if (Math.abs(Robot.oi.getSecondaryY()) > .1)
+                    cubeHolder.setToBottom();
+
+                else if (Math.abs(Robot.oi.getSecondaryY()) > 0.1)
                     cubeHolder.updatePosition(Robot.oi.getSecondaryY());
 
                 cubeHolder.move();

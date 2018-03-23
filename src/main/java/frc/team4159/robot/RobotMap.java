@@ -29,8 +29,13 @@ public interface RobotMap {
     int FORWARD_CHANNEL = 6;
     int REVERSE_CHANNEL = 7;
 
+    // Digital Input ports
+    int LIMIT_SWITCH = 0;
+    int HALL_SENSOR = 1;
+
     // Pneumatics Control Module CAN ID
     int PCM = 0;
+
 
 
     /* PRACTICE BOT */
