@@ -2,7 +2,6 @@ package frc.team4159.robot.commands.climb;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.team4159.robot.OI;
-import frc.team4159.robot.Robot;
 import frc.team4159.robot.subsystems.Climber;
 import frc.team4159.robot.subsystems.Superstructure;
 

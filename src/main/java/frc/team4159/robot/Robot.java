@@ -9,9 +9,8 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.team4159.robot.commands.auto.*;
+import frc.team4159.robot.commands.auto.Auto;
 import frc.team4159.robot.subsystems.Drivetrain;
 import frc.team4159.robot.subsystems.Superstructure;
 
@@ -26,7 +25,7 @@ public class Robot extends TimedRobot {
     private static Robot instance;
 
     public static Robot getInstance() {
-        if(instance == null)
+        if (instance == null)
             instance = new Robot();
         return instance;
     }
@@ -35,9 +34,9 @@ public class Robot extends TimedRobot {
     public static Superstructure superstructure;
     public static OI oi;
 
-	/* Auto choosers */
-	private Command autoCommand;
-	private SendableChooser<Command> autoChooser;
+    /* Auto choosers */
+    private Command autoCommand;
+    private SendableChooser<Command> autoChooser;
     private final double defaultAutoDelay = 0.0;
     private final String defaultStartingPosition = "LEFT";
     private final String defaultLeftAction = "BASE";
@@ -51,32 +50,32 @@ public class Robot extends TimedRobot {
     private NetworkTableEntry ledModeEntry;
 
     /**
-     *  Called when the robot is first powered on
+     * Called when the robot is first powered on
      */
-	@Override
-	public void robotInit() {
+    @Override
+    public void robotInit() {
 
-	    /*
+        /*
          *  Initialize subsystems
          */
-		drivetrain = Drivetrain.getInstance();
-		superstructure = Superstructure.getInstance();
+        drivetrain = Drivetrain.getInstance();
+        superstructure = Superstructure.getInstance();
 
-		/*
+        /*
          *  Initialize operator control bindings
          */
-		oi = OI.getInstance();
+        oi = OI.getInstance();
 
-		/*
-		 * Put auto command into SmartDashboard
-		 */
-		autoChooser = new SendableChooser<>();
+        /*
+         * Put auto command into SmartDashboard
+         */
+        autoChooser = new SendableChooser<>();
         autoChooser.addDefault("Auto!", new Auto());
 
         /*
          *  Put auto options into SmartDashboard
          */
-		SmartDashboard.putString("Starting Position", defaultStartingPosition);
+        SmartDashboard.putString("Starting Position", defaultStartingPosition);
         SmartDashboard.putString("Left Action", defaultLeftAction);
         SmartDashboard.putString("Right Action", defaultRightAction);
         SmartDashboard.putNumber("Auto Delay", defaultAutoDelay);
@@ -89,31 +88,31 @@ public class Robot extends TimedRobot {
         /*
          * Start networktables for rPi to read
          */
-		NetworkTableInstance inst = NetworkTableInstance.getDefault();
-		NetworkTable table = inst.getTable("datatable");
-		ledModeEntry = table.getEntry("LED Mode");
+        NetworkTableInstance inst = NetworkTableInstance.getDefault();
+        NetworkTable table = inst.getTable("datatable");
+        ledModeEntry = table.getEntry("LED Mode");
 
-	}
+    }
 
     /**
      * Called once every time robot enters disabled mode
      */
-	@Override
-	public void disabledInit() {
-		ledModeEntry.setString("DISABLED");
-	}
+    @Override
+    public void disabledInit() {
+        ledModeEntry.setString("DISABLED");
+    }
 
-	/* Called periodically when robot is disabled */
-	@Override
-	public void disabledPeriodic() {
-		Scheduler.getInstance().run();
-	}
+    /* Called periodically when robot is disabled */
+    @Override
+    public void disabledPeriodic() {
+        Scheduler.getInstance().run();
+    }
 
-	/**
-     *  Runs once at the start of autonomous
+    /**
+     * Runs once at the start of autonomous
      */
-	@Override
-	public void autonomousInit() {
+    @Override
+    public void autonomousInit() {
 
         /* Starts auto command */
         autoCommand = autoChooser.getSelected();
@@ -122,19 +121,19 @@ public class Robot extends TimedRobot {
         }
 
         /* Put alliance color to NetworkTables to be used by rPi to control LED strips */
-        if(DriverStation.getInstance().getAlliance() == DriverStation.Alliance.Red) {
-			ledModeEntry.setString("RED");
-		} else {
-			ledModeEntry.setString("BLUE");
-		}
+        if (DriverStation.getInstance().getAlliance() == DriverStation.Alliance.Red) {
+            ledModeEntry.setString("RED");
+        } else {
+            ledModeEntry.setString("BLUE");
+        }
 
-	}
+    }
 
     /**
-     *  Periodically called during autonomous
+     * Periodically called during autonomous
      */
-	@Override
-	public void autonomousPeriodic() {
+    @Override
+    public void autonomousPeriodic() {
 
         startingPosition = SmartDashboard.getString("Starting Position", defaultStartingPosition);
         autoDelay = SmartDashboard.getNumber("Starting Position", defaultAutoDelay);
@@ -142,28 +141,28 @@ public class Robot extends TimedRobot {
         rightAction = SmartDashboard.getString("Right Action", defaultRightAction);
 
         Scheduler.getInstance().run();
-	}
-
-	/**
-     *  Runs once at the start of teleop
-     */
-	@Override
-	public void teleopInit() {
-
-        /* Makes sure autonomous action stops running when teleop starts running */
-		if (autoCommand != null) {
-            autoCommand.cancel();
-		}
-
-	}
-
-	//private boolean blinkMode = false;
+    }
 
     /**
-	 *  Periodically called during teleoperatated control.
-	 */
-	@Override
-	public void teleopPeriodic() {
+     * Runs once at the start of teleop
+     */
+    @Override
+    public void teleopInit() {
+
+        /* Makes sure autonomous action stops running when teleop starts running */
+        if (autoCommand != null) {
+            autoCommand.cancel();
+        }
+
+    }
+
+    //private boolean blinkMode = false;
+
+    /**
+     * Periodically called during teleoperatated control.
+     */
+    @Override
+    public void teleopPeriodic() {
 
 //		if(DriverStation.getInstance().getMatchTime() <= 30 && !blinkMode) {
 //			ledModeEntry.setString("END GAME");
@@ -172,49 +171,49 @@ public class Robot extends TimedRobot {
 //			blinkMode = true;
 //		}
 
-		Scheduler.getInstance().run();
-	}
-
-	/**
-	 *  Periodically called during test mode.
-	 */
-	@Override
-	public void testPeriodic() {
-	}
-
-	/**
-	 * @return auto starting position "LEFT", "MIDDLE", or "RIGHT"
-	 */
-	public String getStartingPosition() {
-	    return startingPosition;
+        Scheduler.getInstance().run();
     }
 
-	/**
-	 * @return auto action if left is near switch. "BASE", "ONE", or "TWO"
-	 */
+    /**
+     * Periodically called during test mode.
+     */
+    @Override
+    public void testPeriodic() {
+    }
+
+    /**
+     * @return auto starting position "LEFT", "MIDDLE", or "RIGHT"
+     */
+    public String getStartingPosition() {
+        return startingPosition;
+    }
+
+    /**
+     * @return auto action if left is near switch. "BASE", "ONE", or "TWO"
+     */
     public String getLeftAction() {
-	    return leftAction;
+        return leftAction;
     }
 
-	/**
-	 * @return auto action if right is near switch. "BASE", "ONE", or "TWO"
-	 */
-	public String getRightAction() {
-	    return rightAction;
+    /**
+     * @return auto action if right is near switch. "BASE", "ONE", or "TWO"
+     */
+    public String getRightAction() {
+        return rightAction;
     }
 
-	/**
-	 * @return autonomous delay in seconds
-	 */
-	public double getAutoDelay() {
-		return autoDelay;
-	}
+    /**
+     * @return autonomous delay in seconds
+     */
+    public double getAutoDelay() {
+        return autoDelay;
+    }
 
-	/**
-	 * @return drivetrain
-	 */
-	public static Drivetrain getDrivetrain() {
-		return drivetrain;
-	}
+    /**
+     * @return drivetrain
+     */
+    public static Drivetrain getDrivetrain() {
+        return drivetrain;
+    }
 
 }

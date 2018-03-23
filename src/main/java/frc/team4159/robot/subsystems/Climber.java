@@ -109,10 +109,11 @@ public class Climber extends Subsystem {
     }
 
     /**
-     * Starting winching at full speed iff telescoping arm is down and has started to deploy
+     * Starting winching at full speed if telescoping arm is down and hook already started to deploy
+     * OR if rawMode is true
      */
     public void winch() {
-        if(hallSensorPresent() && hasStartedClimb) {
+        if((hallSensorPresent() && hasStartedClimb) || rawMode) {
             climbVictor.set(-1);
         } else {
             climbVictor.set(0);
@@ -144,6 +145,9 @@ public class Climber extends Subsystem {
      * Put climber values to SmartDashboard
      */
     public void logSmartDashboard() {
+        SmartDashboard.putBoolean("Climber Raw Mode", rawMode);
+        SmartDashboard.putBoolean("Has Started Climb", hasStartedClimb);
+        SmartDashboard.putNumber("Climber Encoder Position", climbTalon.getSelectedSensorPosition(PIDIDX));
     }
 
     /**
