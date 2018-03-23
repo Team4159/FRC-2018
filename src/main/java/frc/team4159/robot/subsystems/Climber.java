@@ -55,12 +55,12 @@ public class Climber extends Subsystem {
      */
     private void configureSensors() {
 
-        int SLOTIDX = 0;
+        final int SLOTIDX = 0;
 
-        double kF = 0;
-        double kP = 0.4;
-        double kI = 0;
-        double kD = 0;
+        final double kF = 0;
+        final double kP = 0.4;
+        final double kI = 0;
+        final double kD = 0;
 
         climbTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, PIDIDX, TIMEOUT_MS);
 
@@ -69,7 +69,7 @@ public class Climber extends Subsystem {
         climbTalon.config_kI(SLOTIDX, kI, TIMEOUT_MS);
         climbTalon.config_kD(SLOTIDX, kD, TIMEOUT_MS);
 
-        climbTalon.setSelectedSensorPosition(0,PIDIDX, TIMEOUT_MS);
+        climbTalon.setSelectedSensorPosition(0, PIDIDX, TIMEOUT_MS);
 
     }
 
@@ -82,7 +82,7 @@ public class Climber extends Subsystem {
     public void updateSetpoint(double joyAxisValue) {
 
         if(!rawMode && hasStartedClimb) {
-            int MAX_SPEED = 200;
+            final int MAX_SPEED = 200;
             targetPosition = climbTalon.getSelectedSensorPosition(PIDIDX) + joyAxisValue * MAX_SPEED;
         } else {
             climbTalon.set(ControlMode.PercentOutput, joyAxisValue);
