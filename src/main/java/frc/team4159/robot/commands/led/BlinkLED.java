@@ -7,7 +7,11 @@ public class BlinkLED extends CommandGroup {
 
     public BlinkLED() {
 
-        for(int i = 0; i < 20; i++) {
+        /* Wait 1 min and 45 seconds */
+        addSequential(new WaitCommand(105));
+
+        /* Blinky stuff! */
+        for(int i = 0; i < 30; i++) {
             addSequential(new TurnOnLED());
             addSequential(new WaitCommand(0.5));
             addSequential(new TurnOffLED());

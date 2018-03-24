@@ -47,9 +47,6 @@ public class Drivetrain extends Subsystem implements PIDOutput {
     private final double kI_right = 0.0;
     private final double kD_right = 0.0;
 
-    private final int CRUISE_VELOCITY = 3860; // 10 ft/sec to encoder units/100ms
-    private final int CRUISE_ACCEL = 2000; // TODO: Measure. This is a logically guessed value
-
     /* Stores state if controls should be reversed or not */
     private boolean reverse;
 
@@ -59,9 +56,6 @@ public class Drivetrain extends Subsystem implements PIDOutput {
     private final double kD_turn = 0.05;
     private final double kF_turn = 0;
     private final double kToleranceDegrees = 2.0f;
-
-    private final int MOTOR_OUTPUT_RANGE = 1;
-    private final double NAVX_YAW_RANGE = 180.0f;
 
     private double rotateToAngleRate;
 
@@ -93,7 +87,6 @@ public class Drivetrain extends Subsystem implements PIDOutput {
         limitCurrent();
         configureSensors();
 
-        LiveWindow.add(this);
     }
 
     /**
@@ -101,7 +94,9 @@ public class Drivetrain extends Subsystem implements PIDOutput {
      */
     private void configureSensors() {
 
-        /* Configure SRX Mag encoder sensors on both sides, connected to the talon via the SRX data cable */
+        /*
+         * Configure peak and nominal outputs, set feedback sensor (mag encoder), and sensor direction
+         */
 
         leftTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, PIDIDX, TIMEOUT_MS);
         leftTalon.setSensorPhase(false);
@@ -119,6 +114,9 @@ public class Drivetrain extends Subsystem implements PIDOutput {
 
         // TODO: Retune PIDF values for both sides of drivetrain
 
+        /*
+         * Set PIDF values for left and right talons
+         */
         leftTalon.config_kF(SLOTIDX, kF_left, TIMEOUT_MS);
         leftTalon.config_kP(SLOTIDX, kP_left, TIMEOUT_MS);
         leftTalon.config_kI(SLOTIDX, kI_left, TIMEOUT_MS);
@@ -129,11 +127,24 @@ public class Drivetrain extends Subsystem implements PIDOutput {
         rightTalon.config_kI(SLOTIDX, kI_right, TIMEOUT_MS);
         rightTalon.config_kD(SLOTIDX, kD_right, TIMEOUT_MS);
 
+        /*
+         * Set max acceleration and velocity (in raw sensor units) for motion magic
+         */
         // TODO: figure out the correct cruise velocity and acceleration
+        final int CRUISE_ACCEL = 2000;
+        final int CRUISE_VELOCITY = 3860;
+
         leftTalon.configMotionAcceleration(CRUISE_ACCEL, TIMEOUT_MS);
         leftTalon.configMotionCruiseVelocity(CRUISE_VELOCITY, TIMEOUT_MS);
         rightTalon.configMotionAcceleration(CRUISE_ACCEL, TIMEOUT_MS);
         rightTalon.configMotionCruiseVelocity(CRUISE_VELOCITY, TIMEOUT_MS);
+
+        /*
+         * Configure turning PIDController. Set PIDF, input and output range, error tolerance, and continuity
+         */
+
+        final double NAVX_YAW_RANGE = 180.0f;
+        final int MOTOR_OUTPUT_RANGE = 1;
 
         turnController = new PIDController(kP_turn, kI_turn, kD_turn, kF_turn, navx, this);
         turnController.setInputRange(-NAVX_YAW_RANGE, NAVX_YAW_RANGE);
@@ -142,7 +153,9 @@ public class Drivetrain extends Subsystem implements PIDOutput {
         turnController.setContinuous(true);
         turnController.disable();
 
-        // Zero sensors
+        /*
+         * Zero encoders and navX. Probably not be necessary but just in case.
+         */
         leftTalon.setSelectedSensorPosition(0, PIDIDX, TIMEOUT_MS);
         rightTalon.setSelectedSensorPosition(0, PIDIDX, TIMEOUT_MS);
         zeroNavX();
@@ -150,8 +163,8 @@ public class Drivetrain extends Subsystem implements PIDOutput {
     }
 
     /**
-     * @param leftPercent between -1 to 1
-     * @param rightPercent between -1 to 1
+     * @param leftPercent Between -1 to 1
+     * @param rightPercent Between -1 to 1
      */
     public void setRawOutput(double leftPercent, double rightPercent){
 
@@ -174,7 +187,7 @@ public class Drivetrain extends Subsystem implements PIDOutput {
 
     /**
      * Turn to field oriented angle
-     * @param angle robot heading relative to when robot first powered on
+     * @param angle Robot heading relative to when robot first powered on
      */
     public void turnToAngle(double angle) {
         if(!turnController.isEnabled()) {
@@ -188,7 +201,7 @@ public class Drivetrain extends Subsystem implements PIDOutput {
 
     /**
      *  Drive straight in current heading
-     *  @param magnitude speed percentage between -1 to 1
+     *  @param magnitude Speed percentage between -1 to 1
      */
     public void driveStraight(double magnitude) {
         if(!turnController.isEnabled()) {
@@ -200,7 +213,7 @@ public class Drivetrain extends Subsystem implements PIDOutput {
     }
 
     /**
-     *  @return true if turning PID error is less than tolerance
+     *  @return True if turning PID error is less than set tolerance
      */
     public boolean turnOnTarget() {
         return turnController.onTarget();
@@ -249,28 +262,28 @@ public class Drivetrain extends Subsystem implements PIDOutput {
     }
 
     /**
-     * @return true if motion magic trajectory is complete, meaning the velocity is 0
+     * @return True if motion magic trajectory is complete, meaning the velocity profile is 0
      */
     public boolean motionMagicFinished() {
         return leftTalon.getActiveTrajectoryVelocity() == 0 && rightTalon.getActiveTrajectoryVelocity() == 0;
     }
 
     /**
-     *  @return left encoder position
+     *  @return Left encoder position
      */
     public int getLeftEncoderPosition() {
         return leftTalon.getSelectedSensorPosition(PIDIDX);
     }
 
     /**
-     *  @return right encoder position
+     *  @return Right encoder position
      */
     public int getRightEncoderPosition() {
         return rightTalon.getSelectedSensorPosition(PIDIDX);
     }
 
     /**
-     * @return navX's yaw value
+     * @return NavX's yaw value
      */
     public double getHeadingDegrees() {
         return navx.getYaw();
@@ -287,9 +300,11 @@ public class Drivetrain extends Subsystem implements PIDOutput {
      * Log drivetrain variables to SmartDashboard
      */
     public void logDashboard() {
-//        SmartDashboard.putNumber("Current Angle", navx.getYaw());
-//        SmartDashboard.putNumber("Angle Error",turnController.getError());
-//        SmartDashboard.putNumber("Setpoint Angle", angleSetpoint);
+        /*
+        SmartDashboard.putNumber("Current Angle", navx.getYaw());
+        SmartDashboard.putNumber("Angle Error",turnController.getError());
+        SmartDashboard.putNumber("Setpoint Angle", angleSetpoint);
+        */
     }
 
     /**
@@ -316,7 +331,7 @@ public class Drivetrain extends Subsystem implements PIDOutput {
 
     /**
      *  Update rotateToAngleRate
-     *  @param output from PIDController
+     *  @param output From PIDController
      */
     @Override
     public void pidWrite(double output) {
@@ -325,7 +340,7 @@ public class Drivetrain extends Subsystem implements PIDOutput {
 
     /**
      *  Bound an angle to a value between -180 to 180 degrees
-     *  @param angle not between -180 and 180 to bound
+     *  @param angle Less than -180 or greater than 180 degrees
      */
     private double boundAngle(double angle) {
         if(angle > 180) {

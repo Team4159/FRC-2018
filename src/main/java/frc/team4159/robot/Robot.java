@@ -7,10 +7,12 @@ import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team4159.robot.commands.auto.Auto;
+import frc.team4159.robot.commands.led.BlinkLED;
 import frc.team4159.robot.subsystems.Drivetrain;
 import frc.team4159.robot.subsystems.Superstructure;
 
@@ -38,7 +40,7 @@ public class Robot extends TimedRobot {
     private Command autoCommand;
     private SendableChooser<Command> autoChooser;
     private final double defaultAutoDelay = 0.0;
-    private final String defaultStartingPosition = "LEFT";
+    private final String defaultStartingPosition = "MIDDLE";
     private final String defaultLeftAction = "BASE";
     private final String defaultRightAction = "BASE";
 
@@ -47,6 +49,9 @@ public class Robot extends TimedRobot {
     private String leftAction = defaultLeftAction;
     private String rightAction = defaultRightAction;
 
+    /* LED stuff */
+    private Command blinkLEDCommand;
+    private SendableChooser<Command> endGameChooser;
     private NetworkTableEntry ledModeEntry;
 
     /**
@@ -86,6 +91,12 @@ public class Robot extends TimedRobot {
         CameraServer.getInstance().startAutomaticCapture();
 
         /*
+         * Put end game action (blinking LEDs) into SmartDashboard
+         */
+        endGameChooser = new SendableChooser<>();
+        endGameChooser.addDefault("Blink LED Ring", new BlinkLED());
+
+        /*
          * Start networktables for rPi to read
          */
         NetworkTableInstance inst = NetworkTableInstance.getDefault();
@@ -99,7 +110,15 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void disabledInit() {
+
         ledModeEntry.setString("DISABLED");
+
+        /*
+         * Stop blinking LED command
+         */
+        if (blinkLEDCommand != null) {
+            blinkLEDCommand.cancel();
+        }
     }
 
     /* Called periodically when robot is disabled */
@@ -149,27 +168,28 @@ public class Robot extends TimedRobot {
     @Override
     public void teleopInit() {
 
-        /* Makes sure autonomous action stops running when teleop starts running */
+        /*
+         * Stops autonomous action from running when teleop starts
+         */
         if (autoCommand != null) {
             autoCommand.cancel();
         }
 
-    }
+        /*
+         * Start blinking LED command
+         */
+        blinkLEDCommand = endGameChooser.getSelected();
+        if(blinkLEDCommand != null) {
+            blinkLEDCommand.start();
+        }
 
-    //private boolean blinkMode = false;
+    }
 
     /**
      * Periodically called during teleoperatated control.
      */
     @Override
     public void teleopPeriodic() {
-
-//		if(DriverStation.getInstance().getMatchTime() <= 30 && !blinkMode) {
-//			ledModeEntry.setString("END GAME");
-//			Command blinkCommand = new BlinkLED();
-//			blinkCommand.start();
-//			blinkMode = true;
-//		}
 
         Scheduler.getInstance().run();
     }
@@ -210,7 +230,7 @@ public class Robot extends TimedRobot {
     }
 
     /**
-     * @return Drivetrain
+     * @return Drivetrain subsystem
      */
     public static Drivetrain getDrivetrain() {
         return drivetrain;
