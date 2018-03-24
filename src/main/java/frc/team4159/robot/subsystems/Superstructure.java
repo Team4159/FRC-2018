@@ -1,13 +1,12 @@
 package frc.team4159.robot.subsystems;
 
-/*
-* All subsystems and other hardware other than the Drivetrain are initialized here.
-*/
-
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
-
 import static frc.team4159.robot.RobotMap.PCM;
+
+/*
+ * All subsystems and electrical hardware other than the Drivetrain are initialized here.
+ */
 
 public class Superstructure {
 
@@ -36,14 +35,23 @@ public class Superstructure {
         compressor.setClosedLoopControl(true);
     }
 
+    /**
+     * @return Climber Subsystem
+     */
     public Climber getClimber() {
         return climber;
     }
 
+    /**
+     * @return CubeHolder Subsystem
+     */
     public CubeHolder getCubeHolder() {
         return cubeHolder;
     }
 
+    /**
+     * @return LED Subsystem
+     */
     public LED getLED() {
         return led;
     }
