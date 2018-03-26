@@ -10,7 +10,7 @@ public class DriveDistance extends Command {
     private double leftDistance, rightDistance;
 
     /**
-     * @param distance applies to both sides of drivetrain. Basically drive straight.
+     * @param distance Applies to both sides of drivetrain. Basically drive straight.
      */
     public DriveDistance(double distance) {
         requires(Robot.drivetrain);
@@ -20,8 +20,8 @@ public class DriveDistance extends Command {
     }
 
     /**
-     * @param leftDistance left drivetrain distance in feet
-     * @param rightDistance right drivetrain distance in feet
+     * @param leftDistance Left drivetrain distance in feet
+     * @param rightDistance Right drivetrain distance in feet
      */
     public DriveDistance(double leftDistance, double rightDistance) {
         requires(Robot.drivetrain);
@@ -36,7 +36,7 @@ public class DriveDistance extends Command {
     }
 
     /**
-     * @return true if driving distance using motion magic is finished
+     * @return True if driving distance using motion magic is finished
      */
     @Override
     protected boolean isFinished() {

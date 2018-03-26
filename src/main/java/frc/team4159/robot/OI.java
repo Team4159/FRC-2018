@@ -1,6 +1,7 @@
 package frc.team4159.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.buttons.JoystickButton;
 
 import static frc.team4159.robot.ControlMap.*;
 
@@ -22,12 +23,14 @@ public class OI {
     /**
      *  Logitech Attack 3 joysticks, plugged in via USB to the driver station laptop
      */
-    private Joystick leftJoy, rightJoy, secondaryJoy;
+    private Joystick leftJoy, rightJoy, secondaryJoy, testJoy;
+    private JoystickButton baseline, midLeft, midRight, leftLeft, leftRight, rightRight, rightLeft;
 
     private OI() {
         leftJoy = new Joystick(LEFT_STICK);
         rightJoy = new Joystick(RIGHT_STICK);
         secondaryJoy = new Joystick(SECONDARY_STICK);
+        testJoy = new Joystick(3);
     }
 
     /*

@@ -10,9 +10,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team4159.robot.commands.cube.LiftCube;
 
-import static frc.team4159.robot.Constants.NOMINAL_OUT_PERCENT;
-import static frc.team4159.robot.Constants.PEAK_OUT_PERCENT;
-import static frc.team4159.robot.Constants.TIMEOUT_MS;
+import static frc.team4159.robot.Constants.*;
 import static frc.team4159.robot.RobotMap.*;
 
 public class CubeHolder extends Subsystem {
@@ -37,10 +35,7 @@ public class CubeHolder extends Subsystem {
     private final double kD = 0.0;
 
     private double targetPosition; // In encoder units. 4096 per revolution.
-    private final int upperEncoderLimit = 3300; // Lifter is up
-    private final int lowerEncoderLimit = 0; // Lifter is down
-    private final int switchHeight = 2700;  //TODO: this is a random number; determine switch height
-    private boolean rawMode = true; // Switches between raw input (true) and position controlled (false)
+    private boolean rawMode;
 
     private CubeHolder() {
 
@@ -49,7 +44,9 @@ public class CubeHolder extends Subsystem {
         pistons = new DoubleSolenoid(FORWARD_CHANNEL, REVERSE_CHANNEL);
         limitSwitch = new DigitalInput(LIMIT_SWITCH);
 
-        targetPosition = lowerEncoderLimit; // Initial target value in starting configuration (raised)
+        rawMode = true;
+
+        targetPosition = UPPER_LIFTER_LIMIT; // Initial target value in starting configuration (raised)
 
         configureSensors();
         limitCurrent();
@@ -79,7 +76,7 @@ public class CubeHolder extends Subsystem {
         liftTalon.config_kD(SLOTIDX, kD, TIMEOUT_MS);
 
         // Sets initial encoder value in AUTONOMOUS starting configuration (raised)
-        liftTalon.setSelectedSensorPosition(lowerEncoderLimit, PIDIDX, TIMEOUT_MS);
+        liftTalon.setSelectedSensorPosition(UPPER_LIFTER_LIMIT, PIDIDX, TIMEOUT_MS);
     }
 
     private void limitCurrent() {
@@ -138,10 +135,10 @@ public class CubeHolder extends Subsystem {
         }
 
         // Limits to avoid hitting into hardstop
-        if(targetPosition < lowerEncoderLimit)
-            targetPosition = lowerEncoderLimit;
-        if(targetPosition > upperEncoderLimit)
-            targetPosition = upperEncoderLimit;
+        if(targetPosition < LOWER_LIFTER_LIMIT)
+            targetPosition = LOWER_LIFTER_LIMIT;
+        if(targetPosition > UPPER_LIFTER_LIMIT)
+            targetPosition = UPPER_LIFTER_LIMIT;
 
         liftTalon.set(ControlMode.Position, targetPosition);
     }
@@ -164,7 +161,7 @@ public class CubeHolder extends Subsystem {
      * Reset lift encoder to 0 and sets target position to 0
      */
     public void resetLiftEncoder() {
-        liftTalon.setSelectedSensorPosition(lowerEncoderLimit, PIDIDX, TIMEOUT_MS);
+        liftTalon.setSelectedSensorPosition(LOWER_LIFTER_LIMIT, PIDIDX, TIMEOUT_MS);
         targetPosition = 0;
     }
 
@@ -191,14 +188,14 @@ public class CubeHolder extends Subsystem {
      * Set cube lifter to switch height
      */
     public void setToSwitch() {
-        targetPosition = switchHeight;
+        targetPosition = SWITCH_HEIGHT;
     }
 
     /**
      * Set cube lifter to ground height
      */
     public void setToBottom() {
-        targetPosition = lowerEncoderLimit;
+        targetPosition = LOWER_LIFTER_LIMIT;
     }
 
     /**

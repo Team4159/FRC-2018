@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.team4159.robot.Robot;
 import frc.team4159.robot.subsystems.Drivetrain;
 
-
+/* Turns to angle using navX gyro. Currently does not work. Drive distance instead */
 public class TurnToAngle extends Command{
 
     private Drivetrain drivetrain = Robot.getDrivetrain();
