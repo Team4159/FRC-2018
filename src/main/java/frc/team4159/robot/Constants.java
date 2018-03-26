@@ -26,4 +26,11 @@ public interface Constants {
 
     double WHEEL_CIRCUMFERANCE = WHEEL_DIAMETER * Math.PI;
 
+    /*
+     * Positions of the cube lifter in mag encoder units
+     */
+    int UPPER_LIFTER_LIMIT = 3300;
+    int SWITCH_HEIGHT = 2700;
+    int LOWER_LIFTER_LIMIT = 0;
+
 }

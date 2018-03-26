@@ -3,7 +3,9 @@ package frc.team4159.robot.commands.drive;
 import java.io.File;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team4159.robot.Robot;
+import frc.team4159.robot.subsystems.Drivetrain;
 import jaci.pathfinder.Pathfinder;
 import jaci.pathfinder.Trajectory;
 import jaci.pathfinder.followers.EncoderFollower;
@@ -13,10 +15,12 @@ import static frc.team4159.robot.Constants.WHEEL_DIAMETER;
 
 public class RunCSVProfile extends Command {
 
-    private final double MAX_VELOCITY = 4.1148; // meters per second ?!?!?!?!?!?!
-    private final double kV = 1 / MAX_VELOCITY;
-    private final double kA = 0;
-    private final double kP_TURN = 0.11;
+    private Drivetrain drivetrain;
+
+    private double MAX_VELOCITY = 4.1148; // meters per second ?!?!?!?!?!?!
+    private double kV = 1 / MAX_VELOCITY;
+    private double kA = 0;
+    private double kP_TURN = 0.11;
 
     private EncoderFollower left;
     private EncoderFollower right;
@@ -24,10 +28,9 @@ public class RunCSVProfile extends Command {
     private String leftCSV;
     private String rightCSV;
 
-    //private Notifier notifier = new Notifier(this);
-
     public RunCSVProfile(String leftCSV, String rightCSV) {
         requires(Robot.drivetrain);
+        drivetrain = Robot.getDrivetrain();
         this.leftCSV = leftCSV;
         this.rightCSV = rightCSV;
     }
@@ -35,7 +38,12 @@ public class RunCSVProfile extends Command {
     @Override
     protected void initialize() {
 
-        Robot.drivetrain.zeroNavX();
+        MAX_VELOCITY = SmartDashboard.getNumber("MAX_VELOCITY", 4.1148);
+        kP_TURN = SmartDashboard.getNumber("kP_TURN", 0.11);
+
+        kV = 1/MAX_VELOCITY;
+
+        drivetrain.zeroNavX();
 
         File left_csv_trajectory = new File(leftCSV);
         File right_csv_trajectory = new File(rightCSV);
@@ -46,52 +54,29 @@ public class RunCSVProfile extends Command {
         left = new EncoderFollower(left_trajectory);
         right = new EncoderFollower(right_trajectory);
 
-        left.configureEncoder(Robot.drivetrain.getLeftEncoderPosition(), UNITS_PER_REV, WHEEL_DIAMETER);
+        left.configureEncoder(drivetrain.getLeftEncoderPosition(), UNITS_PER_REV, WHEEL_DIAMETER);
         left.configurePIDVA(0.0, 0.0, 0.0, kV, kA);
 
-        right.configureEncoder(Robot.drivetrain.getRightEncoderPosition(), UNITS_PER_REV, WHEEL_DIAMETER);
+        right.configureEncoder(drivetrain.getRightEncoderPosition(), UNITS_PER_REV, WHEEL_DIAMETER);
         right.configurePIDVA(0.0, 0.0, 0.0, kV, kA);
-
-        // In seconds
-        //notifier.startPeriodic(0.01);
 
     }
 
     @Override
     protected void execute() {
-        double l = left.calculate(Robot.drivetrain.getLeftEncoderPosition());
-        double r = right.calculate(Robot.drivetrain.getRightEncoderPosition());
+        double l = left.calculate(drivetrain.getLeftEncoderPosition());
+        double r = right.calculate(drivetrain.getRightEncoderPosition());
 
-        double gyro_heading = Robot.drivetrain.getHeadingDegrees();
+        double gyro_heading = drivetrain.getHeadingDegrees();
         double desired_heading = Pathfinder.r2d(left.getHeading());
 
         double angleDifference = Pathfinder.boundHalfDegrees(desired_heading - gyro_heading);
         double kG = kP_TURN * (-1.0/80.0);
         double turn = kG * angleDifference;
 
-        Robot.drivetrain.setRawOutput(l + turn, r - turn);
-        Robot.drivetrain.logDashboard();
+        drivetrain.setRawOutput(l + turn, r - turn);
+        drivetrain.logDashboard();
     }
-
-    /* Looped by Notifier */
-    /*
-    public void run() {
-
-        double l = left.calculate(Robot.drivetrain.getLeftEncoderPosition());
-        double r = right.calculate(Robot.drivetrain.getRightEncoderPosition());
-
-        double gyro_heading = Robot.drivetrain.getHeadingDegrees();
-        double desired_heading = Pathfinder.r2d(left.getHeading());
-
-        double angleDifference = Pathfinder.boundHalfDegrees(desired_heading - gyro_heading);
-        double kG = kP_TURN * (-1.0/80.0);
-        double turn = kG * angleDifference;
-
-        Robot.drivetrain.setRawOutput(l + turn, r - turn);
-        Robot.drivetrain.logDashboard();
-
-    }
-    */
 
     @Override
     protected boolean isFinished() {
