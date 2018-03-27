@@ -24,7 +24,6 @@ public class OI {
      *  Logitech Attack 3 joysticks, plugged in via USB to the driver station laptop
      */
     private Joystick leftJoy, rightJoy, secondaryJoy, testJoy;
-    private JoystickButton baseline, midLeft, midRight, leftLeft, leftRight, rightRight, rightLeft;
 
     private OI() {
         leftJoy = new Joystick(LEFT_STICK);
@@ -40,6 +39,15 @@ public class OI {
     /**
      * @return Left y-axis joystick value squared and inverted sign
      */
+
+    public boolean getAutoOptionButton(){
+        return testJoy.getRawButtonReleased(8);
+    }
+
+    public boolean getAutoSelectionButton(){
+        return testJoy.getRawButtonReleased(9);
+    }
+
     public double getLeftY() {
         double leftY = leftJoy.getY();
         return -Math.copySign(Math.pow(leftY, 2), leftY);
