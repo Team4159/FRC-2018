@@ -31,6 +31,7 @@ class MiddleAuto extends CommandGroup {
             case LEFT:
                 switch (leftAction) {
                     case "ONE":
+                        System.out.println("Yay One ");
                         addSequential(new RunCSVProfile(MID_TO_LEFT_L, MID_TO_LEFT_R));
                         addSequential(new OuttakeWheels(1));
                         break;

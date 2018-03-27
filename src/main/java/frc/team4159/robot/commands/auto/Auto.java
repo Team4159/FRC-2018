@@ -42,6 +42,7 @@ public class Auto extends CommandGroup {
                 addSequential(new LeftAuto());
                 break;
             case "MIDDLE":
+                System.out.println("Yay Mid Start");
                 addSequential(new MiddleAuto());
                 break;
             case "RIGHT":

@@ -112,16 +112,20 @@ public class CubeHolder extends Subsystem {
 
     /* Opens the claw */
     public void open() {
-        pistons.set(DoubleSolenoid.Value.kForward);
+        pistons.set(DoubleSolenoid.Value.kReverse);
     }
 
     /* Closes the claw */
     public void close() {
-        pistons.set(DoubleSolenoid.Value.kReverse);
+        pistons.set(DoubleSolenoid.Value.kForward);
     }
 
     public void setRawLift(double value) {
-        liftTalon.set(ControlMode.PercentOutput, value);
+        if(limitSwitchPressed() && value < 0) {
+            liftTalon.set(ControlMode.PercentOutput, 0);
+        } else {
+            liftTalon.set(ControlMode.PercentOutput, value);
+        }
     }
 
     /**
@@ -130,7 +134,7 @@ public class CubeHolder extends Subsystem {
     public void move() {
 
         // If limit switch is pressed, reset encoder and target pos to 0
-        if(limitSwitch.get()) {
+        if(limitSwitchPressed()) {
             resetLiftEncoder();
         }
 
@@ -179,7 +183,6 @@ public class CubeHolder extends Subsystem {
     public void updatePosition(double value) {
 
         double MAX_SPEED = 200.0;
-
         value *= MAX_SPEED;
         targetPosition += value;
     }
@@ -198,6 +201,10 @@ public class CubeHolder extends Subsystem {
         targetPosition = LOWER_LIFTER_LIMIT;
     }
 
+    private boolean limitSwitchPressed() {
+        return !limitSwitch.get();
+    }
+
     /**
      * Log values to SmartDashboard
      */
@@ -210,6 +217,8 @@ public class CubeHolder extends Subsystem {
         } else {
             SmartDashboard.putString("Lift mode", "PID");
         }
+
+        SmartDashboard.putBoolean("Limit Switch", limitSwitchPressed());
 
     }
 
