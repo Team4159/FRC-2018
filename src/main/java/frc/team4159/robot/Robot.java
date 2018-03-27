@@ -102,6 +102,9 @@ public class Robot extends TimedRobot {
         NetworkTable table = inst.getTable("datatable");
         ledModeEntry = table.getEntry("LED Mode");
 
+        SmartDashboard.putNumber("MAX_VELOCITY", 3.7);
+        SmartDashboard.putNumber("kP_TURN", 0.1);
+
     }
 
     /**
@@ -131,6 +134,11 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void autonomousInit() {
+
+        startingPosition = SmartDashboard.getString("Starting Position", defaultStartingPosition);
+        autoDelay = SmartDashboard.getNumber("Starting Position", defaultAutoDelay);
+        leftAction = SmartDashboard.getString("Left Action", defaultLeftAction);
+        rightAction = SmartDashboard.getString("Right Action", defaultRightAction);
 
         /* Starts auto command */
         autoCommand = autoChooser.getSelected();
