@@ -2,8 +2,10 @@ package frc.team4159.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import frc.team4159.robot.commands.drive.RunCSVProfile;
 
 import static frc.team4159.robot.ControlMap.*;
+import static frc.team4159.robot.commands.auto.TrajectoryCSV.*;
 
 /*
  * The OI (Operator Interface) class binds the controls on the physical operator interface to the commands and command
@@ -25,11 +27,22 @@ public class OI {
      */
     private Joystick leftJoy, rightJoy, secondaryJoy, testJoy;
 
+    private JoystickButton base, midToRight, midToLeft;
+
     private OI() {
         leftJoy = new Joystick(LEFT_STICK);
         rightJoy = new Joystick(RIGHT_STICK);
         secondaryJoy = new Joystick(SECONDARY_STICK);
         testJoy = new Joystick(3);
+
+        base = new JoystickButton(testJoy, 3);
+        midToLeft = new JoystickButton(testJoy, 4);
+        midToRight = new JoystickButton(testJoy, 5);
+
+
+        base.whenReleased(new RunCSVProfile(BASELINE_L, BASELINE_R));
+        midToLeft.whenReleased(new RunCSVProfile(MID_TO_LEFT_L, MID_TO_LEFT_R));
+        midToRight.whenReleased(new RunCSVProfile(MID_TO_RIGHT_L, MID_TO_RIGHT_R));
     }
 
     /*
