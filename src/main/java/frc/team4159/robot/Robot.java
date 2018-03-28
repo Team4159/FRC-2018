@@ -6,12 +6,14 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team4159.robot.commands.auto.Auto;
 import frc.team4159.robot.commands.led.BlinkLED;
+import frc.team4159.robot.util.AutoSelector;
 import frc.team4159.robot.subsystems.Drivetrain;
 import frc.team4159.robot.subsystems.Superstructure;
 
@@ -34,6 +36,7 @@ public class Robot extends TimedRobot {
     public static Drivetrain drivetrain;
     public static Superstructure superstructure;
     public static OI oi;
+    public static AutoSelector autoSelector;
 
     /* Auto choosers */
     private Command autoCommand;
@@ -69,6 +72,7 @@ public class Robot extends TimedRobot {
          *  Initialize operator control bindings
          */
         oi = OI.getInstance();
+        autoSelector = AutoSelector.getInstance();
 
         /*
          * Put auto command into SmartDashboard
@@ -87,7 +91,7 @@ public class Robot extends TimedRobot {
         /*
          * Stream webcamera on default port
          */
-        CameraServer.getInstance().startAutomaticCapture();
+        //CameraServer.getInstance().startAutomaticCapture();
 
         /*
          * Put end game action (blinking LEDs) into SmartDashboard
@@ -102,8 +106,8 @@ public class Robot extends TimedRobot {
         NetworkTable table = inst.getTable("datatable");
         ledModeEntry = table.getEntry("LED Mode");
 
-        SmartDashboard.putNumber("MAX_VELOCITY", 3.7);
-        SmartDashboard.putNumber("kP_TURN", 0.1);
+        SmartDashboard.putNumber("MAX_VELOCITY", 4.3);
+        SmartDashboard.putNumber("kP_TURN", 0.01);
 
     }
 
@@ -126,6 +130,12 @@ public class Robot extends TimedRobot {
     /* Called periodically when robot is disabled */
     @Override
     public void disabledPeriodic() {
+        if(oi.getAutoOptionButton()|| oi.getAutoSelectionButton()) {
+            System.out.println("SELECTION: " + autoSelector.getSelection());
+            System.out.println("POSITION: " + autoSelector.getPosition());
+            System.out.println("LEFT ACTION: " + autoSelector.getLeftAction());
+            System.out.println("RIGHT ACTION: " + autoSelector.getRightAction());
+        }
         Scheduler.getInstance().run();
     }
 
@@ -240,6 +250,10 @@ public class Robot extends TimedRobot {
      */
     public static Drivetrain getDrivetrain() {
         return drivetrain;
+    }
+
+    public static AutoSelector getAutoSelector() {
+        return autoSelector;
     }
 
 }
