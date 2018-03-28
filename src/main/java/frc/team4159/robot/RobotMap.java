@@ -11,7 +11,6 @@ public interface RobotMap {
 
     /* COMPETITION BOT */
 
-    /*
     // CAN Talon SRX
     int LEFT_TALON = 7;
     int RIGHT_TALON = 9;
@@ -31,16 +30,16 @@ public interface RobotMap {
     int REVERSE_CHANNEL = 7;
 
     // Digital Input ports
-    int LIMIT_SWITCH = 1;
     int HALL_SENSOR = 0;
+    int LIMIT_SWITCH = 1;
 
     // Pneumatics Control Module CAN ID
     int PCM = 0;
 
-*/
-
 
     /* PRACTICE BOT */
+
+    /*
 
     // CAN Talon SRX
     int LEFT_TALON = 6;
@@ -67,5 +66,6 @@ public interface RobotMap {
     // Pneumatics Control Module CAN ID
     int PCM = 0;
 
+    */
 
 }

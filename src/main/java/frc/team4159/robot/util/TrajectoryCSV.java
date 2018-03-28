@@ -1,4 +1,4 @@
-package frc.team4159.robot.commands.auto;
+package frc.team4159.robot.util;
 
 public interface TrajectoryCSV {
 

@@ -35,7 +35,7 @@ public class Robot extends TimedRobot {
     public static Drivetrain drivetrain;
     public static Superstructure superstructure;
     public static OI oi;
-    public static AutoSelector autoSelector;
+    private static AutoSelector autoSelector;
 
     /* Auto choosers */
     private Command autoCommand;
@@ -59,7 +59,7 @@ public class Robot extends TimedRobot {
         superstructure = Superstructure.getInstance();
 
         /*
-         *  Initialize operator control bindings
+         *  Initialize helper classes
          */
         oi = OI.getInstance();
         autoSelector = AutoSelector.getInstance();
@@ -73,7 +73,7 @@ public class Robot extends TimedRobot {
         /*
          * Stream webcamera on default port
          */
-        //CameraServer.getInstance().startAutomaticCapture();
+        CameraServer.getInstance().startAutomaticCapture();
 
         /*
          * Put end game action (blinking LEDs) into SmartDashboard
@@ -88,6 +88,7 @@ public class Robot extends TimedRobot {
         NetworkTable table = inst.getTable("datatable");
         ledModeEntry = table.getEntry("LED Mode");
 
+        // Used for auto testing in teleop
         SmartDashboard.putNumber("MAX_VELOCITY", 4.3);
         SmartDashboard.putNumber("kP_TURN", 0.01);
 
@@ -115,26 +116,13 @@ public class Robot extends TimedRobot {
 
         if(oi.getAutoSelectionButton()) {
             autoSelector.nextSelection();
-            System.out.println("SELECTION: " + autoSelector.getSelection());
-            System.out.println("POSITION: " + autoSelector.getPosition());
-            System.out.println("LEFT ACTION: " + autoSelector.getLeftAction());
-            System.out.println("RIGHT ACTION: " + autoSelector.getRightAction());
-            for(int i = 0; i < 20; i++) {
-                System.out.println("\n");
-            }
+            printAutoOptions();
         }
 
         if(oi.getAutoOptionButton()) {
             autoSelector.nextOption();
-            System.out.println("SELECTION: " + autoSelector.getSelection());
-            System.out.println("POSITION: " + autoSelector.getPosition());
-            System.out.println("LEFT ACTION: " + autoSelector.getLeftAction());
-            System.out.println("RIGHT ACTION: " + autoSelector.getRightAction());
-            for(int i = 0; i < 20; i++) {
-                System.out.println("\n");
-            }
+            printAutoOptions();
         }
-
 
         Scheduler.getInstance().run();
     }
@@ -213,8 +201,18 @@ public class Robot extends TimedRobot {
         return drivetrain;
     }
 
-    public static AutoSelector getAutoSelector() {
-        return autoSelector;
+    /**
+     * Print auto options, along with a bunch of new lines
+     */
+    private void printAutoOptions() {
+        System.out.println("SELECTION: " + autoSelector.getSelection());
+        System.out.println("POSITION: " + autoSelector.getPosition());
+        System.out.println("LEFT ACTION: " + autoSelector.getLeftAction());
+        System.out.println("RIGHT ACTION: " + autoSelector.getRightAction());
+        for(int i = 0; i < 20; i++) {
+            System.out.println("\n");
+        }
     }
+
 
 }

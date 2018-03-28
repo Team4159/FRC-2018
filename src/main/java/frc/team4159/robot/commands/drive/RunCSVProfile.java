@@ -18,7 +18,6 @@ public class RunCSVProfile extends Command {
     private Drivetrain drivetrain;
 
     private double MAX_VELOCITY = 4.3; // meters per second ?!?!?!?!?!?!
-    private double kV = 1 / MAX_VELOCITY;
     private double kA = 0;
     private double kP_TURN = 0.01;
 
@@ -41,7 +40,7 @@ public class RunCSVProfile extends Command {
         MAX_VELOCITY = SmartDashboard.getNumber("MAX_VELOCITY", 4.3);
         kP_TURN = SmartDashboard.getNumber("kP_TURN", 0.01);
 
-        kV = 1/MAX_VELOCITY;
+        double kV = 1 / MAX_VELOCITY;
 
         drivetrain.zeroNavX();
 

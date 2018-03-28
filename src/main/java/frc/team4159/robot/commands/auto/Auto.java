@@ -12,30 +12,35 @@ import frc.team4159.robot.commands.led.SolidLED;
 import frc.team4159.robot.util.AutoSelector;
 import openrio.powerup.MatchData;
 
-import static frc.team4159.robot.commands.auto.TrajectoryCSV.*;
-import static frc.team4159.robot.commands.auto.TrajectoryCSV.BASELINE_L;
-import static frc.team4159.robot.commands.auto.TrajectoryCSV.BASELINE_R;
+import static frc.team4159.robot.util.TrajectoryCSV.*;
 
 /*
- * This CommandGroup handles the initial delay and switching between auto actions based on starting position
+ * This CommandGroup handles the retrieval of auto options and the execution of auto commands based on them
  */
 
 public class Auto extends CommandGroup {
 
-    private AutoSelector autoSelector;
-    private static String position, leftAction, rightAction;
     private MatchData.OwnedSide switchNear;
+    private static String leftAction, rightAction;
 
-    public Auto() {
+    /**
+     * The initialize method is called the first time this Command is run after being started.
+     */
+    @Override
+    protected void initialize() {
 
-        autoSelector = AutoSelector.getInstance();
-        position = autoSelector.getPosition();
-        leftAction = autoSelector.getLeftAction();
-        rightAction = autoSelector.getRightAction();
+        AutoSelector autoSelector = AutoSelector.getInstance();
 
+        String position = autoSelector.getPosition();
+        leftAction      = autoSelector.getLeftAction();
+        rightAction     = autoSelector.getRightAction();
+
+        /*
+         * If retrieving game data for near switch is UNKNOWN, wait 0.05 seconds and try again
+         */
         switchNear = MatchData.getOwnedSide(MatchData.GameFeature.SWITCH_NEAR);
         while(switchNear == MatchData.OwnedSide.UNKNOWN) {
-            addSequential(new WaitCommand(0.1));
+            addSequential(new WaitCommand(0.05));
             switchNear = MatchData.getOwnedSide(MatchData.GameFeature.SWITCH_NEAR);
         }
 
@@ -47,9 +52,10 @@ public class Auto extends CommandGroup {
         addParallel(new RunLift());
         addSequential(new ResetLiftTopPosition());
         addSequential(new LiftUp());
-        //addSequential(new GetAutoOptions());
-        //addSequential(new WaitCommand(0));
 
+        /*
+         * Switch between different auto set of auto commands based on starting position on the field
+         */
         switch(position) {
             case "LEFT":
                 leftCommand();
@@ -160,7 +166,7 @@ public class Auto extends CommandGroup {
             case LEFT:
                 switch(leftAction) {
                     case("ONE"):
-                        addSequential(new RunCSVProfile(RIGHT_TO_LEFT_L, RIGHT_TO_LEFT_L));
+                        addSequential(new RunCSVProfile(RIGHT_TO_LEFT_L, RIGHT_TO_LEFT_R));
                         // turn 180, drive straight
                         //addSequential(new OuttakeWheels(1));
                         break;
@@ -190,15 +196,5 @@ public class Auto extends CommandGroup {
                 addSequential(new RunCSVProfile(BASELINE_L, BASELINE_R));
                 break;
         }
-    }
-
-    public static void setPosition(String new_position) {
-        position = new_position;
-    }
-    public static void setLeftAction(String new_position) {
-        leftAction = new_position;
-    }
-    public static void setRightAction(String new_position) {
-        rightAction = new_position;
     }
 }
