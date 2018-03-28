@@ -2,11 +2,10 @@ package frc.team4159.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
-import frc.team4159.robot.commands.auto.Backwards;
 import frc.team4159.robot.commands.drive.RunCSVProfile;
 
 import static frc.team4159.robot.ControlMap.*;
-import static frc.team4159.robot.commands.auto.TrajectoryCSV.*;
+import static frc.team4159.robot.util.TrajectoryCSV.*;
 
 /*
  * The OI (Operator Interface) class binds the controls on the physical operator interface to the commands and command
@@ -27,25 +26,21 @@ public class OI {
      *  Logitech Attack 3 joysticks, plugged in via USB to the driver station laptop
      */
     private Joystick leftJoy, rightJoy, secondaryJoy, testJoy;
-
-    private JoystickButton base, midToRight, midToLeft, back;
+    private JoystickButton base, midToRight, midToLeft;
 
     private OI() {
         leftJoy = new Joystick(LEFT_STICK);
         rightJoy = new Joystick(RIGHT_STICK);
         secondaryJoy = new Joystick(SECONDARY_STICK);
-        testJoy = new Joystick(3);
+        testJoy = new Joystick(TEST_STICK);
 
         base = new JoystickButton(testJoy, 3);
         midToLeft = new JoystickButton(testJoy, 4);
         midToRight = new JoystickButton(testJoy, 5);
-        back = new JoystickButton(testJoy, 2);
-
 
         base.whenReleased(new RunCSVProfile(BASELINE_L, BASELINE_R));
         midToLeft.whenReleased(new RunCSVProfile(MID_TO_LEFT_L, MID_TO_LEFT_R));
         midToRight.whenReleased(new RunCSVProfile(MID_TO_RIGHT_L, MID_TO_RIGHT_R));
-        back.whenReleased(new Backwards());
 
     }
 
@@ -56,14 +51,6 @@ public class OI {
     /**
      * @return Left y-axis joystick value squared and inverted sign
      */
-
-    public boolean getAutoOptionButton(){
-        return testJoy.getRawButtonReleased(8);
-    }
-
-    public boolean getAutoSelectionButton(){
-        return testJoy.getRawButtonReleased(9);
-    }
 
     public double getLeftY() {
         double leftY = leftJoy.getY();
@@ -198,5 +185,16 @@ public class OI {
         return secondaryJoy.getRawButtonPressed(TOGGLE_RAW_CLIMB);
     }
 
+    /*
+     * TEST JOYSTICK
+     */
+
+    public boolean getAutoSelectionButton(){
+        return testJoy.getRawButtonReleased(SELECTOR);
+    }
+
+    public boolean getAutoOptionButton(){
+        return testJoy.getRawButtonReleased(OPTION);
+    }
 
 }
