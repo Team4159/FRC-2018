@@ -23,7 +23,7 @@ import static frc.team4159.robot.commands.auto.TrajectoryCSV.BASELINE_R;
 public class Auto extends CommandGroup {
 
     private AutoSelector autoSelector;
-    private String position, leftAction, rightAction;
+    private static String position, leftAction, rightAction;
     private MatchData.OwnedSide switchNear;
 
     public Auto() {
@@ -47,6 +47,7 @@ public class Auto extends CommandGroup {
         addParallel(new RunLift());
         addSequential(new ResetLiftTopPosition());
         addSequential(new LiftUp());
+        //addSequential(new GetAutoOptions());
         //addSequential(new WaitCommand(0));
 
         switch(position) {
@@ -60,9 +61,44 @@ public class Auto extends CommandGroup {
                 rightCommand();
                 break;
         }
+
     }
 
     private void leftCommand() {
+
+        switch (switchNear) {
+            case LEFT:
+                switch(leftAction) {
+                    case("ONE"):
+                        addSequential(new RunCSVProfile(LEFT_TO_LEFT_L, LEFT_TO_LEFT_R));
+                        addSequential(new OuttakeWheels(1));
+                        break;
+                    case("BASE"):
+                        addSequential(new RunCSVProfile(BASELINE_L, BASELINE_R));
+                        break;
+                    default:
+                        addSequential(new RunCSVProfile(BASELINE_L, BASELINE_R));
+                        break;
+                }
+                break;
+            case RIGHT:
+                switch(rightAction) {
+                    case("ONE"):
+                        addSequential(new RunCSVProfile(LEFT_TO_RIGHT_L, LEFT_TO_RIGHT_R));
+                        // one eighty turn, go straight, outtake
+                        break;
+                    case("BASE"):
+                        addSequential(new RunCSVProfile(BASELINE_L, BASELINE_R));
+                        break;
+                    default:
+                        addSequential(new RunCSVProfile(BASELINE_L, BASELINE_R));
+                        break;
+                }
+                break;
+            default:
+                addSequential(new RunCSVProfile(BASELINE_L, BASELINE_R));
+                break;
+        }
 
     }
 
@@ -120,6 +156,49 @@ public class Auto extends CommandGroup {
 
     private void rightCommand() {
 
+        switch (switchNear) {
+            case LEFT:
+                switch(leftAction) {
+                    case("ONE"):
+                        addSequential(new RunCSVProfile(RIGHT_TO_LEFT_L, RIGHT_TO_LEFT_L));
+                        // turn 180, drive straight
+                        //addSequential(new OuttakeWheels(1));
+                        break;
+                    case("BASE"):
+                        addSequential(new RunCSVProfile(BASELINE_L, BASELINE_R));
+                        break;
+                    default:
+                        addSequential(new RunCSVProfile(BASELINE_L, BASELINE_R));
+                        break;
+                }
+                break;
+            case RIGHT:
+                switch(rightAction) {
+                    case("ONE"):
+                        addSequential(new RunCSVProfile(RIGHT_TO_RIGHT_L, RIGHT_TO_RIGHT_R));
+                        addSequential(new OuttakeWheels(1));
+                        break;
+                    case("BASE"):
+                        addSequential(new RunCSVProfile(BASELINE_L, BASELINE_R));
+                        break;
+                    default:
+                        addSequential(new RunCSVProfile(BASELINE_L, BASELINE_R));
+                        break;
+                }
+                break;
+            default:
+                addSequential(new RunCSVProfile(BASELINE_L, BASELINE_R));
+                break;
+        }
     }
 
+    public static void setPosition(String new_position) {
+        position = new_position;
+    }
+    public static void setLeftAction(String new_position) {
+        leftAction = new_position;
+    }
+    public static void setRightAction(String new_position) {
+        rightAction = new_position;
+    }
 }

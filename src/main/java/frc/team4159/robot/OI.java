@@ -2,6 +2,7 @@ package frc.team4159.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import frc.team4159.robot.commands.auto.Backwards;
 import frc.team4159.robot.commands.drive.RunCSVProfile;
 
 import static frc.team4159.robot.ControlMap.*;
@@ -27,7 +28,7 @@ public class OI {
      */
     private Joystick leftJoy, rightJoy, secondaryJoy, testJoy;
 
-    private JoystickButton base, midToRight, midToLeft;
+    private JoystickButton base, midToRight, midToLeft, back;
 
     private OI() {
         leftJoy = new Joystick(LEFT_STICK);
@@ -38,11 +39,14 @@ public class OI {
         base = new JoystickButton(testJoy, 3);
         midToLeft = new JoystickButton(testJoy, 4);
         midToRight = new JoystickButton(testJoy, 5);
+        back = new JoystickButton(testJoy, 2);
 
 
         base.whenReleased(new RunCSVProfile(BASELINE_L, BASELINE_R));
         midToLeft.whenReleased(new RunCSVProfile(MID_TO_LEFT_L, MID_TO_LEFT_R));
         midToRight.whenReleased(new RunCSVProfile(MID_TO_RIGHT_L, MID_TO_RIGHT_R));
+        back.whenReleased(new Backwards());
+
     }
 
     /*

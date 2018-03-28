@@ -1,12 +1,9 @@
 package frc.team4159.robot.util;
 
-import edu.wpi.first.wpilibj.command.Subsystem;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class AutoSelector extends Subsystem {
+public class AutoSelector {
 
     private static AutoSelector instance;
 
@@ -35,10 +32,6 @@ public class AutoSelector extends Subsystem {
         autoOptions.addAll(Arrays.asList("BASE", "ONE", "TWO"));
     }
 
-//    public String getSelection() {
-//        return selections.get(selectionsIndex);
-//    }
-
     public void nextSelection() {
 
         selectionsIndex++;
@@ -47,7 +40,6 @@ public class AutoSelector extends Subsystem {
             selectionsIndex = 0;
         }
 
-        System.out.println(selections.get(selectionsIndex));
     }
 
     public void nextOption() {
@@ -56,48 +48,30 @@ public class AutoSelector extends Subsystem {
                 positionIndex++;
                 if (positionIndex >= positionOptions.size())
                     positionIndex = 0;
-                System.out.println(positionOptions.get(positionIndex));
 
                 break;
             case "LEFT ACTION":
                 leftIndex++;
                 if (leftIndex >= autoOptions.size())
                     leftIndex = 0;
-                System.out.println(autoOptions.get(leftIndex));
 
                 break;
             case "RIGHT ACTION":
                 rightIndex++;
                 if (rightIndex >= autoOptions.size())
                     rightIndex = 0;
-                System.out.println(autoOptions.get(rightIndex));
 
                 break;
         }
 
     }
 
-//    public String getOption() {
-//        switch (selections.get(selectionsIndex)) {
-//            case "POSITION":
-//                return positionOptions.get(positionIndex);
-//            case "LEFT ACTION":
-//                return autoOptions.get(leftIndex);
-//            case "RIGHT ACTION":
-//                return autoOptions.get(rightIndex);
-//            default:
-//                return "";
-//        }
-//    }
-
     public String getSelection() {
         return selections.get(selectionsIndex);
     }
-
     public String getPosition() {
         return positionOptions.get(positionIndex);
     }
-
     public String getLeftAction() {
         return autoOptions.get(leftIndex);
     }
@@ -105,8 +79,4 @@ public class AutoSelector extends Subsystem {
         return autoOptions.get(rightIndex);
     }
 
-    public void initDefaultCommand() {
-        setDefaultCommand(new SelectAuto());
-    }
 }
-
