@@ -6,7 +6,6 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -41,15 +40,6 @@ public class Robot extends TimedRobot {
     /* Auto choosers */
     private Command autoCommand;
     private SendableChooser<Command> autoChooser;
-    private final double defaultAutoDelay = 0.0;
-    private final String defaultStartingPosition = "MIDDLE";
-    private final String defaultLeftAction = "BASE";
-    private final String defaultRightAction = "BASE";
-
-    private double autoDelay = defaultAutoDelay;
-    private String startingPosition = defaultStartingPosition;
-    private String leftAction = defaultLeftAction;
-    private String rightAction = defaultRightAction;
 
     /* LED stuff */
     private Command blinkLEDCommand;
@@ -79,14 +69,6 @@ public class Robot extends TimedRobot {
          */
         autoChooser = new SendableChooser<>();
         autoChooser.addDefault("Auto!", new Auto());
-
-        /*
-         *  Put auto options into SmartDashboard
-         */
-        SmartDashboard.putString("Starting Position", defaultStartingPosition);
-        SmartDashboard.putString("Left Action", defaultLeftAction);
-        SmartDashboard.putString("Right Action", defaultRightAction);
-        SmartDashboard.putNumber("Auto Delay", defaultAutoDelay);
 
         /*
          * Stream webcamera on default port
@@ -130,12 +112,30 @@ public class Robot extends TimedRobot {
     /* Called periodically when robot is disabled */
     @Override
     public void disabledPeriodic() {
-        if(oi.getAutoOptionButton()|| oi.getAutoSelectionButton()) {
+
+        if(oi.getAutoSelectionButton()) {
+            autoSelector.nextSelection();
             System.out.println("SELECTION: " + autoSelector.getSelection());
             System.out.println("POSITION: " + autoSelector.getPosition());
             System.out.println("LEFT ACTION: " + autoSelector.getLeftAction());
             System.out.println("RIGHT ACTION: " + autoSelector.getRightAction());
+            for(int i = 0; i < 20; i++) {
+                System.out.println("\n");
+            }
         }
+
+        if(oi.getAutoOptionButton()) {
+            autoSelector.nextOption();
+            System.out.println("SELECTION: " + autoSelector.getSelection());
+            System.out.println("POSITION: " + autoSelector.getPosition());
+            System.out.println("LEFT ACTION: " + autoSelector.getLeftAction());
+            System.out.println("RIGHT ACTION: " + autoSelector.getRightAction());
+            for(int i = 0; i < 20; i++) {
+                System.out.println("\n");
+            }
+        }
+
+
         Scheduler.getInstance().run();
     }
 
@@ -144,11 +144,6 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void autonomousInit() {
-
-        startingPosition = SmartDashboard.getString("Starting Position", defaultStartingPosition);
-        autoDelay = SmartDashboard.getNumber("Starting Position", defaultAutoDelay);
-        leftAction = SmartDashboard.getString("Left Action", defaultLeftAction);
-        rightAction = SmartDashboard.getString("Right Action", defaultRightAction);
 
         /* Starts auto command */
         autoCommand = autoChooser.getSelected();
@@ -170,12 +165,6 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void autonomousPeriodic() {
-
-        startingPosition = SmartDashboard.getString("Starting Position", defaultStartingPosition);
-        autoDelay = SmartDashboard.getNumber("Starting Position", defaultAutoDelay);
-        leftAction = SmartDashboard.getString("Left Action", defaultLeftAction);
-        rightAction = SmartDashboard.getString("Right Action", defaultRightAction);
-
         Scheduler.getInstance().run();
     }
 
@@ -215,34 +204,6 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void testPeriodic() {
-    }
-
-    /**
-     * @return Auto starting position "LEFT", "MIDDLE", or "RIGHT"
-     */
-    public String getStartingPosition() {
-        return startingPosition;
-    }
-
-    /**
-     * @return Auto action if left is near switch. "BASE", "ONE", or "TWO"
-     */
-    public String getLeftAction() {
-        return leftAction;
-    }
-
-    /**
-     * @return Auto action if right is near switch. "BASE", "ONE", or "TWO"
-     */
-    public String getRightAction() {
-        return rightAction;
-    }
-
-    /**
-     * @return Autonomous delay in seconds
-     */
-    public double getAutoDelay() {
-        return autoDelay;
     }
 
     /**
