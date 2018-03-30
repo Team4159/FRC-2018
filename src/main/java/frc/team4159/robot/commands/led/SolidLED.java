@@ -4,7 +4,6 @@ import edu.wpi.first.wpilibj.command.TimedCommand;
 import frc.team4159.robot.subsystems.LED;
 import frc.team4159.robot.subsystems.Superstructure;
 
-
 public class SolidLED extends TimedCommand {
 
     private LED led = Superstructure.getInstance().getLED();

@@ -7,7 +7,7 @@ package frc.team4159.robot;
 public interface Constants {
 
     // Timeout value in ms. If nonzero, function will wait for config success and report an error if it times out. If zero, no blocking or checking is performed.
-    int TIMEOUT_MS = 5;
+    int TIMEOUT_MS = 7;
 
     // Nominal (minimal) percent output
     int NOMINAL_OUT_PERCENT = 0;
@@ -29,8 +29,8 @@ public interface Constants {
     /*
      * Positions of the cube lifter in mag encoder units
      */
-    int UPPER_LIFTER_LIMIT = 3300;
-    int SWITCH_HEIGHT = 2700;
+    int UPPER_LIFTER_LIMIT = 2800;
+    int SWITCH_HEIGHT = 1800;
     int LOWER_LIFTER_LIMIT = 0;
 
 }

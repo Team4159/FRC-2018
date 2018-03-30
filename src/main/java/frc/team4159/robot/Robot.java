@@ -89,8 +89,8 @@ public class Robot extends TimedRobot {
         ledModeEntry = table.getEntry("LED Mode");
 
         // Used for auto testing in teleop
-        SmartDashboard.putNumber("MAX_VELOCITY", 4.3);
-        SmartDashboard.putNumber("kP_TURN", 0.01);
+        SmartDashboard.putNumber("MAX_VELOCITY", 4.05);
+        SmartDashboard.putNumber("kP_TURN", 0.05);
 
     }
 
@@ -213,6 +213,5 @@ public class Robot extends TimedRobot {
             System.out.println("\n");
         }
     }
-
 
 }
