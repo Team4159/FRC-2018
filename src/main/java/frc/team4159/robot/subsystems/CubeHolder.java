@@ -30,7 +30,7 @@ public class CubeHolder extends Subsystem {
 
     private final int PIDIDX = 0;
     private final double kF = 0.0;
-    private final double kP = 0.5;
+    private final double kP = 1.0;
     private final double kI = 0.0;
     private final double kD = 0.0;
 
@@ -41,6 +41,7 @@ public class CubeHolder extends Subsystem {
 
         intakeVictor = new VictorSP(INTAKE_VICTOR);
         liftTalon = new TalonSRX(LIFT_TALON);
+        liftTalon.setInverted(true);
         pistons = new DoubleSolenoid(FORWARD_CHANNEL, REVERSE_CHANNEL);
         limitSwitch = new DigitalInput(LIMIT_SWITCH);
 
@@ -61,7 +62,7 @@ public class CubeHolder extends Subsystem {
         final int SLOTIDX = 0;
 
         liftTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, PIDIDX, TIMEOUT_MS);
-        liftTalon.setSensorPhase(true);
+        liftTalon.setSensorPhase(false);
         liftTalon.configNominalOutputForward(NOMINAL_OUT_PERCENT, TIMEOUT_MS);
         liftTalon.configNominalOutputReverse(NOMINAL_OUT_PERCENT, TIMEOUT_MS);
         liftTalon.configPeakOutputForward(PEAK_OUT_PERCENT, TIMEOUT_MS);
@@ -112,12 +113,12 @@ public class CubeHolder extends Subsystem {
 
     /* Opens the claw */
     public void open() {
-        pistons.set(DoubleSolenoid.Value.kReverse);
+        pistons.set(DoubleSolenoid.Value.kForward);
     }
 
     /* Closes the claw */
     public void close() {
-        pistons.set(DoubleSolenoid.Value.kForward);
+        pistons.set(DoubleSolenoid.Value.kReverse);
     }
 
     public void setRawLift(double value) {
@@ -166,7 +167,8 @@ public class CubeHolder extends Subsystem {
      */
     public void resetLiftEncoder() {
         liftTalon.setSelectedSensorPosition(LOWER_LIFTER_LIMIT, PIDIDX, TIMEOUT_MS);
-        targetPosition = 0;
+        //if(targetPosition!=0)
+            targetPosition = 0;
     }
 
     /**
@@ -210,8 +212,8 @@ public class CubeHolder extends Subsystem {
      */
     public void logDashboard() {
 
-//        SmartDashboard.putNumber("lift position", liftTalon.getSelectedSensorPosition(0));
-//        SmartDashboard.putNumber("lift target", targetPosition);
+        SmartDashboard.putNumber("lift position", liftTalon.getSelectedSensorPosition(0));
+        SmartDashboard.putNumber("lift target", targetPosition);
         if(rawMode) {
             SmartDashboard.putString("Lift mode", "RAW");
         } else {

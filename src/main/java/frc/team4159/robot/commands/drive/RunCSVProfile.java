@@ -17,9 +17,9 @@ public class RunCSVProfile extends Command {
 
     private Drivetrain drivetrain;
 
-    private double MAX_VELOCITY = 4.3; // meters per second ?!?!?!?!?!?!
+    private double MAX_VELOCITY = 4.05; // meters per second ?!?!?!?!?!?!
     private double kA = 0;
-    private double kP_TURN = 0.01;
+    private double kP_TURN = 0.05;
 
     private EncoderFollower left;
     private EncoderFollower right;
@@ -37,8 +37,10 @@ public class RunCSVProfile extends Command {
     @Override
     protected void initialize() {
 
-        MAX_VELOCITY = SmartDashboard.getNumber("MAX_VELOCITY", 4.3);
-        kP_TURN = SmartDashboard.getNumber("kP_TURN", 0.01);
+        System.out.println("Running: " + leftCSV + ", " + rightCSV);
+
+        MAX_VELOCITY = SmartDashboard.getNumber("MAX_VELOCITY", 4.05);
+        kP_TURN = SmartDashboard.getNumber("kP_TURN", 0.05);
 
         double kV = 1 / MAX_VELOCITY;
 

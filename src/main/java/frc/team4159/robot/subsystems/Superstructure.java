@@ -1,7 +1,6 @@
 package frc.team4159.robot.subsystems;
 
 import edu.wpi.first.wpilibj.Compressor;
-import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import static frc.team4159.robot.RobotMap.PCM;
 
 /*
@@ -22,7 +21,7 @@ public class Superstructure {
     public static CubeHolder cubeHolder;
     public static LED led;
 
-    private PowerDistributionPanel pdp;
+//    private PowerDistributionPanel pdp;
     private Compressor compressor;
 
     private Superstructure() {
@@ -30,7 +29,7 @@ public class Superstructure {
         cubeHolder = CubeHolder.getInstance();
         led = LED.getInstance();
 
-        pdp = new PowerDistributionPanel();
+//        pdp = new PowerDistributionPanel(0);
         compressor = new Compressor(PCM);
         compressor.setClosedLoopControl(true);
     }
@@ -56,6 +55,8 @@ public class Superstructure {
         return led;
     }
 
+    /*
+
     public double getPDPCurrent(int channel) {
         return pdp.getCurrent(channel);
     }
@@ -67,6 +68,7 @@ public class Superstructure {
     public double getVoltage() {
         return pdp.getVoltage();
     }
+    */
 
     public double compressorCurrent() {
         return compressor.getCompressorCurrent();
