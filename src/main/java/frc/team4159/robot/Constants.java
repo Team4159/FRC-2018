@@ -24,13 +24,14 @@ public interface Constants {
     // 4 inches to feet
     double WHEEL_DIAMETER = 4/12; // 0.1016
 
-    double WHEEL_CIRCUMFERANCE = WHEEL_DIAMETER * Math.PI;
+    // In feet (wheel diameter * PI)
+    double WHEEL_CIRCUMFERENCE = 1.0471975512;
 
     /*
      * Positions of the cube lifter in mag encoder units
      */
-    int UPPER_LIFTER_LIMIT = 3300;
-    int SWITCH_HEIGHT = 2700;
+    int UPPER_LIFTER_LIMIT = 3000;
+    int SWITCH_HEIGHT = 2300;
     int LOWER_LIFTER_LIMIT = 0;
 
 }

@@ -61,7 +61,7 @@ public class CubeHolder extends Subsystem {
         final int SLOTIDX = 0;
 
         liftTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, PIDIDX, TIMEOUT_MS);
-        liftTalon.setSensorPhase(true);
+        liftTalon.setSensorPhase(false);
         liftTalon.configNominalOutputForward(NOMINAL_OUT_PERCENT, TIMEOUT_MS);
         liftTalon.configNominalOutputReverse(NOMINAL_OUT_PERCENT, TIMEOUT_MS);
         liftTalon.configPeakOutputForward(PEAK_OUT_PERCENT, TIMEOUT_MS);
@@ -112,16 +112,21 @@ public class CubeHolder extends Subsystem {
 
     /* Opens the claw */
     public void open() {
-        pistons.set(DoubleSolenoid.Value.kReverse);
+        pistons.set(DoubleSolenoid.Value.kForward);
     }
 
     /* Closes the claw */
     public void close() {
-        pistons.set(DoubleSolenoid.Value.kForward);
+        pistons.set(DoubleSolenoid.Value.kReverse);
     }
 
     public void setRawLift(double value) {
-        if(limitSwitchPressed() && value < 0) {
+
+        if(limitSwitchPressed()) {
+            resetLiftEncoder();
+        }
+
+        if(limitSwitchPressed() && value > 0) {
             liftTalon.set(ControlMode.PercentOutput, 0);
         } else {
             liftTalon.set(ControlMode.PercentOutput, value);
@@ -210,8 +215,8 @@ public class CubeHolder extends Subsystem {
      */
     public void logDashboard() {
 
-//        SmartDashboard.putNumber("lift position", liftTalon.getSelectedSensorPosition(0));
-//        SmartDashboard.putNumber("lift target", targetPosition);
+        SmartDashboard.putNumber("Lift Position", liftTalon.getSelectedSensorPosition(0));
+
         if(rawMode) {
             SmartDashboard.putString("Lift mode", "RAW");
         } else {

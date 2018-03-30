@@ -89,8 +89,9 @@ public class Robot extends TimedRobot {
         ledModeEntry = table.getEntry("LED Mode");
 
         // Used for auto testing in teleop
-        SmartDashboard.putNumber("MAX_VELOCITY", 4.3);
-        SmartDashboard.putNumber("kP_TURN", 0.01);
+        SmartDashboard.putNumber("MAX_VELOCITY", 4.05);
+        SmartDashboard.putNumber("kP_TURN", 0.05);
+        SmartDashboard.putNumber("kP_RIGHT", 100.0);
 
     }
 
@@ -205,14 +206,13 @@ public class Robot extends TimedRobot {
      * Print auto options, along with a bunch of new lines
      */
     private void printAutoOptions() {
-        System.out.println("SELECTION: " + autoSelector.getSelection());
-        System.out.println("POSITION: " + autoSelector.getPosition());
-        System.out.println("LEFT ACTION: " + autoSelector.getLeftAction());
+        System.out.println("SELECTION: "    + autoSelector.getSelection());
+        System.out.println("POSITION: "     + autoSelector.getPosition());
+        System.out.println("LEFT ACTION: "  + autoSelector.getLeftAction());
         System.out.println("RIGHT ACTION: " + autoSelector.getRightAction());
         for(int i = 0; i < 20; i++) {
             System.out.println("\n");
         }
     }
-
 
 }

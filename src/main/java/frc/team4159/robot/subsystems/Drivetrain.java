@@ -10,8 +10,6 @@ import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import edu.wpi.first.wpilibj.livewindow.LiveWindow;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team4159.robot.commands.drive.Drive;
 
 import static frc.team4159.robot.Constants.*;
@@ -53,9 +51,9 @@ public class Drivetrain extends Subsystem implements PIDOutput {
 
     /* NavX turning PID constants */
     private final double kP_turn = 5 * 0.01;
-    private final double kI_turn = 0;
-    private final double kD_turn = 0.05;
-    private final double kF_turn = 0;
+    private final double kI_turn = 0.0;
+    private final double kD_turn = 0.0; // 0.05
+    private final double kF_turn = 0.0;
     private final double kToleranceDegrees = 2.0f;
 
     private double rotateToAngleRate;
@@ -255,8 +253,8 @@ public class Drivetrain extends Subsystem implements PIDOutput {
      */
     public void driveDistance(double leftDistance, double rightDistance) {
 
-        double leftTarget = (UNITS_PER_REV * leftDistance) / WHEEL_CIRCUMFERANCE;
-        double rightTarget = (UNITS_PER_REV * rightDistance) / WHEEL_CIRCUMFERANCE;
+        double leftTarget = (UNITS_PER_REV * leftDistance) / WHEEL_CIRCUMFERENCE;
+        double rightTarget = (UNITS_PER_REV * rightDistance) / WHEEL_CIRCUMFERENCE;
 
         leftTalon.set(ControlMode.MotionMagic, leftTarget);
         rightTalon.set(ControlMode.MotionMagic, rightTarget);
@@ -306,7 +304,6 @@ public class Drivetrain extends Subsystem implements PIDOutput {
         SmartDashboard.putNumber("Angle Error",turnController.getError());
         SmartDashboard.putNumber("Setpoint Angle", angleSetpoint);
         */
-
     }
 
     /**

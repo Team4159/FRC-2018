@@ -26,7 +26,7 @@ public class OI {
      *  Logitech Attack 3 joysticks, plugged in via USB to the driver station laptop
      */
     private Joystick leftJoy, rightJoy, secondaryJoy, testJoy;
-    private JoystickButton base, midToRight, midToLeft;
+    private JoystickButton base, midToRight, midToLeft, leftToLeft, rightToRight;
 
     private OI() {
         leftJoy = new Joystick(LEFT_STICK);
@@ -37,10 +37,14 @@ public class OI {
         base = new JoystickButton(testJoy, 3);
         midToLeft = new JoystickButton(testJoy, 4);
         midToRight = new JoystickButton(testJoy, 5);
+        leftToLeft = new JoystickButton(testJoy, 6);
+        rightToRight = new JoystickButton(testJoy, 7);
 
         base.whenReleased(new RunCSVProfile(BASELINE_L, BASELINE_R));
         midToLeft.whenReleased(new RunCSVProfile(MID_TO_LEFT_L, MID_TO_LEFT_R));
         midToRight.whenReleased(new RunCSVProfile(MID_TO_RIGHT_L, MID_TO_RIGHT_R));
+        leftToLeft.whenReleased(new RunCSVProfile(LEFT_TO_LEFT_L, LEFT_TO_RIGHT_R));
+        rightToRight.whenReleased(new RunCSVProfile(RIGHT_TO_RIGHT_L, RIGHT_TO_RIGHT_R));
 
     }
 
@@ -70,7 +74,7 @@ public class OI {
      */
     public double getSecondaryY() {
         double secondaryY = secondaryJoy.getY();
-        return Math.copySign(Math.pow(secondaryY, 2), secondaryY);
+        return -Math.copySign(Math.pow(secondaryY, 2), secondaryY);
     }
 
     /**
@@ -189,11 +193,11 @@ public class OI {
      * TEST JOYSTICK
      */
 
-    public boolean getAutoSelectionButton(){
+    boolean getAutoSelectionButton(){
         return testJoy.getRawButtonReleased(SELECTOR);
     }
 
-    public boolean getAutoOptionButton(){
+    boolean getAutoOptionButton(){
         return testJoy.getRawButtonReleased(OPTION);
     }
 

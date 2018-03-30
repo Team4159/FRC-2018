@@ -23,7 +23,7 @@ public class Drive extends Command{
     @Override
     protected void execute() {
 
-        if(Robot.oi.reverseControls() && !DriverStation.getInstance().isDisabled()) {
+        if(Robot.oi.reverseControls() && DriverStation.getInstance().isOperatorControl()) {
             drivetrain.reverseControls();
         }
 
