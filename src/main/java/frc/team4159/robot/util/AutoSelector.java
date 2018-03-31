@@ -23,7 +23,7 @@ public class AutoSelector {
         autoOptions = new ArrayList<>();
 
         selections.addAll(Arrays.asList("POSITION", "LEFT ACTION", "RIGHT ACTION"));
-        positionOptions.addAll(Arrays.asList("LEFT", "MIDDLE", "RIGHT"));
+        positionOptions.addAll(Arrays.asList("BASELINE", "LEFT", "MIDDLE", "MID RIGHT", "RIGHT"));
         autoOptions.addAll(Arrays.asList("BASE", "ONE", "TWO"));
 
         selectionsIndex = positionIndex = leftIndex = rightIndex = 0;

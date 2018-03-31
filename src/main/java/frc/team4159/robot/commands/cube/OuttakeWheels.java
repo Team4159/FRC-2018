@@ -4,7 +4,6 @@ import edu.wpi.first.wpilibj.command.TimedCommand;
 import frc.team4159.robot.subsystems.CubeHolder;
 import frc.team4159.robot.subsystems.Superstructure;
 
-
 public class OuttakeWheels extends TimedCommand {
 
     private CubeHolder cubeHolder = Superstructure.getInstance().getCubeHolder();
@@ -15,7 +14,7 @@ public class OuttakeWheels extends TimedCommand {
 
     @Override
     protected void execute() {
-        cubeHolder.outtake();
+        cubeHolder.autoOuttake();
     }
 
     @Override

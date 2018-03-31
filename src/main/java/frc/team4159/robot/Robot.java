@@ -53,6 +53,11 @@ public class Robot extends TimedRobot {
     public void robotInit() {
 
         /*
+         * Stream webcamera on default port
+         */
+        CameraServer.getInstance().startAutomaticCapture();
+
+        /*
          *  Initialize subsystems
          */
         drivetrain = Drivetrain.getInstance();
@@ -69,11 +74,6 @@ public class Robot extends TimedRobot {
          */
         autoChooser = new SendableChooser<>();
         autoChooser.addDefault("Auto!", new Auto());
-
-        /*
-         * Stream webcamera on default port
-         */
-        CameraServer.getInstance().startAutomaticCapture();
 
         /*
          * Put end game action (blinking LEDs) into SmartDashboard

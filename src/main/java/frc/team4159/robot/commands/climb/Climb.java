@@ -28,18 +28,23 @@ public class Climb extends Command {
          * Update setpoint if enable climber button is held and absolute value of y-axis is greater than 0.1
          */
         if(oi.climbEnable() && Math.abs(oi.getSecondaryY()) > 0.1) {
-            climber.updateSetpoint(oi.getSecondaryY());
+            climber.rawClimb(oi.getSecondaryY());
+            //climber.updateSetpoint(oi.getSecondaryY());
+        } else {
+            climber.stopClimb();
         }
 
         if(oi.climbWinch()) {
             climber.winch();
+        } else {
+            climber.stopWinch();
         }
 
         if(oi.toggleRawClimb()) {
             climber.toggleRawClimb();
         }
 
-        climber.update();
+        //climber.update();
         climber.logSmartDashboard();
     }
 

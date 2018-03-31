@@ -42,7 +42,7 @@ public class Climber extends Subsystem {
         climbVictor = new VictorSP(CLIMB_VICTOR);
         hallSensor = new DigitalInput(HALL_SENSOR);
 
-        rawMode = false;
+        rawMode = true;
         hasStartedClimb = false;
 
         configureSensors();
@@ -108,16 +108,35 @@ public class Climber extends Subsystem {
         }
     }
 
+    public void rawClimb(double value) {
+        climbTalon.set(ControlMode.PercentOutput, value);
+    }
+
     /**
      * Starting winching at full speed if telescoping arm is down and hook already started to deploy
      * OR if rawMode is true
      */
     public void winch() {
-        if((hallSensorPresent() && hasStartedClimb) || rawMode) {
-            climbVictor.set(-1);
-        } else {
-            climbVictor.set(0);
-        }
+        climbVictor.set(-1);
+//        if((hallSensorPresent() && hasStartedClimb) || rawMode) {
+//            climbVictor.set(-1);
+//        } else {
+//            climbVictor.set(0);
+//        }
+    }
+
+    /**
+     * Stops winch motor
+     */
+    public void stopWinch() {
+        climbVictor.set(0);
+    }
+
+    /**
+     * Stops telescoping arm motor
+     */
+    public void stopClimb() {
+        climbTalon.set(ControlMode.PercentOutput, 0);
     }
 
     /**
@@ -147,7 +166,7 @@ public class Climber extends Subsystem {
     public void logSmartDashboard() {
         SmartDashboard.putBoolean("Climber Raw Mode", rawMode);
         SmartDashboard.putBoolean("Has Started Climb", hasStartedClimb);
-        SmartDashboard.putNumber("Climber Encoder Position", climbTalon.getSelectedSensorPosition(PIDIDX));
+//        SmartDashboard.putNumber("Climber Encoder Position", climbTalon.getSelectedSensorPosition(PIDIDX));
     }
 
     /**

@@ -106,6 +106,11 @@ public class CubeHolder extends Subsystem {
         intakeVictor.set(1);
     }
 
+    /* Outtake at a slower speed to prevent launching cube over switch in auto */
+    public void autoOuttake() {
+        intakeVictor.set(0.75);
+    }
+
     /* Stops running the wheels */
     public void stopFlywheels() {
         intakeVictor.set(0);
@@ -163,12 +168,13 @@ public class CubeHolder extends Subsystem {
     }
 
     /**
-     * Reset lift encoder to 0 and sets target position to 0
+     * Reset lift encoder to 0 and sets target position to 0 if not already at 0
      */
-    public void resetLiftEncoder() {
+    private void resetLiftEncoder() {
         liftTalon.setSelectedSensorPosition(LOWER_LIFTER_LIMIT, PIDIDX, TIMEOUT_MS);
-        //if(targetPosition!=0)
+        if(targetPosition != 0) {
             targetPosition = 0;
+        }
     }
 
     /**
@@ -212,15 +218,14 @@ public class CubeHolder extends Subsystem {
      */
     public void logDashboard() {
 
-        SmartDashboard.putNumber("lift position", liftTalon.getSelectedSensorPosition(0));
-        SmartDashboard.putNumber("lift target", targetPosition);
         if(rawMode) {
             SmartDashboard.putString("Lift mode", "RAW");
         } else {
             SmartDashboard.putString("Lift mode", "PID");
         }
-
-        SmartDashboard.putBoolean("Limit Switch", limitSwitchPressed());
+//        SmartDashboard.putNumber("lift position", liftTalon.getSelectedSensorPosition(0));
+//        SmartDashboard.putNumber("lift target", targetPosition);
+//        SmartDashboard.putBoolean("Limit Switch", limitSwitchPressed());
 
     }
 
