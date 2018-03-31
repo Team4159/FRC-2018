@@ -44,6 +44,15 @@ public class Auto extends TimedCommand {
                     command = new RunCSVProfile(BASELINE_L, BASELINE_R);
                 }
                 break;
+            case "MID RIGHT":
+                if(nearSwitch == MatchData.OwnedSide.LEFT) {
+                    command = new RunCSVProfile(BASELINE_L, BASELINE_R);
+                } else if(nearSwitch == MatchData.OwnedSide.RIGHT) {
+                    command = new BaselineDropAuto();
+                } else {
+                    command = new RunCSVProfile(BASELINE_L, BASELINE_R);
+                }
+                break;
             case "RIGHT":
                 if(nearSwitch == MatchData.OwnedSide.LEFT) {
                     command = new RunCSVProfile(BASELINE_L, BASELINE_R);
@@ -52,6 +61,9 @@ public class Auto extends TimedCommand {
                 } else {
                     command = new RunCSVProfile(BASELINE_L, BASELINE_R);
                 }
+                break;
+            case "BASELINE":
+                command = new RunCSVProfile(BASELINE_L, BASELINE_R);
                 break;
             default:
                 command = new RunCSVProfile(BASELINE_L, BASELINE_R);

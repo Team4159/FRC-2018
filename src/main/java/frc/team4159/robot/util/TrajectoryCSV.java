@@ -1,5 +1,9 @@
 package frc.team4159.robot.util;
 
+/**
+ * Maps trajectory CSV filenames to a more easily usable variable name
+ */
+
 public interface TrajectoryCSV {
 
     String BASELINE_L = "/traj/baseline_left_detailed.csv";
