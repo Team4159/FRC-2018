@@ -5,11 +5,11 @@ import frc.team4159.robot.commands.cube.LiftUp;
 import frc.team4159.robot.commands.cube.OuttakeWheels;
 import frc.team4159.robot.commands.cube.ResetLiftTopPosition;
 import frc.team4159.robot.commands.cube.RunLift;
+import frc.team4159.robot.commands.drive.DriveSlow;
 import frc.team4159.robot.commands.drive.RunCSVProfile;
 import frc.team4159.robot.commands.led.SolidLED;
 
 import static frc.team4159.robot.util.TrajectoryCSV.*;
-
 
 class LeftToLeftAuto extends CommandGroup {
 
@@ -19,6 +19,7 @@ class LeftToLeftAuto extends CommandGroup {
         addSequential(new ResetLiftTopPosition());
         addSequential(new LiftUp());
         addSequential(new RunCSVProfile(LEFT_TO_LEFT_L, LEFT_TO_LEFT_R));
-        addSequential(new OuttakeWheels(1));
+        addSequential(new DriveSlow());
+        addSequential(new OuttakeWheels(3));
     }
 }

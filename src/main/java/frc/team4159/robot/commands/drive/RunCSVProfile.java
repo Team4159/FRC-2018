@@ -86,6 +86,7 @@ public class RunCSVProfile extends Command {
 
     @Override
     protected void end() {
+        drivetrain.setRawOutput(0, 0);
     }
 
     @Override
