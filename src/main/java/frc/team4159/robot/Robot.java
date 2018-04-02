@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.team4159.robot.commands.auto.Auto;
+import frc.team4159.robot.commands.auto.ElimsAuto;
 import frc.team4159.robot.commands.led.BlinkLED;
 import frc.team4159.robot.util.AutoSelector;
 import frc.team4159.robot.subsystems.Drivetrain;
@@ -53,11 +53,6 @@ public class Robot extends TimedRobot {
     public void robotInit() {
 
         /*
-         * Stream webcamera on default port
-         */
-        CameraServer.getInstance().startAutomaticCapture();
-
-        /*
          *  Initialize subsystems
          */
         drivetrain = Drivetrain.getInstance();
@@ -73,7 +68,7 @@ public class Robot extends TimedRobot {
          * Put auto command into SmartDashboard
          */
         autoChooser = new SendableChooser<>();
-        autoChooser.addDefault("Auto!", new Auto());
+        autoChooser.addDefault("Auto!", new ElimsAuto());
 
         /*
          * Put end game action (blinking LEDs) into SmartDashboard
@@ -91,6 +86,8 @@ public class Robot extends TimedRobot {
         // Used for auto testing in teleop
         SmartDashboard.putNumber("MAX_VELOCITY", 4.05);
         SmartDashboard.putNumber("kP_TURN", 0.05);
+
+        CameraServer.getInstance().startAutomaticCapture();
 
     }
 

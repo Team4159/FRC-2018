@@ -306,7 +306,6 @@ public class Drivetrain extends Subsystem implements PIDOutput {
         SmartDashboard.putNumber("Angle Error",turnController.getError());
         SmartDashboard.putNumber("Setpoint Angle", angleSetpoint);
         */
-
     }
 
     /**
