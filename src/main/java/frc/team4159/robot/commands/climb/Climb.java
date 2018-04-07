@@ -16,20 +16,16 @@ public class Climb extends Command {
     private OI oi;
 
     public Climb() {
-        requires(Superstructure.climber);
         climber = Superstructure.getInstance().getClimber();
         oi = OI.getInstance();
+        requires(climber);
     }
 
     @Override
     protected void execute() {
 
-        /*
-         * Update setpoint if enable climber button is held and absolute value of y-axis is greater than 0.1
-         */
         if(oi.climbEnable() && Math.abs(oi.getSecondaryY()) > 0.1) {
             climber.rawClimb(oi.getSecondaryY());
-            //climber.updateSetpoint(oi.getSecondaryY());
         } else {
             climber.stopClimb();
         }
@@ -44,7 +40,6 @@ public class Climb extends Command {
             climber.toggleRawClimb();
         }
 
-        //climber.update();
         climber.logSmartDashboard();
     }
 

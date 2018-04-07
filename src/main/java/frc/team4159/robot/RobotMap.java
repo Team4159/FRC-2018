@@ -26,8 +26,10 @@ public interface RobotMap {
     int CLIMB_VICTOR = 1;
 
     // Double Solenoid PCM IDs
-    int FORWARD_CHANNEL = 6;
-    int REVERSE_CHANNEL = 7;
+    int CLAW_FORWARD = 6;
+    int CLAW_REVERSE = 7;
+    int ANTENNA_FORWARD = 3;
+    int ANTENNA_REVERSE = 4;
 
     // Digital Input ports
     int HALL_SENSOR = 0;

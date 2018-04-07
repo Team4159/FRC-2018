@@ -10,11 +10,13 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.team4159.robot.commands.auto.ElimsAuto;
+import frc.team4159.robot.commands.auto.Auto;
 import frc.team4159.robot.commands.led.BlinkLED;
-import frc.team4159.robot.util.AutoSelector;
+import frc.team4159.robot.util.AutoAction;
 import frc.team4159.robot.subsystems.Drivetrain;
 import frc.team4159.robot.subsystems.Superstructure;
+
+import static frc.team4159.robot.util.AutoAction.*;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -35,15 +37,15 @@ public class Robot extends TimedRobot {
     public static Drivetrain drivetrain;
     public static Superstructure superstructure;
     public static OI oi;
-    private static AutoSelector autoSelector;
+
+    /* Commands */
+    private Command autoCommand;
+    private Command endGameCommand;
 
     /* Auto choosers */
-    private Command autoCommand;
-    private SendableChooser<Command> autoChooser;
+    private SendableChooser<AutoAction> leftAutoAction;
+    private SendableChooser<AutoAction> rightAutoAction;
 
-    /* LED stuff */
-    private Command blinkLEDCommand;
-    private SendableChooser<Command> endGameChooser;
     private NetworkTableEntry ledModeEntry;
 
     /**
@@ -62,19 +64,19 @@ public class Robot extends TimedRobot {
          *  Initialize helper classes
          */
         oi = OI.getInstance();
-        autoSelector = AutoSelector.getInstance();
 
         /*
-         * Put auto command into SmartDashboard
+         * Put auto action choosers to SmartDashboard
          */
-        autoChooser = new SendableChooser<>();
-        autoChooser.addDefault("Auto!", new ElimsAuto());
+        leftAutoAction.addDefault("Baseline", BASELINE);
+        leftAutoAction.addObject("Baseline ONE", BASELINE_DROP);
+        leftAutoAction.addObject("Mid to Left ONE", MID_TO_LEFT_ONE);
+        leftAutoAction.addObject("Mid to Right ONE", MID_TO_RIGHT_ONE);
 
-        /*
-         * Put end game action (blinking LEDs) into SmartDashboard
-         */
-        endGameChooser = new SendableChooser<>();
-        endGameChooser.addDefault("Blink LED Ring", new BlinkLED());
+        rightAutoAction.addDefault("Baseline", BASELINE);
+        leftAutoAction.addObject("Baseline ONE", BASELINE_DROP);
+        rightAutoAction.addObject("Mid to Left ONE", MID_TO_LEFT_ONE);
+        rightAutoAction.addObject("Mid to Right ONE", MID_TO_RIGHT_ONE);
 
         /*
          * Start networktables for rPi to read
@@ -83,10 +85,15 @@ public class Robot extends TimedRobot {
         NetworkTable table = inst.getTable("datatable");
         ledModeEntry = table.getEntry("LED Mode");
 
-        // Used for auto testing in teleop
+        /*
+         * Variables that can change in SmartDashboard to tune auto during teleop
+         */
         SmartDashboard.putNumber("MAX_VELOCITY", 4.05);
         SmartDashboard.putNumber("kP_TURN", 0.05);
 
+        /*
+         * Automatically stream USB camera
+         */
         CameraServer.getInstance().startAutomaticCapture();
 
     }
@@ -102,8 +109,8 @@ public class Robot extends TimedRobot {
         /*
          * Stop blinking LED command
          */
-        if (blinkLEDCommand != null) {
-            blinkLEDCommand.cancel();
+        if (endGameCommand != null) {
+            endGameCommand.cancel();
         }
     }
 
@@ -111,6 +118,7 @@ public class Robot extends TimedRobot {
     @Override
     public void disabledPeriodic() {
 
+        /*
         if(oi.getAutoSelectionButton()) {
             autoSelector.nextSelection();
             printAutoOptions();
@@ -120,6 +128,7 @@ public class Robot extends TimedRobot {
             autoSelector.nextOption();
             printAutoOptions();
         }
+        */
 
         Scheduler.getInstance().run();
     }
@@ -130,11 +139,9 @@ public class Robot extends TimedRobot {
     @Override
     public void autonomousInit() {
 
-        /* Starts auto command */
-        autoCommand = autoChooser.getSelected();
-        if (autoCommand != null) {
-            autoCommand.start();
-        }
+        /* Start auto command */
+        autoCommand = new Auto();
+        autoCommand.start();
 
         /* Put alliance color to NetworkTables to be used by rPi to control LED strips */
         if (DriverStation.getInstance().getAlliance() == DriverStation.Alliance.Red) {
@@ -167,12 +174,10 @@ public class Robot extends TimedRobot {
         }
 
         /*
-         * Start blinking LED command
+         * Start end game command (waits until endgame first)
          */
-        blinkLEDCommand = endGameChooser.getSelected();
-        if(blinkLEDCommand != null) {
-            blinkLEDCommand.start();
-        }
+        endGameCommand = new BlinkLED();
+        endGameCommand.start();
 
     }
 
@@ -188,8 +193,7 @@ public class Robot extends TimedRobot {
      * Periodically called during test mode.
      */
     @Override
-    public void testPeriodic() {
-    }
+    public void testPeriodic() {}
 
     /**
      * @return Drivetrain subsystem
@@ -199,9 +203,25 @@ public class Robot extends TimedRobot {
     }
 
     /**
+     * @return Auto action if left side is near switch
+     */
+    public AutoAction getLeftAction() {
+        return leftAutoAction.getSelected();
+    }
+
+    /**
+     * @return Auto action if right side is near switch
+     */
+    public AutoAction getRightAction() {
+        return rightAutoAction.getSelected();
+    }
+
+    /**
      * Print auto options, along with a bunch of new lines
+     * Currently unused.
      */
     private void printAutoOptions() {
+        /*
         System.out.println("SELECTION: " + autoSelector.getSelection());
         System.out.println("POSITION: " + autoSelector.getPosition());
         System.out.println("LEFT ACTION: " + autoSelector.getLeftAction());
@@ -209,6 +229,7 @@ public class Robot extends TimedRobot {
         for(int i = 0; i < 20; i++) {
             System.out.println("\n");
         }
+        */
     }
 
 }

@@ -15,7 +15,6 @@ public class RunLift extends TimedCommand {
         Superstructure.getInstance().getCubeHolder().move();
     }
 
-
     @Override
     protected boolean isFinished() {
         return isTimedOut();

@@ -10,7 +10,6 @@ import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team4159.robot.commands.drive.Drive;
 
@@ -183,7 +182,19 @@ public class Drivetrain extends Subsystem implements PIDOutput {
      *  Change state of reversed controls
      */
     public void reverseControls() {
-        reverse = !reverse;
+        if(reverse) {
+            disableReverse();
+        } else {
+            enableReverse();
+        }
+    }
+
+    private void enableReverse() {
+        reverse = true;
+    }
+
+    public void disableReverse() {
+        reverse = false;
     }
 
     /**

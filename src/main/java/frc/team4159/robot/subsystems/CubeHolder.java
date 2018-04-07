@@ -25,7 +25,7 @@ public class CubeHolder extends Subsystem {
 
     private TalonSRX liftTalon;
     private VictorSP intakeVictor;
-    private DoubleSolenoid pistons;
+    private DoubleSolenoid clawSolenoid;
     private DigitalInput limitSwitch;
 
     private final int PIDIDX = 0;
@@ -42,7 +42,7 @@ public class CubeHolder extends Subsystem {
         intakeVictor = new VictorSP(INTAKE_VICTOR);
         liftTalon = new TalonSRX(LIFT_TALON);
         liftTalon.setInverted(true);
-        pistons = new DoubleSolenoid(FORWARD_CHANNEL, REVERSE_CHANNEL);
+        clawSolenoid = new DoubleSolenoid(CLAW_FORWARD, CLAW_REVERSE);
         limitSwitch = new DigitalInput(LIMIT_SWITCH);
 
         rawMode = true;
@@ -118,12 +118,12 @@ public class CubeHolder extends Subsystem {
 
     /* Opens the claw */
     public void open() {
-        pistons.set(DoubleSolenoid.Value.kForward);
+        clawSolenoid.set(DoubleSolenoid.Value.kForward);
     }
 
     /* Closes the claw */
     public void close() {
-        pistons.set(DoubleSolenoid.Value.kReverse);
+        clawSolenoid.set(DoubleSolenoid.Value.kReverse);
     }
 
     public void setRawLift(double value) {

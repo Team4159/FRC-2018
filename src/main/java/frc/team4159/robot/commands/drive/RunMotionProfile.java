@@ -2,6 +2,7 @@ package frc.team4159.robot.commands.drive;
 
 import java.io.File;
 
+import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team4159.robot.Robot;
@@ -13,7 +14,11 @@ import jaci.pathfinder.followers.EncoderFollower;
 import static frc.team4159.robot.Constants.UNITS_PER_REV;
 import static frc.team4159.robot.Constants.WHEEL_DIAMETER;
 
-public class RunCSVProfile extends Command {
+// TODO: Test Notifier and change time step on paths to 0.01
+
+public class RunMotionProfile extends Command implements Runnable {
+
+    private Notifier notifier;
 
     private Drivetrain drivetrain;
 
@@ -27,11 +32,12 @@ public class RunCSVProfile extends Command {
     private String leftCSV;
     private String rightCSV;
 
-    public RunCSVProfile(String leftCSV, String rightCSV) {
-        requires(Robot.drivetrain);
-        drivetrain = Robot.getDrivetrain();
+    public RunMotionProfile(String leftCSV, String rightCSV) {
         this.leftCSV = leftCSV;
         this.rightCSV = rightCSV;
+
+        drivetrain = Robot.getDrivetrain();
+        requires(drivetrain);
     }
 
     @Override
@@ -61,10 +67,25 @@ public class RunCSVProfile extends Command {
         right.configureEncoder(drivetrain.getRightEncoderPosition(), UNITS_PER_REV, WHEEL_DIAMETER);
         right.configurePIDVA(0.0, 0.0, 0.0, kV, kA);
 
+        /*
+         * Period of the loop. Consistent with the time step on motion profile csv
+         */
+        final double period = 0.01;
+
+        /*
+         * Start a separate thread with given period
+         */
+        notifier = new Notifier(this);
+        notifier.startPeriodic(period);
+
     }
 
+    /**
+     * Loops in separate thread
+     */
     @Override
-    protected void execute() {
+    public void run() {
+
         double l = left.calculate(drivetrain.getLeftEncoderPosition());
         double r = right.calculate(drivetrain.getRightEncoderPosition());
 
@@ -72,25 +93,36 @@ public class RunCSVProfile extends Command {
         double desired_heading = Pathfinder.r2d(left.getHeading());
 
         double angleDifference = Pathfinder.boundHalfDegrees(desired_heading - gyro_heading);
-        double kG = kP_TURN * (-1.0/80.0);
+        double kG = kP_TURN * (-1.0/80.0); // TODO: What if this was positive?
         double turn = kG * angleDifference;
 
         drivetrain.setRawOutput(l + turn, r - turn);
-        drivetrain.logDashboard();
+        //drivetrain.logDashboard();
+
     }
 
+    /**
+     * @return True if finished tracking trajectory
+     */
     @Override
     protected boolean isFinished() {
         return left.isFinished() && right.isFinished();
     }
 
+    /**
+     * Stop drivetrain from moving when command ends
+     */
     @Override
     protected void end() {
-        drivetrain.setRawOutput(0, 0);
+        notifier.stop();
+        drivetrain.stop();
     }
 
+    /**
+     * Calls end()
+     */
     @Override
     protected void interrupted() {
-        end();
+        super.interrupted();
     }
 }

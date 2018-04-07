@@ -12,16 +12,16 @@ public class LiftCube extends Command {
     private OI oi;
 
     public LiftCube() {
-        requires(Superstructure.cubeHolder);
         cubeHolder = Superstructure.getInstance().getCubeHolder();
         oi = OI.getInstance();
+        requires(cubeHolder);
     }
 
     @Override
     protected void execute() {
 
         /*
-         * Intake and outtake wheel control
+         * Intake and outtake wheel logic
          */
         if(oi.intakeButton() && oi.outtakeButton()) {
             cubeHolder.stopFlywheels();
@@ -38,7 +38,7 @@ public class LiftCube extends Command {
 
 
         /*
-         * Open claw if trigger is pressed. Closed by default.
+         * Open claw if trigger is pressed. Default closes.
          */
         if(oi.openClaw()) {
             cubeHolder.open();

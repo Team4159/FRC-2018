@@ -17,21 +17,22 @@ public class Superstructure {
         return instance;
     }
 
-    public static Climber climber;
-    public static CubeHolder cubeHolder;
+    private static Climber climber;
+    private static CubeHolder cubeHolder;
     public static LED led;
-
-//    private PowerDistributionPanel pdp;
-    private Compressor compressor;
+    private static Antenna antenna;
+    private static Compressor compressor;
 
     private Superstructure() {
+
         climber = Climber.getInstance();
         cubeHolder = CubeHolder.getInstance();
         led = LED.getInstance();
-
-//        pdp = new PowerDistributionPanel(0);
+        antenna = Antenna.getInstance();
         compressor = new Compressor(PCM);
-        compressor.setClosedLoopControl(true);
+
+        compressor.start();
+
     }
 
     /**
@@ -55,31 +56,16 @@ public class Superstructure {
         return led;
     }
 
-    /*
-
-    public double getPDPCurrent(int channel) {
-        return pdp.getCurrent(channel);
+    public Antenna getAntenna() {
+        return antenna;
     }
 
-    public double getTotalCurrent() {
-        return pdp.getTotalCurrent();
+    public void disableCompressor() {
+        compressor.stop();
     }
 
-    public double getVoltage() {
-        return pdp.getVoltage();
-    }
-    */
-
-    public double compressorCurrent() {
-        return compressor.getCompressorCurrent();
-    }
-
-    public boolean compressorEnabled() {
-        return compressor.enabled();
-    }
-
-    public boolean pressureSwitch() {
-        return compressor.getPressureSwitchValue();
+    public void enableCompressor() {
+        compressor.start();
     }
 
 }

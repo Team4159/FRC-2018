@@ -3,6 +3,10 @@ package frc.team4159.robot.util;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+/**
+ *  Currently unused. Used throughout SVR 2018 to choose auto modes on a joystick and graphically view them on the
+ *  DriverStation's console.
+ */
 public class AutoSelector {
 
     private static AutoSelector instance;

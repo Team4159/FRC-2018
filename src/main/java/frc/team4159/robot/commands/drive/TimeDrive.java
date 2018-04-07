@@ -4,11 +4,11 @@ import edu.wpi.first.wpilibj.command.TimedCommand;
 import frc.team4159.robot.Robot;
 import frc.team4159.robot.subsystems.Drivetrain;
 
-public class DriveSlow extends TimedCommand {
+public class TimeDrive extends TimedCommand {
 
     private Drivetrain drivetrain;
 
-    public DriveSlow() {
+    public TimeDrive() {
         super(8);
         requires(Robot.drivetrain);
         drivetrain = Robot.getDrivetrain();
