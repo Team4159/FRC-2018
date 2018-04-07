@@ -24,7 +24,7 @@ public class Drive extends Command{
     @Override
     protected void execute() {
 
-        if(oi.reverseControls() && !DriverStation.getInstance().isDisabled()) {
+        if(oi.reverseControls() && DriverStation.getInstance().isEnabled()) {
             drivetrain.reverseControls();
         }
 

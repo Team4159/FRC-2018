@@ -3,7 +3,6 @@ package frc.team4159.robot;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
@@ -90,11 +89,6 @@ public class Robot extends TimedRobot {
          */
         SmartDashboard.putNumber("MAX_VELOCITY", 4.05);
         SmartDashboard.putNumber("kP_TURN", 0.05);
-
-        /*
-         * Automatically stream USB camera
-         */
-        CameraServer.getInstance().startAutomaticCapture();
 
     }
 
