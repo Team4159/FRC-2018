@@ -1,69 +1,45 @@
 package frc.team4159.robot.commands.drive;
 
+import edu.wpi.cscore.CvSink;
+import edu.wpi.cscore.CvSource;
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.CameraServer;
-import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.vision.VisionThread;
-import frc.team4159.robot.Robot;
-import frc.team4159.robot.SwitchVisionPipeline;
-import frc.team4159.robot.subsystems.Drivetrain;
-import org.opencv.core.Rect;
+import org.opencv.core.Mat;
 import org.opencv.imgproc.Imgproc;
 
-public class VisualServo extends Command implements Runnable {
 
-    private Drivetrain drivetrain;
-    private Notifier notifier;
+public class VisualServo extends Command {
 
-    /* Image rec stuff */
-    private static final int IMG_WIDTH = 160;
-    private static final int IMG_HEIGHT = 90;
-    private VisionThread visionThread;
-    private double centerX = 0.0;
-    private final Object imgLock = new Object();
+    Mat source;
+    Mat output;
+    CvSink cvSink;
+    CvSource outputStream;
 
     public VisualServo() {
-        drivetrain = Robot.getDrivetrain();
-        notifier = new Notifier(this);
-        requires(drivetrain);
+
     }
 
     @Override
     protected void initialize() {
-
-        /*
-         * Set up vision thread
-         */
         UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
-        camera.setResolution(IMG_WIDTH, IMG_HEIGHT);
-        visionThread = new VisionThread(camera, new SwitchVisionPipeline(), pipeline -> {
-            if (!pipeline.filterContoursOutput().isEmpty()) {
-                Rect r = Imgproc.boundingRect(pipeline.filterContoursOutput().get(0));
-                synchronized (imgLock) {
-                    centerX = r.x + (r.width / 2);
-                }
-            }
-        });
-        visionThread.start();
+        camera.setResolution(640, 480);
 
-        notifier.startPeriodic(0.01);
+
+        cvSink = CameraServer.getInstance().getVideo();
+        outputStream = CameraServer.getInstance().putVideo("VisualServo", 256, 144);
+
+        source = new Mat();
+        output = new Mat();
     }
 
     @Override
-    public void run() {
+    protected void execute() {
 
-        double centerX;
-        double kP_TURN = 0.005;
-        double BASE_SPEED = 0.5;
-
-        synchronized (imgLock) {
-            centerX = this.centerX;
-        }
-
-        double angleDifference = centerX - (IMG_WIDTH / 2);
-        double turn = angleDifference * kP_TURN;
-        drivetrain.setRawOutput(BASE_SPEED + turn, BASE_SPEED - turn);
+        cvSink.grabFrame(source);
+        Imgproc.cvtColor(source, output, Imgproc.COLOR_BGR2GRAY);
+        outputStream.putFrame(output);
+        System.out.println("Show Image!");
     }
 
     @Override
@@ -72,13 +48,33 @@ public class VisualServo extends Command implements Runnable {
         return false;
     }
 
+
+    /**
+     * Called once when the command ended peacefully; that is it is called once
+     * after {@link #isFinished()} returns true. This is where you may want to
+     * wrap up loose ends, like shutting off a motor that was being used in the
+     * command.
+     */
     @Override
     protected void end() {
-        notifier.stop();
-        visionThread.interrupt();
-        drivetrain.stop();
+
     }
 
+
+    /**
+     * <p>
+     * Called when the command ends because somebody called {@link #cancel()} or
+     * another command shared the same requirements as this one, and booted it out. For example,
+     * it is called when another command which requires one or more of the same
+     * subsystems is scheduled to run.
+     * </p><p>
+     * This is where you may want to wrap up loose ends, like shutting off a motor that was being
+     * used in the command.
+     * </p><p>
+     * Generally, it is useful to simply call the {@link #end()} method within this
+     * method, as done here.
+     * </p>
+     */
     @Override
     protected void interrupted() {
         super.interrupted();

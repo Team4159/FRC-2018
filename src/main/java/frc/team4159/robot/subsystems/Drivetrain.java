@@ -2,6 +2,7 @@ package frc.team4159.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.kauailabs.navx.frc.AHRS;
@@ -100,17 +101,26 @@ public class Drivetrain extends Subsystem implements PIDOutput {
 
         leftTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, PIDIDX, TIMEOUT_MS);
         leftTalon.setSensorPhase(false);
+
         leftTalon.configNominalOutputForward(NOMINAL_OUT_PERCENT, TIMEOUT_MS);
         leftTalon.configNominalOutputReverse(NOMINAL_OUT_PERCENT, TIMEOUT_MS);
         leftTalon.configPeakOutputForward(PEAK_OUT_PERCENT, TIMEOUT_MS);
         leftTalon.configPeakOutputReverse(-PEAK_OUT_PERCENT, TIMEOUT_MS);
 
+        leftTalon.configVoltageCompSaturation(MAX_VOLTAGE, TIMEOUT_MS);
+        leftTalon.enableVoltageCompensation(true);
+
         rightTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, PIDIDX, TIMEOUT_MS);
         rightTalon.setSensorPhase(true); // Reverses encoder direction to match with motor direction
+
         rightTalon.configNominalOutputForward(NOMINAL_OUT_PERCENT, TIMEOUT_MS);
         rightTalon.configNominalOutputReverse(NOMINAL_OUT_PERCENT, TIMEOUT_MS);
         rightTalon.configPeakOutputForward(PEAK_OUT_PERCENT, TIMEOUT_MS);
         rightTalon.configPeakOutputReverse(-PEAK_OUT_PERCENT, TIMEOUT_MS);
+
+        /* Ensures voltage output is always between 0 to 12 volts */
+        rightTalon.configVoltageCompSaturation(MAX_VOLTAGE, TIMEOUT_MS);
+        rightTalon.enableVoltageCompensation(true);
 
         // TODO: Retune PIDF values for both sides of drivetrain
 

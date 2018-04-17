@@ -29,8 +29,8 @@ public class Superstructure {
         cubeHolder = CubeHolder.getInstance();
         led = LED.getInstance();
         antenna = Antenna.getInstance();
-        compressor = new Compressor(PCM);
 
+        compressor = new Compressor(PCM);
         compressor.start();
 
     }
