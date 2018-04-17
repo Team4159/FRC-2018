@@ -15,11 +15,12 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team4159.robot.commands.auto.Auto;
 import frc.team4159.robot.commands.led.BlinkLED;
-import frc.team4159.robot.util.AutoAction;
 import frc.team4159.robot.subsystems.Drivetrain;
 import frc.team4159.robot.subsystems.Superstructure;
-import org.opencv.imgproc.*;
+import frc.team4159.robot.util.AutoAction;
 import org.opencv.core.*;
+import org.opencv.imgproc.Imgproc;
+import org.opencv.imgproc.Moments;
 
 import java.util.ArrayList;
 import java.util.List;

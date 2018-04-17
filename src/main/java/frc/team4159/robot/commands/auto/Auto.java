@@ -10,7 +10,6 @@ import java.util.HashMap;
 
 import static frc.team4159.robot.util.AutoAction.*;
 
-
 public class Auto extends TimedCommand {
 
     private Robot robot;
@@ -28,8 +27,6 @@ public class Auto extends TimedCommand {
         autoList.put(MID_TO_RIGHT_ONE, new MiddleRightAuto());
         autoList.put(LEFT_TO_LEFT,     new LeftToLeftAuto());
         autoList.put(RIGHT_TO_RIGHT,   new RightToRightAuto());
-//        autoList.put(MID_TO_LEFT_TWO,  new MiddleLeftAuto());
-//        autoList.put(MID_TO_RIGHT_TWO, new MiddleRightAuto());
 
     }
 

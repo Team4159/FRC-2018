@@ -1,6 +1,7 @@
 package frc.team4159.robot.commands.auto;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
+import edu.wpi.first.wpilibj.command.WaitCommand;
 import frc.team4159.robot.commands.cube.LiftUp;
 import frc.team4159.robot.commands.cube.OuttakeWheels;
 import frc.team4159.robot.commands.cube.ResetLiftTopPosition;

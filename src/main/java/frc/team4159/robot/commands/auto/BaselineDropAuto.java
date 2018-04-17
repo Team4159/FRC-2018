@@ -5,8 +5,11 @@ import frc.team4159.robot.commands.cube.LiftUp;
 import frc.team4159.robot.commands.cube.OuttakeWheels;
 import frc.team4159.robot.commands.cube.ResetLiftTopPosition;
 import frc.team4159.robot.commands.cube.RunLift;
-import frc.team4159.robot.commands.drive.TimeDrive;
+import frc.team4159.robot.commands.drive.RunMotionProfile;
 import frc.team4159.robot.commands.led.SolidLED;
+
+import static frc.team4159.robot.util.TrajectoryCSV.BASELINE_L;
+import static frc.team4159.robot.util.TrajectoryCSV.BASELINE_R;
 
 
 class BaselineDropAuto extends CommandGroup {
@@ -16,7 +19,7 @@ class BaselineDropAuto extends CommandGroup {
         addParallel(new RunLift());
         addSequential(new ResetLiftTopPosition());
         addSequential(new LiftUp());
-        addSequential(new TimeDrive());
-        addSequential(new OuttakeWheels(1));
+        addSequential(new RunMotionProfile(BASELINE_L, BASELINE_R));
+        addSequential(new OuttakeWheels(3));
     }
 }
