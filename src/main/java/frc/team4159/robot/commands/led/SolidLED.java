@@ -1,6 +1,7 @@
 package frc.team4159.robot.commands.led;
 
 import edu.wpi.first.wpilibj.command.TimedCommand;
+import frc.team4159.robot.Robot;
 import frc.team4159.robot.subsystems.LED;
 import frc.team4159.robot.subsystems.Superstructure;
 
@@ -10,11 +11,12 @@ public class SolidLED extends TimedCommand {
 
     public SolidLED() {
         super(15);
-        requires(Superstructure.led);
+        requires(led);
     }
 
     @Override
     protected void initialize() {
+        Robot.getDrivetrain().disableReverse();
         led.enableLEDRings();
     }
 

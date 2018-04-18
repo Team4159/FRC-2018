@@ -111,12 +111,11 @@ public class Robot extends TimedRobot {
          * View stream on http://roborio-4159-frc.local:1181
          */
         UsbCamera driverCam = CameraServer.getInstance().startAutomaticCapture(0);
-//        CvSink cvSink = new CvSink("driverCam");
-//        cvSink.setSource(driverCam);
-//        cvSink.setEnabled(true);
+        CvSink cvSink = new CvSink("driverCam");
+        cvSink.setSource(driverCam);
+        cvSink.setEnabled(true);
 
-//        Command visualServo = new VisualServo();
-//        visualServo.start();
+        /*
 
         new Thread(() -> {
 
@@ -180,6 +179,7 @@ public class Robot extends TimedRobot {
 
             }
         }).start();
+        */
 
     }
 
@@ -318,6 +318,7 @@ public class Robot extends TimedRobot {
     @Override
     public void autonomousInit() {
 
+        // Disable compressor to prevent vibration error
         Superstructure.getInstance().disableCompressor();
 
         /* Start auto command */
@@ -360,6 +361,7 @@ public class Robot extends TimedRobot {
         endGameCommand = new BlinkLED();
         endGameCommand.start();
 
+        // Enable compressor
         Superstructure.getInstance().enableCompressor();
 
     }

@@ -3,6 +3,9 @@ package frc.team4159.robot.subsystems;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
+import static frc.team4159.robot.RobotMap.LED_BIG;
+import static frc.team4159.robot.RobotMap.LED_SMALL;
+
 public class LED extends Subsystem {
 
     private static LED instance;
@@ -17,8 +20,8 @@ public class LED extends Subsystem {
     private Solenoid bigRing;
 
     private LED() {
-        smallRing = new Solenoid(0);
-        bigRing = new Solenoid(4);
+        smallRing = new Solenoid(LED_SMALL);
+        bigRing = new Solenoid(LED_BIG);
     }
 
     public void enableLEDRings() {

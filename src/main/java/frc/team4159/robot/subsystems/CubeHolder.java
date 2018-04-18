@@ -213,6 +213,9 @@ public class CubeHolder extends Subsystem {
         return !limitSwitch.get();
     }
 
+    public int getLeftPosition() {
+        return liftTalon.getSelectedSensorPosition(0);
+    }
     /**
      * Log values to SmartDashboard
      */

@@ -22,11 +22,12 @@ public interface Constants {
     int UNITS_PER_REV = 4096;
 
     // Distance between wheels of two sides
-    double WHEELBASE_WIDTH = .6566535; // 25.8525 inches to meters.
+    // double WHEELBASE_WIDTH = .6566535; // 25.8525 inches to meters.
 
     // 4 inches to feet
     double WHEEL_DIAMETER = 4/12; // 0.1016
 
+    // Circumference = PI * diameter
     double WHEEL_CIRCUMFERANCE = WHEEL_DIAMETER * Math.PI;
 
     /*

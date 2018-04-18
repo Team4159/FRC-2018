@@ -10,7 +10,7 @@ package frc.team4159.robot;
 public interface RobotMap {
 
     /* COMPETITION BOT */
-    /*
+
     // CAN Talon SRX
     int LEFT_TALON = 7;
     int RIGHT_TALON = 9;
@@ -25,11 +25,13 @@ public interface RobotMap {
     int INTAKE_VICTOR = 0;
     int CLIMB_VICTOR = 1;
 
-    // Double Solenoid PCM IDs
-    int CLAW_FORWARD = 6;
-    int CLAW_REVERSE = 7;
+    // PCM IDs
+    int LED_SMALL = 1;
+    int LED_BIG = 2;
     int ANTENNA_FORWARD = 3;
     int ANTENNA_REVERSE = 4;
+    int CLAW_FORWARD = 6;
+    int CLAW_REVERSE = 7;
 
     // Digital Input ports
     int HALL_SENSOR = 0;
@@ -37,9 +39,9 @@ public interface RobotMap {
 
     // Pneumatics Control Module CAN ID
     int PCM = 0;
-    */
-    /* PRACTICE BOT */
 
+    /* PRACTICE BOT */
+    /*
     // CAN Talon SRX
     int LEFT_TALON = 6;
     int RIGHT_TALON = 1;
@@ -54,11 +56,13 @@ public interface RobotMap {
     int INTAKE_VICTOR = 0;
     int CLIMB_VICTOR = 1;
 
-    // Double Solenoid PCM IDs
+    // PCM IDs
+    int LED_SMALL = 1;
+    int LED_BIG = 2;
+    int ANTENNA_FORWARD = 3;
+    int ANTENNA_REVERSE = 4;
     int CLAW_FORWARD = 6;
     int CLAW_REVERSE = 7;
-    int ANTENNA_FORWARD = 1;
-    int ANTENNA_REVERSE = 2;
 
     // Digital Input ports
     int HALL_SENSOR = 0;
@@ -66,5 +70,6 @@ public interface RobotMap {
 
     // Pneumatics Control Module CAN ID
     int PCM = 0;
+    */
 
 }

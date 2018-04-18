@@ -29,6 +29,7 @@ public class OI {
     private JoystickButton base, midToRight, midToLeft;
 
     private OI() {
+
         leftJoy = new Joystick(LEFT_STICK);
         rightJoy = new Joystick(RIGHT_STICK);
         secondaryJoy = new Joystick(SECONDARY_STICK);
@@ -189,6 +190,7 @@ public class OI {
      * TEST JOYSTICK
      */
 
+    /*
     public boolean getAutoSelectionButton(){
         return testJoy.getRawButtonReleased(SELECTOR);
     }
@@ -196,5 +198,6 @@ public class OI {
     public boolean getAutoOptionButton(){
         return testJoy.getRawButtonReleased(OPTION);
     }
+    */
 
 }
