@@ -18,6 +18,7 @@ import frc.team4159.robot.commands.led.BlinkLED;
 import frc.team4159.robot.subsystems.Drivetrain;
 import frc.team4159.robot.subsystems.Superstructure;
 import frc.team4159.robot.util.AutoAction;
+import frc.team4159.robot.util.AutoSelector;
 import org.opencv.core.*;
 import org.opencv.imgproc.Imgproc;
 import org.opencv.imgproc.Moments;
@@ -46,14 +47,15 @@ public class Robot extends TimedRobot {
     public static Drivetrain drivetrain;
     public static Superstructure superstructure;
     public static OI oi;
+    public static AutoSelector autoSelector;
 
     /* Commands */
     private Command autoCommand;
     private Command endGameCommand;
 
     /* Auto choosers */
-    private SendableChooser<AutoAction> leftAutoAction;
-    private SendableChooser<AutoAction> rightAutoAction;
+//    private SendableChooser<AutoAction> leftAutoAction;
+//    private SendableChooser<AutoAction> rightAutoAction;
 
     private NetworkTableEntry ledModeEntry;
 
@@ -73,10 +75,12 @@ public class Robot extends TimedRobot {
          *  Initialize helper classes
          */
         oi = OI.getInstance();
+        autoSelector = AutoSelector.getInstance();
 
         /*
          * Put auto action choosers to SmartDashboard
          */
+        /*
         leftAutoAction = new SendableChooser<>();
         leftAutoAction.addDefault("Baseline", BASELINE);
         leftAutoAction.addObject("Baseline ONE", BASELINE_DROP);
@@ -92,6 +96,7 @@ public class Robot extends TimedRobot {
         rightAutoAction.addObject("Mid to Right ONE", MID_TO_RIGHT_ONE);
         SmartDashboard.putData("Right Auto Chooser", leftAutoAction);
         SmartDashboard.putString("Right Action: ", rightAutoAction.getName());
+        */
 
         /*
          * Start networktables for rPi to read
@@ -297,17 +302,17 @@ public class Robot extends TimedRobot {
     @Override
     public void disabledPeriodic() {
 
-        /*
-        if(oi.getAutoSelectionButton()) {
-            autoSelector.nextSelection();
+
+        if(oi.getLeftSelectionButton()) {
+            autoSelector.nextLeftSelection();
             printAutoOptions();
         }
 
-        if(oi.getAutoOptionButton()) {
-            autoSelector.nextOption();
+        if(oi.getRightSelectionButton()) {
+            autoSelector.nextRightSelection();
             printAutoOptions();
         }
-        */
+
 
         Scheduler.getInstance().run();
     }
@@ -390,15 +395,15 @@ public class Robot extends TimedRobot {
     /**
      * @return Auto action if left side is near switch
      */
-    public AutoAction getLeftAction() {
-        return leftAutoAction.getSelected();
+    public String getLeftAction() {
+        return autoSelector.getLeftAuto();
     }
 
     /**
      * @return Auto action if right side is near switch
      */
-    public AutoAction getRightAction() {
-        return rightAutoAction.getSelected();
+    public String getRightAction() {
+        return autoSelector.getRightAuto();
     }
 
     /*
@@ -406,15 +411,13 @@ public class Robot extends TimedRobot {
      * Currently unused.
      */
     private void printAutoOptions() {
-        /*
-        System.out.println("SELECTION: " + autoSelector.getSelection());
-        System.out.println("POSITION: " + autoSelector.getPosition());
-        System.out.println("LEFT ACTION: " + autoSelector.getLeftAction());
-        System.out.println("RIGHT ACTION: " + autoSelector.getRightAction());
+
+        System.out.println("LEFT ACTION: " + autoSelector.getLeftAuto());
+        System.out.println("RIGHT ACTION: " + autoSelector.getRightAuto());
         for(int i = 0; i < 20; i++) {
             System.out.println("\n");
         }
-        */
+
     }
 
 }

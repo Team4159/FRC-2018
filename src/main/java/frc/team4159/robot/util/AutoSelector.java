@@ -1,12 +1,5 @@
 package frc.team4159.robot.util;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
-/**
- *  Currently unused. Used throughout SVR 2018 to choose auto modes on a joystick and graphically view them on the
- *  DriverStation's console.
- */
 public class AutoSelector {
 
     private static AutoSelector instance;
@@ -17,88 +10,44 @@ public class AutoSelector {
         return instance;
     }
 
-    private ArrayList<String> selections, positionOptions, autoOptions;
-    private int selectionsIndex, positionIndex, leftIndex, rightIndex;
+    private String[] leftOptions, rightOptions;
+    private int leftIndex, rightIndex;
 
     private AutoSelector() {
-
-        selections = new ArrayList<>();
-        positionOptions = new ArrayList<>();
-        autoOptions = new ArrayList<>();
-
-        selections.addAll(Arrays.asList("POSITION", "LEFT ACTION", "RIGHT ACTION"));
-        positionOptions.addAll(Arrays.asList("BASELINE", "LEFT", "MIDDLE", "MID RIGHT", "RIGHT"));
-        autoOptions.addAll(Arrays.asList("BASE", "ONE", "TWO"));
-
-        selectionsIndex = positionIndex = leftIndex = rightIndex = 0;
-
+        leftOptions = new String[]{"BASELINE", "BASELINE_DROP", "MID_TO_LEFT", "MID_TO_RIGHT", "LEFT_TO_LEFT", "RIGHT_TO_RIGHT"};
+        rightOptions = new String[]{"BASELINE", "BASELINE_DROP", "MID_TO_LEFT", "MID_TO_RIGHT", "LEFT_TO_LEFT", "RIGHT_TO_RIGHT"};
+        leftIndex = rightIndex = 0;
     }
 
     /**
-     * Increment selectionsIndex. If greater or equal to selections ArrayList size, set index to 0
+     * Increments left index. If greater than or equal to left array length, set to 0
      */
-    public void nextSelection() {
-        selectionsIndex++;
-        if(selectionsIndex >= selections.size()) {
-            selectionsIndex = 0;
+    public void nextLeftSelection() {
+        leftIndex++;
+        if(leftIndex >= leftOptions.length) {
+            leftIndex = 0;
+        }
+    }
+
+    public void nextRightSelection() {
+        rightIndex++;
+        if(rightIndex >= rightOptions.length) {
+            rightIndex = 0;
         }
     }
 
     /**
-     * Increment option indexes for respective ArrayList based on which selection is selected
+     * @return Left auto action based on left index
      */
-    public void nextOption() {
-        switch (selections.get(selectionsIndex)) {
-            case "POSITION":
-                positionIndex++;
-                if (positionIndex >= positionOptions.size()) {
-                    positionIndex = 0;
-                }
-                break;
-
-            case "LEFT ACTION":
-                leftIndex++;
-                if (leftIndex >= autoOptions.size()) {
-                    leftIndex = 0;
-                }
-                break;
-
-            case "RIGHT ACTION":
-                rightIndex++;
-                if (rightIndex >= autoOptions.size()) {
-                    rightIndex = 0;
-                }
-                break;
-        }
-
+    public String getLeftAuto() {
+        return leftOptions[leftIndex];
     }
 
     /**
-     * @return Selection selected based on selection index
+     * @return Right auto action based on right index
      */
-    public String getSelection() {
-        return selections.get(selectionsIndex);
-    }
-
-    /**
-     * @return Position selected based on position index
-     */
-    public String getPosition() {
-        return positionOptions.get(positionIndex);
-    }
-
-    /**
-     * @return Left action selected based on left index
-     */
-    public String getLeftAction() {
-        return autoOptions.get(leftIndex);
-    }
-
-    /**
-     * @return Right action selected based on right index
-     */
-    public String getRightAction() {
-        return autoOptions.get(rightIndex);
+    public String getRightAuto() {
+        return rightOptions[rightIndex];
     }
 
 }
