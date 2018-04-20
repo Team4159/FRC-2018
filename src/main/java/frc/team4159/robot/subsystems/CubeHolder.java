@@ -199,14 +199,16 @@ public class CubeHolder extends Subsystem {
      * Set cube lifter to switch height
      */
     public void setToSwitch() {
-        targetPosition = SWITCH_HEIGHT;
+        //targetPosition = SWITCH_HEIGHT;
+        liftTalon.set(ControlMode.Position, SWITCH_HEIGHT);
     }
 
     /**
      * Set cube lifter to ground height
      */
     public void setToBottom() {
-        targetPosition = LOWER_LIFTER_LIMIT;
+        //targetPosition = LOWER_LIFTER_LIMIT;
+        liftTalon.set(ControlMode.Position, LOWER_LIFTER_LIMIT);
     }
 
     private boolean limitSwitchPressed() {
@@ -215,6 +217,12 @@ public class CubeHolder extends Subsystem {
 
     public int getLeftPosition() {
         return liftTalon.getSelectedSensorPosition(0);
+    }
+
+    public void update() {
+        if(limitSwitchPressed()) {
+            liftTalon.setSelectedSensorPosition(0, PIDIDX, 0);
+        }
     }
     /**
      * Log values to SmartDashboard
@@ -226,9 +234,9 @@ public class CubeHolder extends Subsystem {
         } else {
             SmartDashboard.putString("Lift mode", "PID");
         }
-//        SmartDashboard.putNumber("lift position", liftTalon.getSelectedSensorPosition(0));
-//        SmartDashboard.putNumber("lift target", targetPosition);
-//        SmartDashboard.putBoolean("Limit Switch", limitSwitchPressed());
+        SmartDashboard.putNumber("lift position", liftTalon.getSelectedSensorPosition(0));
+        //SmartDashboard.putNumber("lift target", targetPosition);
+        SmartDashboard.putBoolean("Limit Switch", limitSwitchPressed());
 
     }
 

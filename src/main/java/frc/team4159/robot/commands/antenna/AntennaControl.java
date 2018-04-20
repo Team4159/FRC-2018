@@ -27,7 +27,7 @@ public class AntennaControl extends Command {
 
         } else {
             int liftPosition = cubeHolder.getLeftPosition();
-            if(liftPosition > 1400 && liftPosition < 2800) {
+            if(liftPosition > 1300 && liftPosition < 2800) {
                 antenna.deployAntenna();
             } else {
                 antenna.retractAntenna();

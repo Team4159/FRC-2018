@@ -65,7 +65,7 @@ public class RunMotionProfile extends Command implements Runnable {
         left.configurePIDVA(0.0, 0.0, 0.0, kV, kA);
 
         right.configureEncoder(drivetrain.getRightEncoderPosition(), UNITS_PER_REV, WHEEL_DIAMETER);
-        right.configurePIDVA(0.0, 0.0, 0.0, kV, kA);
+        right.configurePIDVA(0.1, 0.0, 0.0, kV, kA);
 
         /*
          * Period of the loop. Consistent with the time step on motion profile csv

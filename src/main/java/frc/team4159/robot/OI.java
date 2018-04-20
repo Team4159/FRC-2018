@@ -190,14 +190,20 @@ public class OI {
      * TEST JOYSTICK
      */
 
-
-    public boolean getLeftSelectionButton(){
+    boolean getLeftSelectionButton(){
         return testJoy.getRawButtonReleased(SELECTOR);
     }
 
-    public boolean getRightSelectionButton(){
+    boolean getRightSelectionButton(){
         return testJoy.getRawButtonReleased(OPTION);
     }
 
+    boolean getTestTriggerPressed() {
+        return testJoy.getTriggerPressed();
+    }
+
+    boolean getTestTriggerReleased() {
+        return testJoy.getTriggerReleased();
+    }
 
 }

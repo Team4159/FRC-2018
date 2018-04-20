@@ -26,10 +26,10 @@ public interface RobotMap {
     int CLIMB_VICTOR = 1;
 
     // PCM IDs
-    int LED_SMALL = 1;
-    int LED_BIG = 2;
+    int LED_SMALL = 4;
+    int LED_BIG = 5;
     int ANTENNA_FORWARD = 3;
-    int ANTENNA_REVERSE = 4;
+    int ANTENNA_REVERSE = 2;
     int CLAW_FORWARD = 6;
     int CLAW_REVERSE = 7;
 

@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team4159.robot.commands.auto.Auto;
+import frc.team4159.robot.commands.auto.RecordDrivetrain;
 import frc.team4159.robot.commands.led.BlinkLED;
 import frc.team4159.robot.subsystems.Drivetrain;
 import frc.team4159.robot.subsystems.Superstructure;
@@ -47,11 +48,12 @@ public class Robot extends TimedRobot {
     public static Drivetrain drivetrain;
     public static Superstructure superstructure;
     public static OI oi;
-    public static AutoSelector autoSelector;
+    private static AutoSelector autoSelector;
 
     /* Commands */
     private Command autoCommand;
     private Command endGameCommand;
+    private Command recordCommand = new RecordDrivetrain();
 
     /* Auto choosers */
 //    private SendableChooser<AutoAction> leftAutoAction;
@@ -115,7 +117,7 @@ public class Robot extends TimedRobot {
          * Automatically stream driver camera and keep it open
          * View stream on http://roborio-4159-frc.local:1181
          */
-        UsbCamera driverCam = CameraServer.getInstance().startAutomaticCapture(0);
+        UsbCamera driverCam = CameraServer.getInstance().startAutomaticCapture();
         CvSink cvSink = new CvSink("driverCam");
         cvSink.setSource(driverCam);
         cvSink.setEnabled(true);
@@ -376,6 +378,15 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void teleopPeriodic() {
+
+        if(oi.getTestTriggerPressed()) {
+            recordCommand.start();
+        }
+
+        if(oi.getTestTriggerReleased()) {
+            recordCommand.cancel();
+        }
+
         Scheduler.getInstance().run();
     }
 

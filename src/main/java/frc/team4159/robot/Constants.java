@@ -33,7 +33,7 @@ public interface Constants {
     /*
      * Positions of the cube lifter in mag encoder units
      */
-    int UPPER_LIFTER_LIMIT = 2800;
+    int UPPER_LIFTER_LIMIT = 3000;
     int SWITCH_HEIGHT = 1800;
     int LOWER_LIFTER_LIMIT = 0;
 
