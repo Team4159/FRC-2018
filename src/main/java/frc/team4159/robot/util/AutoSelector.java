@@ -15,7 +15,7 @@ public class AutoSelector {
 
     private AutoSelector() {
         leftOptions = new String[]{"BASELINE", "BASELINE_DROP", "MID_TO_LEFT", "MID_TO_RIGHT", "LEFT_TO_LEFT", "RIGHT_TO_RIGHT"};
-        rightOptions = new String[]{"BASELINE", "BASELINE_DROP", "MID_TO_LEFT", "MID_TO_RIGHT", "LEFT_TO_LEFT", "RIGHT_TO_RIGHT"};
+        rightOptions = new String[]{ "BASELINE", "BASELINE_DROP", "MID_TO_LEFT", "MID_TO_RIGHT", "LEFT_TO_LEFT", "RIGHT_TO_RIGHT"};
         leftIndex = rightIndex = 0;
     }
 

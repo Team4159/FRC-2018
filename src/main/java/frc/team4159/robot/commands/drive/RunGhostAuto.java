@@ -1,60 +1,49 @@
 package frc.team4159.robot.commands.drive;
 
-import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team4159.robot.Robot;
 import frc.team4159.robot.subsystems.Drivetrain;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
+import java.util.Scanner;
 
-
-public class RunGhostAuto extends Command implements Runnable {
+public class RunGhostAuto extends Command {
 
     private Drivetrain drivetrain;
-    private Notifier notifier;
-    private String csvFile, line, csvSplitBy;
+    private Scanner scanner;
+
     private boolean running;
 
     public RunGhostAuto(String fileName) {
         drivetrain = Robot.getDrivetrain();
         requires(drivetrain);
-        csvFile = fileName;
-        line = "";
-        csvSplitBy = ",";
+        try {
+            String csv = SmartDashboard.getString("Record Name", "/home/lvuser/baseline.csv");
+            scanner = new Scanner(new File("home/lvuser/" + fileName));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        scanner.useDelimiter(",|\\n");
+
         running = true;
     }
 
     @Override
     protected void initialize() {
-        double period = 0.01;
-        notifier = new Notifier(this);
-        notifier.startPeriodic(period);
+        System.out.println("Ghost auto initialized.");
+
     }
 
     @Override
-    public void run() {
-
-        try (BufferedReader br = new BufferedReader(new FileReader(csvFile))) {
-
-            while ((line = br.readLine()) != null) {
-
-                // use comma as separator
-                String[] values = line.split(csvSplitBy);
-                double left = Double.parseDouble(values[0]);
-                double right = Double.parseDouble(values[1]);
-                drivetrain.setRawOutput(left, right);
-
-            }
-
-            running = false;
-
-        } catch (IOException e) {
-            e.printStackTrace();
+    protected void execute() {
+        if (scanner.hasNext()) {
+            double left = scanner.nextDouble();
+            double right = scanner.nextDouble();
+            drivetrain.setRawOutput(left, right);
+        } else {
             running = false;
         }
-
     }
 
     @Override
@@ -64,7 +53,7 @@ public class RunGhostAuto extends Command implements Runnable {
 
     @Override
     protected void end() {
-        notifier.stop();
+        System.out.println("Run ghost auto ended");
     }
 
     @Override

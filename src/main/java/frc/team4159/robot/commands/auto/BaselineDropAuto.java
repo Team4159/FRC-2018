@@ -20,7 +20,7 @@ class BaselineDropAuto extends CommandGroup {
         addSequential(new ResetLiftTopPosition());
         addSequential(new LiftUp());
         //addSequential(new RunMotionProfile(BASELINE_SHORT_L, BASELINE_SHORT_R));
-        addSequential(new TimeDrive());
+        addSequential(new TimeDrive(5));
         addSequential(new OuttakeWheels(3));
     }
 }

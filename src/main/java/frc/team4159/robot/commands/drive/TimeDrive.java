@@ -8,8 +8,8 @@ public class TimeDrive extends TimedCommand {
 
     private Drivetrain drivetrain;
 
-    public TimeDrive() {
-        super(8);
+    public TimeDrive(double time) {
+        super(time);
         requires(Robot.drivetrain);
         drivetrain = Robot.getDrivetrain();
     }
