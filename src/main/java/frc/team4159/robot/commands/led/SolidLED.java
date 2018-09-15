@@ -16,7 +16,6 @@ public class SolidLED extends TimedCommand {
 
     @Override
     protected void initialize() {
-        Robot.getDrivetrain().disableReverse();
         led.enableLEDRings();
     }
 

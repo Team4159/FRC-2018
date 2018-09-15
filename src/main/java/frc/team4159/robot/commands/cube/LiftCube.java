@@ -46,36 +46,15 @@ public class LiftCube extends Command {
             cubeHolder.close();
         }
 
-        if (oi.setSwitchHeight())
+        /* Automated arm movement */
+        if (oi.setSwitchHeight()) {
             cubeHolder.setToSwitch();
-
-        else if(oi.setLiftTargetZero())
+        } else if(oi.setLiftTargetZero())  {
             cubeHolder.setToBottom();
-
-        /*
-         * Use secondary y-axis to control lifter if not used to control climbing
-         */
-        if(!oi.climbEnable()) {
-
-//            if (!cubeHolder.getRawMode()) {
-//                if (oi.setSwitchHeight())
-//                    cubeHolder.setToSwitch();
-//
-//                else if(oi.setLiftTargetZero())
-//                    cubeHolder.setToBottom();
-//
-//                else if (Math.abs(oi.getSecondaryY()) > 0.1)
-//                    cubeHolder.updatePosition(oi.getSecondaryY());
-//
-//                cubeHolder.move();
-//
-//            } else {
-
-                cubeHolder.setRawLift(oi.getSecondaryY());
-                cubeHolder.update();
-
-//            }
         }
+
+        cubeHolder.setRawLift(oi.getSecondaryY());
+        cubeHolder.update();
 
         if(Robot.oi.toggleLifterRawMode()){
             cubeHolder.toggleLifterRawMode();

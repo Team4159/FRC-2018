@@ -24,25 +24,6 @@ public class Drive extends Command{
     @Override
     protected void execute() {
 
-        if(oi.reverseControls() && DriverStation.getInstance().isEnabled()) {
-            drivetrain.reverseControls();
-        }
-
-        /*
-        if(Robot.oi.left90Button()) {
-            drivetrain.turnToAngle(-90.0f);
-
-        } else if(Robot.oi.right90Button()) {
-            drivetrain.turnToAngle(90.0f);
-
-        } else if(Robot.oi.front0Button()) {
-            drivetrain.turnToAngle(0.0f);
-
-        } else if(Robot.oi.back180Button()) {
-            drivetrain.turnToAngle(180.0f);
-        }
-        */
-
         if(oi.driveStraightButton()) {
             // Take average of both joysticks
             double magnitude = (oi.getLeftY() + oi.getRightY()) / 2;

@@ -2,7 +2,6 @@ package frc.team4159.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
-import frc.team4159.robot.commands.drive.RunGhostAuto;
 import frc.team4159.robot.commands.drive.RunMotionProfile;
 
 import static frc.team4159.robot.ControlMap.*;
@@ -27,7 +26,7 @@ public class OI {
      *  Logitech Attack 3 joysticks, plugged in via USB to the driver station laptop
      */
     private Joystick leftJoy, rightJoy, secondaryJoy, testJoy;
-    private JoystickButton base, midToRight, midToLeft, ghostAuto;
+    private JoystickButton base, midToRight, midToLeft;
 
     private OI() {
 
@@ -39,12 +38,10 @@ public class OI {
         base = new JoystickButton(testJoy, 3);
         midToLeft = new JoystickButton(testJoy, 4);
         midToRight = new JoystickButton(testJoy, 5);
-        ghostAuto = new JoystickButton(testJoy, 2);
 
         base.whenReleased(new RunMotionProfile(BASELINE_L, BASELINE_R));
         midToLeft.whenReleased(new RunMotionProfile(MID_TO_LEFT_L, MID_TO_LEFT_R));
         midToRight.whenReleased(new RunMotionProfile(MID_TO_RIGHT_L, MID_TO_RIGHT_R));
-        ghostAuto.whenReleased(new RunGhostAuto("baseline.csv"));
 
     }
 
@@ -83,26 +80,6 @@ public class OI {
         return value;
     }
 
-
-    /*
-
-    public boolean left90Button() {
-        return rightJoy.getRawButton(LEFT_90);
-    }
-
-    public boolean right90Button() {
-        return rightJoy.getRawButton(RIGHT_90);
-    }
-
-    public boolean front0Button() {
-        return rightJoy.getRawButton(FRONT_0);
-    }
-
-    public boolean back180Button() {
-        return rightJoy.getRawButton(BACK_180);
-    }
-
-    */
 
     /**
      * @return True if right trigger held.

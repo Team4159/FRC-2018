@@ -33,7 +33,6 @@ public class Drivetrain extends Subsystem implements PIDOutput {
     private AHRS navx;
 
     private PIDController turnController;
-    private double angleSetpoint = 0;
 
     /* Drivetrain encoder PID constants */
     private final int MAX_SPEED = 5200; // Native units per 100ms
@@ -179,20 +178,6 @@ public class Drivetrain extends Subsystem implements PIDOutput {
     }
 
     /**
-     * Turn to field oriented angle
-     * @param angle Robot heading relative to when robot first powered on
-     */
-    public void turnToAngle(double angle) {
-        if(!turnController.isEnabled()) {
-            turnController.setSetpoint(angle);
-            angleSetpoint = angle;
-            rotateToAngleRate = 0;
-            turnController.enable();
-        }
-        setRawOutput(-rotateToAngleRate, rotateToAngleRate);
-    }
-
-    /**
      *  Drive straight in current heading
      *  @param magnitude Speed percentage between -1 to 1
      */
@@ -226,32 +211,6 @@ public class Drivetrain extends Subsystem implements PIDOutput {
     public void stop() {
         leftTalon.set(ControlMode.PercentOutput, 0);
         rightTalon.set(ControlMode.PercentOutput, 0);
-    }
-
-    /**
-     *  Set left and right motors to a target velocity
-     *  @param leftPercent Between -1 to 1
-     *  @param rightPercent Between -1 to 1
-     */
-    public void setVelocity(double leftPercent, double rightPercent) {
-        double leftTarget = leftPercent * MAX_SPEED;
-        double rightTarget = rightPercent * MAX_SPEED;
-        leftTalon.set(ControlMode.Velocity, leftTarget);
-        rightTalon.set(ControlMode.Velocity, rightTarget);
-    }
-
-    /**
-     * Drive a certain amount of distance using Talon's Motion Magic control mode
-     * @param leftDistance distance for left side to travel in feet
-     * @param rightDistance distance for right side to travel in feet
-     */
-    public void driveDistance(double leftDistance, double rightDistance) {
-
-        double leftTarget = (UNITS_PER_REV * leftDistance) / WHEEL_CIRCUMFERANCE;
-        double rightTarget = (UNITS_PER_REV * rightDistance) / WHEEL_CIRCUMFERANCE;
-
-        leftTalon.set(ControlMode.MotionMagic, leftTarget);
-        rightTalon.set(ControlMode.MotionMagic, rightTarget);
     }
 
     /**
