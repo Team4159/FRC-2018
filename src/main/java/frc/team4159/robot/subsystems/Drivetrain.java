@@ -48,9 +48,6 @@ public class Drivetrain extends Subsystem implements PIDOutput {
     private final double kI_right = 0.0;
     private final double kD_right = 0.0;
 
-    /* Stores state if controls should be reversed or not */
-    private boolean reverse;
-
     /* NavX turning PID constants */
     private final double kP_turn = 5 * 0.01;
     private final double kI_turn = 0;
@@ -82,8 +79,6 @@ public class Drivetrain extends Subsystem implements PIDOutput {
         } catch (RuntimeException ex) {
             DriverStation.reportError("Error instantiating navX-MXP:  " + ex.getMessage(), true);
         }
-
-        reverse = false;
 
         limitCurrent();
         configureSensors();
@@ -173,38 +168,14 @@ public class Drivetrain extends Subsystem implements PIDOutput {
     }
 
     /**
-     * @param leftPercent Between -1 to 1
+     * @param leftPercent  Between -1 to 1
      * @param rightPercent Between -1 to 1
      */
     public void setRawOutput(double leftPercent, double rightPercent){
 
-        if(reverse) {
-            leftTalon.set(ControlMode.PercentOutput, -rightPercent);
-            rightTalon.set(ControlMode.PercentOutput, -leftPercent);
-        } else {
-            leftTalon.set(ControlMode.PercentOutput, leftPercent);
-            rightTalon.set(ControlMode.PercentOutput, rightPercent);
-        }
+        leftTalon.set(ControlMode.PercentOutput, leftPercent);
+        rightTalon.set(ControlMode.PercentOutput, rightPercent);
 
-    }
-
-    /**
-     *  Change state of reversed controls
-     */
-    public void reverseControls() {
-        if(reverse) {
-            disableReverse();
-        } else {
-            enableReverse();
-        }
-    }
-
-    private void enableReverse() {
-        reverse = true;
-    }
-
-    public void disableReverse() {
-        reverse = false;
     }
 
     /**

@@ -17,7 +17,6 @@ public class Superstructure {
         return instance;
     }
 
-    private static Climber climber;
     private static CubeHolder cubeHolder;
     public static LED led;
     private static Antenna antenna;
@@ -25,7 +24,6 @@ public class Superstructure {
 
     private Superstructure() {
 
-        climber = Climber.getInstance();
         cubeHolder = CubeHolder.getInstance();
         led = LED.getInstance();
         antenna = Antenna.getInstance();
@@ -33,13 +31,6 @@ public class Superstructure {
         compressor = new Compressor(PCM);
         compressor.start();
 
-    }
-
-    /**
-     * @return Climber Subsystem
-     */
-    public Climber getClimber() {
-        return climber;
     }
 
     /**

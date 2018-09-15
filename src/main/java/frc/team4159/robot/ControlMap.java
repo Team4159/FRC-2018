@@ -21,13 +21,6 @@ public interface ControlMap {
     int BACK_180 = 2;
     */
 
-    int REVERSE_CONTROLS = 2;
-
-    /* Climber Buttons */
-    int CLIMB_ENABLE = 7;
-    int WINCH = 6;
-    int TOGGLE_RAW_CLIMB = 8;
-
     /* Intake Buttons */
     int INTAKE = 2;
     int OUTTAKE = 3;

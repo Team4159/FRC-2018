@@ -58,6 +58,7 @@ public class OI {
 
     public double getLeftY() {
         double leftY = leftJoy.getY();
+        leftY = compensateDeadband(leftY);
         return -Math.copySign(Math.pow(leftY, 2), leftY);
     }
 
@@ -77,12 +78,11 @@ public class OI {
         return Math.copySign(Math.pow(secondaryY, 2), secondaryY);
     }
 
-    /**
-     * @return True if reverse button pressed.
-     */
-	public boolean reverseControls() {
-        return (leftJoy.getRawButtonPressed(REVERSE_CONTROLS));
+    /* Do something */
+    private double compensateDeadband(double value) {
+        return value;
     }
+
 
     /*
 
@@ -162,31 +162,6 @@ public class OI {
      */
     public boolean resetLiftEncoder(){
         return secondaryJoy.getRawButtonPressed(RESET_LIFT_ENCODER);
-    }
-
-    /*
-     * CLIMBER CONTROLS
-     */
-
-    /**
-     * @return True if set enable climb button held
-     */
-    public boolean climbEnable() {
-        return secondaryJoy.getRawButton(CLIMB_ENABLE);
-    }
-
-    /**
-     * @return True if winch button held
-     */
-    public boolean climbWinch() {
-        return secondaryJoy.getRawButton(WINCH);
-    }
-
-    /**
-     * @return True if set toggle raw climb button pressed
-     */
-    public boolean toggleRawClimb() {
-        return secondaryJoy.getRawButtonPressed(TOGGLE_RAW_CLIMB);
     }
 
     /*

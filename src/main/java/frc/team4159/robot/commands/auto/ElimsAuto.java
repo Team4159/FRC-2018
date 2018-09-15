@@ -7,7 +7,7 @@ import openrio.powerup.MatchData;
 /**
  * Unused. Kept for historic purposes.
  * We used this in SVR 2018 elimination rounds for simple auto logic that would never go wrong ;)
- * Finalists!!! With Spartan Robotics and Funky Monkeys
+ * Finalists!!! With Spartan Robotics (971) and Funky Monkeys
  */
 
 public class ElimsAuto extends TimedCommand {

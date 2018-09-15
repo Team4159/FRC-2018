@@ -81,7 +81,7 @@ public class RunMotionProfile extends Command implements Runnable {
     }
 
     /**
-     * Loops in separate thread
+     * Loops in separate thread running at constant rate
      */
     @Override
     public void run() {
@@ -119,7 +119,7 @@ public class RunMotionProfile extends Command implements Runnable {
     }
 
     /**
-     * Calls end()
+     * Calls end() if interrupted by another command
      */
     @Override
     protected void interrupted() {

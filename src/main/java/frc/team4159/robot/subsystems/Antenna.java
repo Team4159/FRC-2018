@@ -49,9 +49,6 @@ public class Antenna extends Subsystem {
         return rawMode;
     }
 
-    /**
-     * Intentionally left blank
-     */
     public void initDefaultCommand() {
         setDefaultCommand(new AntennaControl());
     }
