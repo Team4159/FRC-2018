@@ -11,7 +11,6 @@ import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team4159.robot.commands.drive.Drive;
 
 import static frc.team4159.robot.Constants.*;
@@ -64,12 +63,16 @@ public class Drivetrain extends Subsystem implements PIDOutput {
         leftVictor = new VictorSPX(LEFT_DRIVE_VICTOR);
         leftTalon.setInverted(true);
         leftVictor.setInverted(true);
+        leftTalon.setNeutralMode(NeutralMode.Brake);
+        leftVictor.setNeutralMode(NeutralMode.Brake);
         leftVictor.follow(leftTalon);
 
         rightTalon = new TalonSRX(RIGHT_TALON);
         rightVictor = new VictorSPX(RIGHT_DRIVE_VICTOR);
         rightTalon.setInverted(false);
         rightVictor.setInverted(false);
+        rightTalon.setNeutralMode(NeutralMode.Brake);
+        rightVictor.setNeutralMode(NeutralMode.Brake);
         rightVictor.follow(rightTalon);
 
         /* NavX is a 9-axis inertial/magnetic sensor and motion processor, plugged into the RoboRio's MXP port */
@@ -117,31 +120,6 @@ public class Drivetrain extends Subsystem implements PIDOutput {
         rightTalon.enableVoltageCompensation(true);
 
         // TODO: Retune PIDF values for both sides of drivetrain
-
-        /*
-         * Set PIDF values for left and right talons
-         */
-        leftTalon.config_kF(SLOTIDX, kF_left, TIMEOUT_MS);
-        leftTalon.config_kP(SLOTIDX, kP_left, TIMEOUT_MS);
-        leftTalon.config_kI(SLOTIDX, kI_left, TIMEOUT_MS);
-        leftTalon.config_kD(SLOTIDX, kD_left, TIMEOUT_MS);
-
-        rightTalon.config_kF(SLOTIDX, kF_right, TIMEOUT_MS);
-        rightTalon.config_kP(SLOTIDX, kP_right, TIMEOUT_MS);
-        rightTalon.config_kI(SLOTIDX, kI_right, TIMEOUT_MS);
-        rightTalon.config_kD(SLOTIDX, kD_right, TIMEOUT_MS);
-
-        /*
-         * Set max acceleration and velocity (in raw sensor units) for motion magic
-         */
-        // TODO: figure out the correct cruise velocity and acceleration
-        final int CRUISE_ACCEL = 2000;
-        final int CRUISE_VELOCITY = 3860;
-
-        leftTalon.configMotionAcceleration(CRUISE_ACCEL, TIMEOUT_MS);
-        leftTalon.configMotionCruiseVelocity(CRUISE_VELOCITY, TIMEOUT_MS);
-        rightTalon.configMotionAcceleration(CRUISE_ACCEL, TIMEOUT_MS);
-        rightTalon.configMotionCruiseVelocity(CRUISE_VELOCITY, TIMEOUT_MS);
 
         /*
          * Configure turning PIDController. Set PIDF, input and output range, error tolerance, and continuity
@@ -211,13 +189,6 @@ public class Drivetrain extends Subsystem implements PIDOutput {
     public void stop() {
         leftTalon.set(ControlMode.PercentOutput, 0);
         rightTalon.set(ControlMode.PercentOutput, 0);
-    }
-
-    /**
-     * @return True if motion magic trajectory is complete, meaning the velocity profile is 0
-     */
-    public boolean motionMagicFinished() {
-        return leftTalon.getActiveTrajectoryVelocity() == 0 && rightTalon.getActiveTrajectoryVelocity() == 0;
     }
 
     /**
