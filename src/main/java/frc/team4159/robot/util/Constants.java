@@ -67,4 +67,27 @@ public class Constants {
         }
     }
 
+    public String getString(String key) {
+
+        try {
+            input = new FileInputStream("/home/lvuser/config.properties");
+            prop.load(input);
+            return prop.getProperty(key);
+
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            return "";
+
+        } finally {
+            if (input != null) {
+                try {
+                    input.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+
 }
