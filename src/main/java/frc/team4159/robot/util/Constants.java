@@ -26,7 +26,6 @@ public class Constants {
     public int getInt(String key) {
 
         try {
-
             input = new FileInputStream("/home/lvuser/config.properties");
             prop.load(input);
             return Integer.parseInt(prop.getProperty(key));

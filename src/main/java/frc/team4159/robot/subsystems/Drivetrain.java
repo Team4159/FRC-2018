@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team4159.robot.commands.drive.Drive;
 
 import static frc.team4159.robot.Constants.*;
@@ -223,11 +224,8 @@ public class Drivetrain extends Subsystem implements PIDOutput {
      * Log drivetrain variables to SmartDashboard
      */
     public void logDashboard() {
-        /*
+
         SmartDashboard.putNumber("Current Angle", navx.getYaw());
-        SmartDashboard.putNumber("Angle Error",turnController.getError());
-        SmartDashboard.putNumber("Setpoint Angle", angleSetpoint);
-        */
     }
 
     /**

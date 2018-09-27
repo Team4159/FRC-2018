@@ -3,6 +3,7 @@ package frc.team4159.robot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.team4159.robot.commands.drive.RunMotionProfile;
+import frc.team4159.robot.commands.auto.*;
 
 import static frc.team4159.robot.ControlMap.*;
 import static frc.team4159.robot.util.TrajectoryCSV.*;
@@ -151,14 +152,6 @@ public class OI {
 
     boolean getRightSelectionButton(){
         return testJoy.getRawButtonReleased(OPTION);
-    }
-
-    boolean getTestTriggerPressed() {
-        return testJoy.getTriggerPressed();
-    }
-
-    boolean getTestTriggerReleased() {
-        return testJoy.getTriggerReleased();
     }
 
 }

@@ -19,14 +19,12 @@ public class Superstructure {
 
     private static CubeHolder cubeHolder;
     public static LED led;
-    private static Antenna antenna;
     private static Compressor compressor;
 
     private Superstructure() {
 
         cubeHolder = CubeHolder.getInstance();
         led = LED.getInstance();
-        antenna = Antenna.getInstance();
 
         compressor = new Compressor(PCM);
         compressor.start();
@@ -45,10 +43,6 @@ public class Superstructure {
      */
     public LED getLED() {
         return led;
-    }
-
-    public Antenna getAntenna() {
-        return antenna;
     }
 
     public void disableCompressor() {

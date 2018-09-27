@@ -11,8 +11,6 @@ import jaci.pathfinder.Pathfinder;
 import jaci.pathfinder.Trajectory;
 import jaci.pathfinder.followers.EncoderFollower;
 
-// TODO: Test Notifier and change time step on paths to 0.01
-
 public class RunMotionProfile extends Command implements Runnable {
 
     private Notifier notifier;
@@ -49,6 +47,8 @@ public class RunMotionProfile extends Command implements Runnable {
         int UNITS_PER_REV = constants.getInt("unitsPerRev");
         double WHEEL_DIAMETER = constants.getDouble("wheelDiameter");
 
+        System.out.println(MAX_VELOCITY);
+
         drivetrain.zeroNavX();
 
         File left_csv_trajectory  = new File(leftCSV);
@@ -64,7 +64,7 @@ public class RunMotionProfile extends Command implements Runnable {
         left.configurePIDVA(0.0, 0.0, 0.0, kV, kA);
 
         right.configureEncoder(drivetrain.getRightEncoderPosition(), UNITS_PER_REV, WHEEL_DIAMETER);
-        right.configurePIDVA(0.1, 0.0, 0.0, kV, kA);
+        right.configurePIDVA(0.0, 0.0, 0.0, kV, kA);
 
         /*
          * Period of the loop. Consistent with the time step on motion profile csv
@@ -96,7 +96,7 @@ public class RunMotionProfile extends Command implements Runnable {
         double turn = kG * angleDifference;
 
         drivetrain.setRawOutput(l + turn, r - turn);
-        //drivetrain.logDashboard();
+        drivetrain.logDashboard();
 
     }
 

@@ -5,16 +5,21 @@ import frc.team4159.robot.commands.cube.LiftUp;
 import frc.team4159.robot.commands.cube.OuttakeWheels;
 import frc.team4159.robot.commands.cube.ResetLiftTopPosition;
 import frc.team4159.robot.commands.cube.RunLift;
+import frc.team4159.robot.commands.drive.RunMotionProfile;
+import frc.team4159.robot.commands.drive.RunMotionProfileReverse;
 import frc.team4159.robot.commands.led.SolidLED;
 
-class MiddleRightAuto extends CommandGroup {
+import static frc.team4159.robot.util.TrajectoryCSV.MID_TO_RIGHT_L;
+import static frc.team4159.robot.util.TrajectoryCSV.MID_TO_RIGHT_R;
 
-    MiddleRightAuto() {
+public class MiddleRightAuto extends CommandGroup {
+
+    public MiddleRightAuto() {
         addParallel(new SolidLED());
         addParallel(new RunLift());
         addSequential(new ResetLiftTopPosition());
         addSequential(new LiftUp());
-//        addSequential(new RunGhostAuto("midRight.csv"));
+        addSequential(new RunMotionProfile(MID_TO_RIGHT_L, MID_TO_RIGHT_R));
         addSequential(new OuttakeWheels(1));
     }
 }
