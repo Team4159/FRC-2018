@@ -154,4 +154,12 @@ public class OI {
         return testJoy.getRawButtonReleased(OPTION);
     }
 
+    boolean getTestTriggerPressed() {
+        return testJoy.getTriggerPressed();
+    }
+
+    boolean getTestTriggerReleased() {
+        return testJoy.getTriggerReleased();
+    }
+
 }

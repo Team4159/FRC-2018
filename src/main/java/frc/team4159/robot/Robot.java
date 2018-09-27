@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team4159.robot.commands.auto.Auto;
+import frc.team4159.robot.commands.drive.RecordDrivetrain;
 import frc.team4159.robot.commands.led.BlinkLED;
 import frc.team4159.robot.subsystems.Drivetrain;
 import frc.team4159.robot.subsystems.Superstructure;
@@ -37,6 +38,8 @@ public class Robot extends TimedRobot {
     public static Superstructure superstructure;
     public static OI oi;
     private static AutoSelector autoSelector;
+
+    private Command recordCommand = new RecordDrivetrain();
 
     /* Commands */
     private Command autoCommand;
@@ -205,6 +208,15 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void teleopPeriodic() {
+
+        if(oi.getTestTriggerPressed()) {
+            recordCommand.start();
+        }
+
+        if(oi.getTestTriggerReleased()) {
+            recordCommand.cancel();
+        }
+
         Scheduler.getInstance().run();
     }
 
