@@ -14,18 +14,23 @@ public class RunGhostAuto extends Command implements Runnable {
     private Scanner scanner;
     private Notifier notifier;
 
-    private String fileName;
+    private String file;
     private boolean running;
 
     public RunGhostAuto(String fileName) {
 
+        file = fileName;
+
         drivetrain = Robot.getDrivetrain();
         requires(drivetrain);
 
-        fileName = this.fileName;
+    }
+
+    @Override
+    protected void initialize() {
 
         try {
-            scanner = new Scanner(new File("/home/lvuser/ghost/" + fileName));
+            scanner = new Scanner(new File("/home/lvuser/ghost/" + file));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -33,14 +38,11 @@ public class RunGhostAuto extends Command implements Runnable {
         scanner.useDelimiter(",|\\n");
 
         running = true;
-    }
 
-    @Override
-    protected void initialize() {
+        System.out.println("Ghost init: " + file);
 
         notifier = new Notifier(this);
-        notifier.startPeriodic(0.05);
-        System.out.println("Ghost init: " + fileName);
+        notifier.startPeriodic(0.01);
 
     }
 
@@ -51,6 +53,8 @@ public class RunGhostAuto extends Command implements Runnable {
             double left = scanner.nextDouble();
             double right = scanner.nextDouble();
             drivetrain.setRawOutput(left, right);
+            System.out.println("Running: " + left + "," + right);
+
         } else {
             running = false;
         }
@@ -64,7 +68,8 @@ public class RunGhostAuto extends Command implements Runnable {
 
     @Override
     protected void end() {
-        System.out.println("Ghost " + fileName + " ended.");
+        notifier.stop();
+        System.out.println("Ghost " + file + " ended.");
     }
 
     @Override

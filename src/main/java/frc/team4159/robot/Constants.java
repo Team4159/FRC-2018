@@ -6,8 +6,9 @@ package frc.team4159.robot;
 
 public interface Constants {
 
-    // Timeout value in ms. If nonzero, function will wait for config success and report an error if it times out. If zero, no blocking or checking is performed.
-    int TIMEOUT_MS = 1;
+    // Function will wait for config success and report an error if it times out
+    int S_TIMEOUT = 10;  // on the fly
+    int L_TIMEOUT = 100; // in constructors
 
     // Nominal (minimal) percent output
     int NOMINAL_OUT_PERCENT = 0;
@@ -15,8 +16,8 @@ public interface Constants {
     // Desired peak output percentage
     int PEAK_OUT_PERCENT = 1;
 
-    // Max voltage applied to motor controllers
-    double MAX_VOLTAGE = 12.0;
+    // Max voltage applied to motor controllers. Lower than 12V to compensate for battery drop.
+    double MAX_VOLTAGE = 10.0;
 
     // For SRX mag encoder. AKA ticks per revolution or pulses per revolution
     int UNITS_PER_REV = 4096;

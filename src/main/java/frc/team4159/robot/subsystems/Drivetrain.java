@@ -97,27 +97,27 @@ public class Drivetrain extends Subsystem implements PIDOutput {
          * Configure peak and nominal outputs, set feedback sensor (mag encoder), and sensor direction
          */
 
-        leftTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, PIDIDX, TIMEOUT_MS);
+        leftTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, PIDIDX, L_TIMEOUT);
         leftTalon.setSensorPhase(false);
 
-        leftTalon.configNominalOutputForward(NOMINAL_OUT_PERCENT, TIMEOUT_MS);
-        leftTalon.configNominalOutputReverse(NOMINAL_OUT_PERCENT, TIMEOUT_MS);
-        leftTalon.configPeakOutputForward(PEAK_OUT_PERCENT, TIMEOUT_MS);
-        leftTalon.configPeakOutputReverse(-PEAK_OUT_PERCENT, TIMEOUT_MS);
+        leftTalon.configNominalOutputForward(NOMINAL_OUT_PERCENT, L_TIMEOUT);
+        leftTalon.configNominalOutputReverse(NOMINAL_OUT_PERCENT, L_TIMEOUT);
+        leftTalon.configPeakOutputForward(PEAK_OUT_PERCENT, L_TIMEOUT);
+        leftTalon.configPeakOutputReverse(-PEAK_OUT_PERCENT, L_TIMEOUT);
 
-        leftTalon.configVoltageCompSaturation(MAX_VOLTAGE, TIMEOUT_MS);
+        leftTalon.configVoltageCompSaturation(MAX_VOLTAGE, L_TIMEOUT);
         leftTalon.enableVoltageCompensation(true);
 
-        rightTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, PIDIDX, TIMEOUT_MS);
+        rightTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, PIDIDX, L_TIMEOUT);
         rightTalon.setSensorPhase(true); // Reverses encoder direction to match with motor direction
 
-        rightTalon.configNominalOutputForward(NOMINAL_OUT_PERCENT, TIMEOUT_MS);
-        rightTalon.configNominalOutputReverse(NOMINAL_OUT_PERCENT, TIMEOUT_MS);
-        rightTalon.configPeakOutputForward(PEAK_OUT_PERCENT, TIMEOUT_MS);
-        rightTalon.configPeakOutputReverse(-PEAK_OUT_PERCENT, TIMEOUT_MS);
+        rightTalon.configNominalOutputForward(NOMINAL_OUT_PERCENT, L_TIMEOUT);
+        rightTalon.configNominalOutputReverse(NOMINAL_OUT_PERCENT, L_TIMEOUT);
+        rightTalon.configPeakOutputForward(PEAK_OUT_PERCENT, L_TIMEOUT);
+        rightTalon.configPeakOutputReverse(-PEAK_OUT_PERCENT, L_TIMEOUT);
 
         /* Ensures voltage output is always between 0 to 12 volts */
-        rightTalon.configVoltageCompSaturation(MAX_VOLTAGE, TIMEOUT_MS);
+        rightTalon.configVoltageCompSaturation(MAX_VOLTAGE, L_TIMEOUT);
         rightTalon.enableVoltageCompensation(true);
 
         // TODO: Retune PIDF values for both sides of drivetrain
@@ -139,8 +139,8 @@ public class Drivetrain extends Subsystem implements PIDOutput {
         /*
          * Zero encoders and navX. Probably not be necessary but just in case.
          */
-        leftTalon.setSelectedSensorPosition(0, PIDIDX, TIMEOUT_MS);
-        rightTalon.setSelectedSensorPosition(0, PIDIDX, TIMEOUT_MS);
+        leftTalon.setSelectedSensorPosition(0, PIDIDX, L_TIMEOUT);
+        rightTalon.setSelectedSensorPosition(0, PIDIDX, L_TIMEOUT);
         zeroNavX();
 
     }
@@ -238,14 +238,14 @@ public class Drivetrain extends Subsystem implements PIDOutput {
         final int PEAK_CURRENT_DURATION = 200; // ms
         final int PEAK_CURRENT_TIMEOUT = 20; // ms
 
-        leftTalon.configPeakCurrentLimit(PEAK_CURRENT,TIMEOUT_MS);
+        leftTalon.configPeakCurrentLimit(PEAK_CURRENT,L_TIMEOUT);
         leftTalon.configPeakCurrentDuration(PEAK_CURRENT_DURATION, PEAK_CURRENT_TIMEOUT);
-        leftTalon.configContinuousCurrentLimit(CONTINUOUS_CURRENT, TIMEOUT_MS);
+        leftTalon.configContinuousCurrentLimit(CONTINUOUS_CURRENT, L_TIMEOUT);
         leftTalon.enableCurrentLimit(true);
 
-        rightTalon.configPeakCurrentLimit(PEAK_CURRENT,TIMEOUT_MS);
+        rightTalon.configPeakCurrentLimit(PEAK_CURRENT,L_TIMEOUT);
         rightTalon.configPeakCurrentDuration(PEAK_CURRENT_DURATION, PEAK_CURRENT_TIMEOUT);
-        rightTalon.configContinuousCurrentLimit(CONTINUOUS_CURRENT, TIMEOUT_MS);
+        rightTalon.configContinuousCurrentLimit(CONTINUOUS_CURRENT, L_TIMEOUT);
         rightTalon.enableCurrentLimit(true);
 
     }

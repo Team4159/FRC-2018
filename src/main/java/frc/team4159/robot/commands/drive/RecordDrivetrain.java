@@ -20,25 +20,23 @@ public class RecordDrivetrain extends Command implements Runnable {
     private OI oi;
     private List<String> lines;
 
-    private String fileName;
-
     @Override
     protected void initialize() {
 
         constants = Constants.getInstance();
-        fileName = constants.getString("ghostFile");
         oi = OI.getInstance();
         lines = new ArrayList<>();
-        notifier = new Notifier(this);
-        notifier.startPeriodic(0.05);
 
-        System.out.println("Recording init: ");
+        System.out.println("Recording init: " + constants.getString("ghostFile"));
+
+        notifier = new Notifier(this);
+        notifier.startPeriodic(0.01);
 
     }
 
     @Override
     public void run() {
-        String left  = String.valueOf(oi.getLeftY());
+        String left   = String.valueOf(oi.getLeftY());
         String right  = String.valueOf(oi.getRightY());
         lines.add(left + "," + right);
         System.out.println("Recorded: " + left + ", " + right);
@@ -52,8 +50,11 @@ public class RecordDrivetrain extends Command implements Runnable {
     @Override
     protected void end() {
 
-        String fileName = "/home/lvuser/ghost/" + constants.getString("ghostFileName");
+        notifier.stop();
+
+        String fileName = "/home/lvuser/ghost/" + constants.getString("ghostFile");
         Path file = Paths.get(fileName);
+
         try {
             Files.write(file, lines, Charset.forName("UTF-8"));
             System.out.println("Recording ended. Saved at " + fileName);

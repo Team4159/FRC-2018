@@ -54,30 +54,30 @@ public class CubeHolder extends Subsystem {
     }
 
     public void setLiftEncoderValue(int value) {
-        liftTalon.setSelectedSensorPosition(value, PIDIDX, TIMEOUT_MS);
+        liftTalon.setSelectedSensorPosition(value, PIDIDX, S_TIMEOUT);
     }
 
     private void configureSensors() {
 
         final int SLOTIDX = 0;
 
-        liftTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, PIDIDX, TIMEOUT_MS);
+        liftTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, PIDIDX, L_TIMEOUT);
         liftTalon.setSensorPhase(false);
-        liftTalon.configNominalOutputForward(NOMINAL_OUT_PERCENT, TIMEOUT_MS);
-        liftTalon.configNominalOutputReverse(NOMINAL_OUT_PERCENT, TIMEOUT_MS);
-        liftTalon.configPeakOutputForward(PEAK_OUT_PERCENT, TIMEOUT_MS);
-        liftTalon.configPeakOutputReverse(-PEAK_OUT_PERCENT, TIMEOUT_MS);
+        liftTalon.configNominalOutputForward(NOMINAL_OUT_PERCENT, L_TIMEOUT);
+        liftTalon.configNominalOutputReverse(NOMINAL_OUT_PERCENT, L_TIMEOUT);
+        liftTalon.configPeakOutputForward(PEAK_OUT_PERCENT, L_TIMEOUT);
+        liftTalon.configPeakOutputReverse(-PEAK_OUT_PERCENT, L_TIMEOUT);
 
         // TODO: Figure out allowable closed loop error units and value
-        liftTalon.configAllowableClosedloopError(SLOTIDX, 0, TIMEOUT_MS);
+        liftTalon.configAllowableClosedloopError(SLOTIDX, 0, L_TIMEOUT);
 
-        liftTalon.config_kF(SLOTIDX, kF, TIMEOUT_MS);
-        liftTalon.config_kP(SLOTIDX, kP, TIMEOUT_MS);
-        liftTalon.config_kI(SLOTIDX, kI, TIMEOUT_MS);
-        liftTalon.config_kD(SLOTIDX, kD, TIMEOUT_MS);
+        liftTalon.config_kF(SLOTIDX, kF, L_TIMEOUT);
+        liftTalon.config_kP(SLOTIDX, kP, L_TIMEOUT);
+        liftTalon.config_kI(SLOTIDX, kI, L_TIMEOUT);
+        liftTalon.config_kD(SLOTIDX, kD, L_TIMEOUT);
 
         // Sets initial encoder value in AUTONOMOUS starting configuration (raised)
-        liftTalon.setSelectedSensorPosition(UPPER_LIFTER_LIMIT, PIDIDX, TIMEOUT_MS);
+        liftTalon.setSelectedSensorPosition(UPPER_LIFTER_LIMIT, PIDIDX, L_TIMEOUT);
     }
 
     private void limitCurrent() {
@@ -89,9 +89,9 @@ public class CubeHolder extends Subsystem {
         final int PEAK_CURRENT_DURATION = 200; // ms
         final int PEAK_CURRENT_TIMEOUT = 20; // ms
 
-        liftTalon.configPeakCurrentLimit(PEAK_CURRENT,TIMEOUT_MS);
+        liftTalon.configPeakCurrentLimit(PEAK_CURRENT, L_TIMEOUT);
         liftTalon.configPeakCurrentDuration(PEAK_CURRENT_DURATION, PEAK_CURRENT_TIMEOUT);
-        liftTalon.configContinuousCurrentLimit(CONTINUOUS_CURRENT, TIMEOUT_MS);
+        liftTalon.configContinuousCurrentLimit(CONTINUOUS_CURRENT, L_TIMEOUT);
         liftTalon.enableCurrentLimit(true);
 
     }
@@ -171,7 +171,7 @@ public class CubeHolder extends Subsystem {
      * Reset lift encoder to 0 and sets target position to 0 if not already at 0
      */
     private void resetLiftEncoder() {
-        liftTalon.setSelectedSensorPosition(LOWER_LIFTER_LIMIT, PIDIDX, TIMEOUT_MS);
+        liftTalon.setSelectedSensorPosition(LOWER_LIFTER_LIMIT, PIDIDX, S_TIMEOUT);
         if(targetPosition != 0) {
             targetPosition = 0;
         }
