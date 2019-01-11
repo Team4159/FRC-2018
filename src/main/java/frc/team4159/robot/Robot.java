@@ -77,7 +77,7 @@ public class Robot extends TimedRobot {
             throw new RuntimeException("Problems with creating the log files");
         }
 
-        LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+        LOGGER = Logger.getLogger("team4159");
         LOGGER.info("Starting up!");
 
         /*
