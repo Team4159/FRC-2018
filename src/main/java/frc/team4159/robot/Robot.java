@@ -15,6 +15,10 @@ import frc.team4159.robot.commands.led.BlinkLED;
 import frc.team4159.robot.util.AutoSelector;
 import frc.team4159.robot.subsystems.Drivetrain;
 import frc.team4159.robot.subsystems.Superstructure;
+import frc.team4159.robot.Logger.logging.RobotLogger;
+
+import java.io.IOException;
+import java.util.logging.Logger;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -46,6 +50,8 @@ public class Robot extends TimedRobot {
     private SendableChooser<Command> endGameChooser;
     private NetworkTableEntry ledModeEntry;
 
+    private Logger LOGGER;
+
     /**
      * Called when the robot is first powered on
      */
@@ -63,6 +69,16 @@ public class Robot extends TimedRobot {
          */
         oi = OI.getInstance();
         autoSelector = AutoSelector.getInstance();
+
+        try {
+            RobotLogger.setup();
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Problems with creating the log files");
+        }
+
+        LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+        LOGGER.info("Starting up!");
 
         /*
          * Put auto command into SmartDashboard
