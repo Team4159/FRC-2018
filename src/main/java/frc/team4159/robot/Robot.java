@@ -15,15 +15,13 @@ public class Robot extends TimedRobot {
 
     private OI oi;
 
-    private static Command auto;
-
-    private Logger LOGGER;
+    private static Logger LOGGER;
 
     /**
      * Called when the robot is first powered on
      */
     @Override
-    public void robotInit(){
+    public void robotInit() {
         drivetrain = Drivetrain.getInstance();
         oi = OI.getInstance();
 
@@ -39,46 +37,43 @@ public class Robot extends TimedRobot {
     }
 
     @Override
-    public void disabledInit(){
+    public void disabledInit() {
 
     }
 
     @Override
-    public void disabledPeriodic(){
+    public void disabledPeriodic() {
 
     }
 
-    //@Override
-    //public void autonomousInit()
+    @Override
+    public void autonomousInit() {
 
-    //}
+    }
 
     @Override
-    public void autonomousPeriodic()
-    {
+    public void autonomousPeriodic() {
         Scheduler.getInstance().run();
-
     }
     // loops during antonomous
 
     @Override
-    public void teleopInit(){
-        if (auto != null) {
-            auto.cancel();
-        }
+    public void teleopInit() {
 
     }
     // when u control
 
     @Override
-    public void teleopPeriodic(){
-
+    public void teleopPeriodic() {
         Scheduler.getInstance().run();
     }
     // when it repeats the controls
 
-    public Drivetrain getDrivetrain(){
-
+    public Drivetrain getDrivetrain() {
         return drivetrain;
+    }
+
+    public static Logger getLogger() {
+        return LOGGER;
     }
 }
