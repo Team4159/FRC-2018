@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.RobotController;
 
 public class Robot extends TimedRobot {
-    private Logger LOGGER;
+    private Logger batteryLogger;
 
     @Override
     public void robotInit() {
@@ -19,11 +19,10 @@ public class Robot extends TimedRobot {
             RobotLogger.setup();
         } catch (IOException e) {
             e.printStackTrace();
-            throw new RuntimeException("Problems with creating the log files");
+            System.out.println("Problems with creating the log files");
         }
 
-        LOGGER = Logger.getLogger("team4159");
-        LOGGER.info("Starting up!");
+        batteryLogger = Logger.getLogger("team4159.battery");
     }
 
     @Override
@@ -34,11 +33,9 @@ public class Robot extends TimedRobot {
     @Override
     public void teleopPeriodic() {
         if (0.02 * Math.round(Timer.getFPGATimestamp() / 0.02) % 5 == 0) {
-            LOGGER.info(Double.toString(RobotController.getBatteryVoltage()));
+            batteryLogger.info(Double.toString(RobotController.getBatteryVoltage()));
         }
         
         Scheduler.getInstance().run();
     }
-
-    public Logger getLogger() { return LOGGER; }
 }
