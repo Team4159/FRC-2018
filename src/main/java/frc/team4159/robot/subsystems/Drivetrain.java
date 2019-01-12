@@ -3,7 +3,7 @@ package frc.team4159.robot.subsystems;
 
 import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import frc.team4159.robot.command.Drive;
+import frc.team4159.robot.commands.Drive;
 
 public class Drivetrain extends Subsystem {
     //to control the drivetrain; the wheels on the robot
