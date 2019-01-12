@@ -1,6 +1,5 @@
 package frc.team4159.robot;
 
-import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 
@@ -8,16 +7,14 @@ import frc.team4159.robot.Logger.logging.RobotLogger;
 import java.io.IOException;
 import java.util.logging.Logger;
 
-import static edu.wpi.first.wpilibj.Timer.getFPGATimestamp;
+import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.RobotController;
 
 public class Robot extends TimedRobot {
-    private PowerDistributionPanel pdp;
     private Logger LOGGER;
 
     @Override
     public void robotInit() {
-        pdp = new PowerDistributionPanel();
-
         try {
             RobotLogger.setup();
         } catch (IOException e) {
@@ -36,8 +33,8 @@ public class Robot extends TimedRobot {
 
     @Override
     public void teleopPeriodic() {
-        if (getFPGATimestamp() % 5 == 0){
-            LOGGER.info(Double.toString(pdp.getVoltage()));
+        if (0.02 * Math.round(Timer.getFPGATimestamp() / 0.02) % 5 == 0) {
+            LOGGER.info(Double.toString(RobotController.getBatteryVoltage()));
         }
         
         Scheduler.getInstance().run();
