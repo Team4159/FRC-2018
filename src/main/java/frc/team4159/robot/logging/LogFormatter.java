@@ -2,6 +2,7 @@ package frc.team4159.robot.logging;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
 import java.util.logging.Formatter;
 import java.util.logging.LogRecord;
 
