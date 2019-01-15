@@ -61,7 +61,9 @@ public class Robot extends TimedRobot {
                 RobotLogger.setup(
                         driverStation.getEventName(),
                         driverStation.getAlliance().toString(),
-                        driverStation.getMatchType().toString()
+                        driverStation.getMatchType().toString(),
+                        driverStation.getMatchNumber(),
+                        isAutonomous() ? "Autonomous" : "Teleoperated"
                 );
                 logger = Logger.getLogger("team4159");
             } catch (IOException e) {
