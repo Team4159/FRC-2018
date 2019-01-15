@@ -91,7 +91,7 @@ public class Robot extends TimedRobot {
     private void logCycle() {
         if (logger != null) {
             if (0.02 * Math.round(Timer.getFPGATimestamp() / 0.02) % 5 == 0) {
-                logger.info(mode.toString() + "," + Double.toString(RobotController.getBatteryVoltage()));
+                logger.info(mode.toString() + "," + RobotController.getBatteryVoltage());
             }
         }
     }

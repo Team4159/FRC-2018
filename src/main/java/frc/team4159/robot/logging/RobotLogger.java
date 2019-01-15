@@ -1,7 +1,9 @@
 package frc.team4159.robot.logging;
 
+import java.io.File;
 import java.io.IOException;
 
+import java.util.Arrays;
 import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import java.util.logging.LogManager;
@@ -15,13 +17,29 @@ public class RobotLogger {
 
         Logger logger = Logger.getLogger("team4159");
 
-        FileHandler logFile = new FileHandler("/media/sda1/" + LogFormatter.calcDate(System.currentTimeMillis()) + "_" + eventName.replaceAll( "[^a-zA-Z0-9\\.\\-]", "_") + "_" + matchNumber + ".csv");
-        logFile.setFormatter(new LogFormatter());
-        logger.addHandler(logFile);
+        String[] directories = new File("/media").list(
+            (File dir, String name) -> new File(dir, name).isDirectory()
+        );
 
-        logger.setLevel(Level.FINEST);
+        if (directories != null) {
+            for (String directory : directories) {
+                String[] files = new File("/media/" + directory).list(
+                        (File dir, String name) -> new File(dir, name).isDirectory()
+                );
 
-        logger.config( eventName + "," + alliance + "," + matchType + "," + matchNumber);
-        logger.config("level,timestamp,period,voltage");
+                if (files != null) {
+                    if (Arrays.asList(files).contains("RobotLogViewer")) {
+                        FileHandler logFile = new FileHandler("/media/" + directory + "/" + System.currentTimeMillis() + "_" + eventName.replaceAll( "[^a-zA-Z0-9\\.\\-]", "_") + "_" + matchNumber + ".csv");
+                        logFile.setFormatter(new LogFormatter());
+                        logger.addHandler(logFile);
+
+                        logger.setLevel(Level.FINEST);
+
+                        logger.config( eventName + "," + alliance + "," + matchType + "," + matchNumber);
+                        logger.config("level,timestamp,period,voltage");
+                    }
+                }
+            }
+        }
     }
 }

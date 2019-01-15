@@ -1,8 +1,5 @@
 package frc.team4159.robot.logging;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import java.util.logging.Formatter;
 import java.util.logging.LogRecord;
 
@@ -15,7 +12,7 @@ class LogFormatter extends Formatter {
         } else {
             buf.append(rec.getLevel());
             buf.append(',');
-            buf.append(calcDate(rec.getMillis()));
+            buf.append(rec.getMillis());
             buf.append(',');
             buf.append(rec.getMessage());
         }
@@ -23,11 +20,5 @@ class LogFormatter extends Formatter {
         buf.append('\n');
 
         return buf.toString();
-    }
-
-    static String calcDate(long millisecs) {
-        SimpleDateFormat date_format = new SimpleDateFormat("MM_dd_HH_mm_ss");
-        Date resultDate = new Date(millisecs);
-        return date_format.format(resultDate);
     }
 }
