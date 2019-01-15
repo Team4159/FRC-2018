@@ -13,12 +13,20 @@ import edu.wpi.first.wpilibj.Timer;
 import frc.team4159.robot.subsystems.Drivetrain;
 
 public class Robot extends TimedRobot {
+    private enum Mode {
+        None,
+        Autonomous,
+        Teleoperated
+    }
+
     private Logger logger;
 
     private DriverStation driverStation;
 
     private Drivetrain drivetrain;
     private OI oi;
+
+    private Mode mode = Mode.None;
 
     @Override
     public void robotInit() {
@@ -35,6 +43,7 @@ public class Robot extends TimedRobot {
 
     @Override
     public void autonomousPeriodic() {
+        mode = Mode.Autonomous;
         logCycle();
         Scheduler.getInstance().run();
     }
@@ -46,13 +55,20 @@ public class Robot extends TimedRobot {
 
     @Override
     public void teleopPeriodic() {
+        mode = Mode.Teleoperated;
         logCycle();
         Scheduler.getInstance().run();
     }
 
     @Override
     public void disabledInit() {
-        logger = null;
+        if (driverStation.isFMSAttached()) {
+            if (mode == Mode.Teleoperated) {
+                logger = null;
+            }
+        } else {
+            logger = null;
+        }
     }
 
     private void initLogger() {
@@ -62,8 +78,7 @@ public class Robot extends TimedRobot {
                         driverStation.getEventName(),
                         driverStation.getAlliance().toString(),
                         driverStation.getMatchType().toString(),
-                        driverStation.getMatchNumber(),
-                        isAutonomous() ? "Autonomous" : "Teleoperated"
+                        driverStation.getMatchNumber()
                 );
                 logger = Logger.getLogger("team4159");
             } catch (IOException e) {
@@ -76,7 +91,7 @@ public class Robot extends TimedRobot {
     private void logCycle() {
         if (logger != null) {
             if (0.02 * Math.round(Timer.getFPGATimestamp() / 0.02) % 5 == 0) {
-                logger.info((isAutonomous() ? "Autonomous" : "Teleoperated") + "," + Double.toString(RobotController.getBatteryVoltage()));
+                logger.info(mode.toString() + "," + Double.toString(RobotController.getBatteryVoltage()));
             }
         }
     }

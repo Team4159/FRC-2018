@@ -8,14 +8,14 @@ import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
 public class RobotLogger {
-    static public void setup(String eventName, String alliance, String matchType, int matchNumber, String period) throws IOException {
+    static public void setup(String eventName, String alliance, String matchType, int matchNumber) throws IOException {
         LogManager.getLogManager().reset();
 
         eventName = eventName.isEmpty() ? "Practice" : eventName;
 
         Logger logger = Logger.getLogger("team4159");
 
-        FileHandler logFile = new FileHandler("/media/sda1/" + LogFormatter.calcDate(System.currentTimeMillis()) + "_" + period + "_" + eventName.replaceAll( "[^a-zA-Z0-9\\.\\-]", "_") + "_" + matchNumber + ".csv");
+        FileHandler logFile = new FileHandler("/media/sda1/" + LogFormatter.calcDate(System.currentTimeMillis()) + "_" + eventName.replaceAll( "[^a-zA-Z0-9\\.\\-]", "_") + "_" + matchNumber + ".csv");
         logFile.setFormatter(new LogFormatter());
         logger.addHandler(logFile);
 
