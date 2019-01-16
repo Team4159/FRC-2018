@@ -13,12 +13,6 @@ import edu.wpi.first.wpilibj.Timer;
 import frc.team4159.robot.subsystems.Drivetrain;
 
 public class Robot extends TimedRobot {
-    private enum Mode {
-        None,
-        Autonomous,
-        Teleoperated
-    }
-
     private Logger logger;
 
     private DriverStation driverStation;
@@ -26,49 +20,29 @@ public class Robot extends TimedRobot {
     private Drivetrain drivetrain;
     private OI oi;
 
-    private Mode mode = Mode.None;
-
     @Override
     public void robotInit() {
         drivetrain = Drivetrain.getInstance();
         oi = OI.getInstance();
 
         driverStation = DriverStation.getInstance();
+
+        initLogger();
     }
 
     @Override
-    public void autonomousInit() {
-        initLogger();
+    public void robotPeriodic() {
+        logCycle();
     }
 
     @Override
     public void autonomousPeriodic() {
-        mode = Mode.Autonomous;
-        logCycle();
         Scheduler.getInstance().run();
-    }
-
-    @Override
-    public void teleopInit() {
-        initLogger();
     }
 
     @Override
     public void teleopPeriodic() {
-        mode = Mode.Teleoperated;
-        logCycle();
         Scheduler.getInstance().run();
-    }
-
-    @Override
-    public void disabledInit() {
-        if (driverStation.isFMSAttached()) {
-            if (mode == Mode.Teleoperated) {
-                logger = null;
-            }
-        } else {
-            logger = null;
-        }
     }
 
     private void initLogger() {
@@ -89,10 +63,8 @@ public class Robot extends TimedRobot {
     }
 
     private void logCycle() {
-        if (logger != null) {
-            if (0.02 * Math.round(Timer.getFPGATimestamp() / 0.02) % 5 == 0) {
-                logger.info(mode.toString() + "," + RobotController.getBatteryVoltage());
-            }
+        if (logger != null && !isDisabled() && 0.02 * Math.round(Timer.getFPGATimestamp() / 0.02) % 5 == 0) {
+            logger.info((isAutonomous() ? "Autonomous": "Teleoperated") + "," + RobotController.getBatteryVoltage());
         }
     }
 }
