@@ -47,4 +47,12 @@ public class OI {
         double rightY = rightJoy.getY();
         return -Math.copySign(Math.pow(rightY, 2), rightY);
     }
+
+    public boolean getIn() {
+        return rightJoy.getRawButtonPressed(3);
+    }
+
+    public boolean getOut() {
+        return rightJoy.getRawButtonPressed(2);
+    }
 }
